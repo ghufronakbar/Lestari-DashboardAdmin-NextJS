@@ -109,7 +109,7 @@ export function detailHistory() {
               </Text>
               <Text>{requestData.body}</Text>
             </Box>
-            <Spacer/>
+            <Spacer />
             <Box flex={4} mt={4}>
               <Box p={8} borderWidth="1px" borderRadius="lg" overflow="hidden">
                 <Text fontSize="xl" fontWeight="semibold">
@@ -120,37 +120,41 @@ export function detailHistory() {
                 </Text>
                 <Box mt={4}>
                   <TableContainer>
-                  <Table>
-                    <Tbody>
-                      <Tr>
-                        <Th>Profession</Th>
-                        <Td>{requestData.profession}</Td>
-                      </Tr>
-                      <Tr>
-                        <Th>Instances</Th>
-                        <Td>{requestData.instances}</Td>
-                      </Tr>
-                      <Tr>
-                        <Th>Send at</Th>
-                        <Td>{formatDate(requestData.date)}</Td>
-                      </Tr>
-                      <Tr>
-                        <Th>From</Th>
-                        <Td>{formatDate(requestData.date_start)}</Td>
-                      </Tr>
-                      <Tr>
-                        <Th>To</Th>
-                        <Td>{formatDate(requestData.date_end)}</Td>
-                      </Tr>
-                    </Tbody>
-                  </Table>
-
-
+                    <Table>
+                      <Tbody>
+                        <Tr>
+                          <Th>Profession</Th>
+                          <Td>{requestData.profession}</Td>
+                        </Tr>
+                        <Tr>
+                          <Th>Instances</Th>
+                          <Td>{requestData.instances}</Td>
+                        </Tr>
+                        <Tr>
+                          <Th>Send at</Th>
+                          <Td>{formatDate(requestData.date)}</Td>
+                        </Tr>
+                        <Tr>
+                          <Th>From</Th>
+                          <Td>{formatDate(requestData.date_start)}</Td>
+                        </Tr>
+                        <Tr>
+                          <Th>To</Th>
+                          <Td>{formatDate(requestData.date_end)}</Td>
+                        </Tr>
+                      </Tbody>
+                    </Table>
                   </TableContainer>
                 </Box>
-                
-                <Box p={1} borderWidth="1px" borderRadius="lg" overflow="hidden" marginTop={4}>
-                {requestData.local_name == 1 && (
+
+                <Box
+                  p={1}
+                  borderWidth="1px"
+                  borderRadius="lg"
+                  overflow="hidden"
+                  marginTop={4}
+                >
+                  {requestData.local_name == 1 && (
                     <Box
                       as="button"
                       borderRadius="md"
@@ -158,12 +162,12 @@ export function detailHistory() {
                       color="white"
                       px={4}
                       h={8}
-                      margin={1}                      
+                      margin={1}
                     >
                       Local Name
                     </Box>
                   )}
-                   {requestData.latin_name == 1 && (
+                  {requestData.latin_name == 1 && (
                     <Box
                       as="button"
                       borderRadius="md"
@@ -176,7 +180,7 @@ export function detailHistory() {
                       Latin Name
                     </Box>
                   )}
-                   {requestData.habitat == 1 && (
+                  {requestData.habitat == 1 && (
                     <Box
                       as="button"
                       borderRadius="md"
@@ -189,7 +193,7 @@ export function detailHistory() {
                       Habitat
                     </Box>
                   )}
-                   {requestData.description == 1 && (
+                  {requestData.description == 1 && (
                     <Box
                       as="button"
                       borderRadius="md"
@@ -202,7 +206,7 @@ export function detailHistory() {
                       Description
                     </Box>
                   )}
-                   {requestData.city == 1 && (
+                  {requestData.city == 1 && (
                     <Box
                       as="button"
                       borderRadius="md"
@@ -215,7 +219,7 @@ export function detailHistory() {
                       City
                     </Box>
                   )}
-                   {requestData.longitude == 1 && (
+                  {requestData.longitude == 1 && (
                     <Box
                       as="button"
                       borderRadius="md"
@@ -228,7 +232,7 @@ export function detailHistory() {
                       Coordinates
                     </Box>
                   )}
-                   {requestData.amount == 1 && (
+                  {requestData.amount == 1 && (
                     <Box
                       as="button"
                       borderRadius="md"
@@ -241,11 +245,7 @@ export function detailHistory() {
                       Amount
                     </Box>
                   )}
-                
                 </Box>
-                
-                  
-                
               </Box>
             </Box>
           </Flex>

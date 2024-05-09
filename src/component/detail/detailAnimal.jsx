@@ -158,9 +158,12 @@ export function detailAnimal() {
                         <Tr>
                           <Th>Updated at</Th>
                           <Td>
-                            {animal.updated_at == animal.date ?  <Text as="b">-</Text> : formatDate(animal.updated_at) }
-                            
-                            </Td>
+                            {animal.updated_at == animal.date ? (
+                              <Text as="b">-</Text>
+                            ) : (
+                              formatDate(animal.updated_at)
+                            )}
+                          </Td>
                         </Tr>
                       </Tbody>
                     </Table>
@@ -171,40 +174,6 @@ export function detailAnimal() {
           </Flex>
         </Box>
       )}
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Confirm Request</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Flex>
-              <Center flex={1}>
-                <Button
-                  borderRadius="md"
-                  bg="#E53E3E"
-                  color="white"
-                  px={4}
-                  h={8}
-                >
-                  Reject
-                </Button>
-              </Center>
-              <Center flex={1}>
-                <Button
-                  borderRadius="md"
-                  bg="#48BB78"
-                  color="white"
-                  px={4}
-                  h={8}
-                >
-                  Approve
-                </Button>
-              </Center>
-            </Flex>
-          </ModalBody>
-          <ModalFooter></ModalFooter>
-        </ModalContent>
-      </Modal>
     </>
   );
 }

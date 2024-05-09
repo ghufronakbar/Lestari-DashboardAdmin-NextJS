@@ -206,7 +206,7 @@ export function detailReqAccount() {
                   color="white"
                   px={4}
                   h={8}
-                  onClick={handleReject} // Handle reject action
+                  onClick={handleReject} 
                 >
                   Reject
                 </Button>
