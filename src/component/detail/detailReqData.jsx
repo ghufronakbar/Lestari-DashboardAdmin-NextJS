@@ -64,7 +64,7 @@ export function detailReqData() {
   const handleApprove = async () => {
     try {
       await axiosInstance.put(`/request/data/approve/${id}`, { approve: 2 });
-      setIsModalOpen(false);
+      
       // Refresh data after approval
       const reqDataResponse = await axiosInstance.get(`/request/data/${id}`);
       setrequestAccount(reqDataResponse.data.values[0]);
@@ -72,6 +72,7 @@ export function detailReqData() {
         title: "Request has been approved",
         status: "success",
       });
+      setIsModalOpen(false);
     } catch (error) {
       console.error("Error approving request:", error);
     }
@@ -80,13 +81,15 @@ export function detailReqData() {
   const handleReject = async () => {
     try {
       await axiosInstance.put(`/request/data/approve/${id}`, { approve: 1 });
-      setIsModalOpen(false);
+      
       const reqDataResponse = await axiosInstance.get(`/request/data/${id}`);
       setrequestAccount(reqDataResponse.data.values[0]);
       toast({
         title: "Request has been rejected",
         status: "warning",
       });
+      setIsModalOpen(false);
+      
     } catch (error) {
       console.error("Error rejecting request:", error);
     }

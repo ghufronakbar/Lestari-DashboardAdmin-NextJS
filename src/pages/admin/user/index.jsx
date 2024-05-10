@@ -1,37 +1,28 @@
 import { headAdmin } from "@/component/headAdmin";
-import { tableAnimal } from "@/component/table/tableAnimal";
 import {
-  Button,
   Container,
   Heading,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
-  Text,
-  Th,
-  Thead,
-  Tr,
+  Flex
 } from "@chakra-ui/react";
-import { axiosInstance } from "@/lib/axios";
-import { useMutation, useQuery } from "@tanstack/react-query";
 import { tableUser } from "@/component/table/tableUser";
-import { navbar } from "@/component/navbar";
+import { SidebarMenu } from "@/component/SidebarMenu";
+import { withAuth } from "@/lib/authorization";
 
 function User() {
   return (
     <>
       {headAdmin()}
       <main>
-      {navbar()}
-        <Container maxW="80%">
+      <Flex>
+          <SidebarMenu flex={1} /> <Container maxW="80%">
           <Heading marginBottom="8" marginTop="8">
             User
           </Heading>
           {tableUser()}
-        </Container>
+        </Container></Flex>
+       
       </main>
     </>
   );
 }
-export default User;
+export default withAuth(User);
