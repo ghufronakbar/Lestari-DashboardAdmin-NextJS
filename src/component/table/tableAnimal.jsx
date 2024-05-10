@@ -15,6 +15,7 @@ import {
 import { axiosInstance } from "@/lib/axios";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
+import { baseURL } from "@/lib/baseUrl";
 
 export function tableAnimal() {
   const router = useRouter()
@@ -79,7 +80,7 @@ export function tableAnimal() {
                   borderRadius="18"
                   boxSize="60px"
                   objectFit="cover"
-                  src={animal.image}
+                  src={baseURL+animal.image}
                   alt={animal.image}
                 />
               </Td>

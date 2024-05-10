@@ -29,6 +29,7 @@ import {
 import { axiosInstance } from "@/lib/axios";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { baseURL } from "@/lib/baseUrl";
 
 export function detailAnimal() {
   const router = useRouter();
@@ -80,7 +81,7 @@ export function detailAnimal() {
                 <Image
                   borderRadius="18"
                   objectFit="cover"
-                  src={animal.image}
+                  src={baseURL+animal.image}
                   alt={animal.image}
                 />
               </Center>
@@ -103,7 +104,7 @@ export function detailAnimal() {
                         borderRadius="18"
                         boxSize="60px"
                         objectFit="cover"
-                        src={animal.user_picture}
+                        src={baseURL+animal.user_picture}
                         alt={animal.user_picture}
                       />
 

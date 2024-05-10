@@ -25,6 +25,7 @@ import {
   WarningTwoIcon,
 } from "@chakra-ui/icons";
 import { useState, useEffect } from "react";
+import { baseURL } from "@/lib/baseUrl";
 
 export function tableUser() {
   const [user, setRequestData] = useState(null);
@@ -106,7 +107,7 @@ export function tableUser() {
                   borderRadius="18"
                   boxSize="60px"
                   objectFit="cover"
-                  src={user.picture}
+                  src={baseURL+user.picture}
                   alt={user.picture}
                 />
               </Td>
