@@ -26,10 +26,12 @@ import {
 } from "@chakra-ui/icons";
 import { useState, useEffect } from "react";
 import { baseURL } from "@/lib/baseUrl";
+import { Loading } from "../Loading";
 
 export function tableUser() {
   const [user, setRequestData] = useState(null);
   const toast = useToast()
+  const [isLoading, setIsloading] = useState(true)
   function formatDate(dateString) {
     const options = {
       weekday: "long",
@@ -42,8 +44,7 @@ export function tableUser() {
 
   const suspendHandle = async (id) => {
     try {
-      await axiosInstance.put(`/user/suspend`, { status: 0, id });
-      
+      await axiosInstance.put(`/user/suspend`, { status: 0, id });      
       toast({
         title: "User has been suspended",
         status: "warning",
@@ -56,8 +57,8 @@ export function tableUser() {
 
   const unsuspendHandle = async (id) => {
     try {
-      await axiosInstance.put(`/user/suspend`, { status: 1, id});
-      
+      const response = await axiosInstance.put(`/user/suspend`, { status: 1, id});
+      console.log(response)
       toast({
         title: "User has been activated",
         status: "success",
@@ -73,8 +74,9 @@ export function tableUser() {
   const { data, refetch: refetchData } = useQuery({
     queryFn: async () => {
       const animalsResponse = await axiosInstance.get("/users");
+      setIsloading(false)
       return animalsResponse;
-    },
+    },    
     refetchOnWindowFocus: true, 
   });
 
@@ -83,6 +85,8 @@ export function tableUser() {
       refetchData();
     }
   }, [user, refetchData]);
+
+  if(isLoading)return<Loading/>
 
   return (
     <TableContainer>
@@ -107,8 +111,8 @@ export function tableUser() {
                   borderRadius="18"
                   boxSize="60px"
                   objectFit="cover"
-                  src={baseURL+user.picture}
-                  alt={user.picture}
+                  src={user.picture}
+                  alt={user.name}
                 />
               </Td>
               <Td>
@@ -145,8 +149,6 @@ export function tableUser() {
                         Suspended
                       </Box>
                     )}
-                    
-                    
                   </Text>
                 </Center>
               </Td>

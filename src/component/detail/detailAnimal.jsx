@@ -81,8 +81,8 @@ export function detailAnimal() {
                 <Image
                   borderRadius="18"
                   objectFit="cover"
-                  src={baseURL+animal.image}
-                  alt={animal.image}
+                  src={animal.image}
+                  alt={animal.latin_name}
                 />
               </Center>
 
@@ -104,8 +104,8 @@ export function detailAnimal() {
                         borderRadius="18"
                         boxSize="60px"
                         objectFit="cover"
-                        src={baseURL+animal.user_picture}
-                        alt={animal.user_picture}
+                        src={animal.user_picture}
+                        alt={animal.name}
                       />
 
                       <Table>

@@ -80,8 +80,8 @@ export function tableAnimal() {
                   borderRadius="18"
                   boxSize="60px"
                   objectFit="cover"
-                  src={baseURL+animal.image}
-                  alt={animal.image}
+                  src={animal.image}
+                  alt={animal.latin_name}
                 />
               </Td>
               <Td>
