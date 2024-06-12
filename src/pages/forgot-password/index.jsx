@@ -27,7 +27,7 @@ function ForgotPassword() {
           status: "error",
         });
       } else if (email && !otp) {
-        await axiosInstance.post("/user/forgot_password", {
+        await axiosInstance.post("/user/forgot-password", {
           email: email,
         });
 
