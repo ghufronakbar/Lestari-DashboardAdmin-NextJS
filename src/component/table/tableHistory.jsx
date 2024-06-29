@@ -5,6 +5,7 @@ import {
   Button,
   Center,
   Flex,
+  HStack,
   Image,
   Input,
   Table,
@@ -200,6 +201,51 @@ export function TableHistory() {
             )}
           </Tbody>
         </Table>
+        <Center>
+          <HStack mt={4}>
+            {history?.pagination?.total_page > 0 ? (
+              <>
+                <Text as="b">Page {history?.pagination?.page}</Text>{" "}
+                <Text>/ {history?.pagination?.total_page}</Text>
+              </>
+            ) : null}
+          </HStack>
+        </Center>
+        <Center>
+          {history?.pagination?.total_page > 0 ? (
+            <HStack mt={4}>
+              <Button
+                variant="outline"
+                colorScheme="teal"
+                onClick={() => handlePagination(page - 1)}
+                isDisabled={page === 1}
+              >
+                <Text as="b">Previous</Text>
+              </Button>
+              {Array.from(
+                { length: history?.pagination?.total_page },
+                (_, index) => (
+                  <Button
+                    variant={page === index + 1 ? "solid" : "outline"}
+                    colorScheme="teal"
+                    onClick={() => handlePagination(index + 1)}
+                    key={index}
+                  >
+                    {index + 1}
+                  </Button>
+                )
+              )}
+              <Button
+                variant="outline"
+                colorScheme="teal"
+                onClick={() => handlePagination(page + 1)}
+                isDisabled={page === history?.pagination?.total_page}
+              >
+                <Text as="b">Next</Text>
+              </Button>
+            </HStack>
+          ) : null}
+        </Center>
       </TableContainer>
     </>
   );
