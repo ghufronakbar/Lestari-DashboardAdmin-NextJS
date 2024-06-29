@@ -31,7 +31,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { baseURL } from "@/lib/baseUrl";
 
-export function detailAnimal() {
+export function DetailAnimal() {
   const router = useRouter();
   const { id } = router.query;
   const [animal, setAnimal] = useState(null);

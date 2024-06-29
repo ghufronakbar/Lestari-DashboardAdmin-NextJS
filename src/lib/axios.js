@@ -1,6 +1,15 @@
 import axios from "axios";
 
-export const axiosInstance = axios.create({
+ const axiosInstance = axios.create({
     baseURL: "http://localhost:5000/v1/web"
 })
 
+axiosInstance.interceptors.request.use((config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+})
+
+module.exports = {axiosInstance}

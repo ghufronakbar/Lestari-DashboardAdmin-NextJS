@@ -107,8 +107,7 @@ export function TableAnimal() {
 
   const handlePagination = (newPage) => {
     setPage(newPage);
-    setAnimals([]); // Clear animals when paginating
-    setError(false); // Reset error state when paginating
+    setIsLoading(true); 
     router.push({
       pathname: router.pathname,
       query: { ...router.query, page: newPage },

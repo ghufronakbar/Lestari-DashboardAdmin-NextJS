@@ -80,7 +80,7 @@ export function TableReqAccount() {
   const handlePagination = (newPage) => {
     setPage(newPage);
     setReq([]); // Clear req when paginating
-    setError(false); // Reset error state when paginating
+    setIsloading(true); 
     router.push({
       pathname: router.pathname,
       query: { ...router.query, page: newPage },

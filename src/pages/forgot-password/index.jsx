@@ -10,7 +10,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 
-import { headAdmin } from "@/component/headAdmin";
+import { HeadAdmin } from "@/component/HeadAdmin";
 
 function ForgotPassword() {
   const toast = useToast();
@@ -79,7 +79,7 @@ function ForgotPassword() {
 
   return (
     <>
-      {headAdmin()}
+      {HeadAdmin()}
       <main>
         <Container>
           <br />

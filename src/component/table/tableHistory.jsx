@@ -91,7 +91,7 @@ export function TableHistory() {
   const handlePagination = (newPage) => {
     setPage(newPage);
     setHistory([]); // Clear history when paginating
-    setError(false); // Reset error state when paginating
+    setIsloading(true); 
     router.push({
       pathname: router.pathname,
       query: { ...router.query, page: newPage },

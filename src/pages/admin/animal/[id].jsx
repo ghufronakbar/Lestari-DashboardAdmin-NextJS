@@ -1,17 +1,17 @@
-import { headAdmin } from "@/component/headAdmin";
+import { HeadAdmin } from "@/component/HeadAdmin";
 import { Container, Flex } from "@chakra-ui/react";
 import { SidebarMenu } from "@/component/SidebarMenu";
-import { detailAnimal } from "@/component/detail/detailAnimal";
+import { DetailAnimal } from "@/component/detail/DetailAnimal";
 import { withAuth } from "@/lib/authorization";
 
 function RequestDataID() {
   return (
     <>
-      {headAdmin()}
+      {HeadAdmin()}
       <main>
         <Flex>
           <SidebarMenu flex={1} />
-          <Container maxW="80%">{detailAnimal()}</Container>
+          <Container maxW="80%">{DetailAnimal()}</Container>
         </Flex>
       </main>
     </>

@@ -1,13 +1,13 @@
-import { headAdmin } from "@/component/headAdmin";
+import { HeadAdmin } from "@/component/HeadAdmin";
 import { Container, Heading, Flex } from "@chakra-ui/react";
 import { SidebarMenu } from "@/component/SidebarMenu";
-import { detailReqData } from "@/component/detail/detailReqData";
+import { DetailReqData } from "@/component/detail/DetailReqData";
 import { withAuth } from "@/lib/authorization";
 
 function RequestDataID() {
   return (
     <>
-      {headAdmin()}
+      {HeadAdmin()}
       <main>
         <Flex>
           <SidebarMenu flex={1} />
@@ -15,7 +15,7 @@ function RequestDataID() {
             <Heading marginBottom="8" marginTop="8">
               Request Data
             </Heading>
-            {detailReqData()}
+            {DetailReqData()}
           </Container>
         </Flex>
       </main>

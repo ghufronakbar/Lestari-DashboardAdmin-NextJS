@@ -26,7 +26,7 @@ import { useEffect, useState } from "react";
 import { Loading } from "../Loading";
 import { CloseIcon } from "@chakra-ui/icons";
 
-export function tableReqData() {
+export function TableReqData() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -81,7 +81,7 @@ export function tableReqData() {
   const handlePagination = (newPage) => {
     setPage(newPage);
     setReq([]); // Clear req when paginating
-    setError(false); // Reset error state when paginating
+    setIsloading(true); 
     router.push({
       pathname: router.pathname,
       query: { ...router.query, page: newPage },

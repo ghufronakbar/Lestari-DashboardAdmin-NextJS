@@ -24,7 +24,7 @@ import { axiosInstance } from "@/lib/axios";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
-export function detailReqAccount() {
+export function DetailReqAccount() {
   const router = useRouter();
   const { id } = router.query;
   const [requestAccount, setRequestAccount] = useState(null);

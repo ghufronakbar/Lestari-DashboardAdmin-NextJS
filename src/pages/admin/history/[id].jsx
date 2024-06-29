@@ -1,13 +1,13 @@
-import { headAdmin } from "@/component/headAdmin";
+import { HeadAdmin } from "@/component/HeadAdmin";
 import { Container, Flex, Heading } from "@chakra-ui/react";
 import { SidebarMenu } from "@/component/SidebarMenu";
-import { detailHistory } from "@/component/detail/detailHistory";
+import { DetailHistory } from "@/component/detail/DetailHistory";
 import { withAuth } from "@/lib/authorization";
 
 function HistoryDataID() {
   return (
     <>
-      {headAdmin()}
+      {HeadAdmin()}
       <main>
         <Flex>
           <SidebarMenu flex={1} />
@@ -15,7 +15,7 @@ function HistoryDataID() {
             <Heading marginBottom="8" marginTop="8">
               Request Data
             </Heading>
-            {detailHistory()}
+            {DetailHistory()}
           </Container>
         </Flex>
       </main>

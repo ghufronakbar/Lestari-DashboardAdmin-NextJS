@@ -25,7 +25,7 @@ import { axiosInstance } from "@/lib/axios";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
-export function detailHistory() {
+export function DetailHistory() {
   const router = useRouter();
   const { id } = router.query;
   const [requestData, setRequestData] = useState(null);

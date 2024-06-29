@@ -1,24 +1,24 @@
-import { headAdmin } from "@/component/headAdmin";
+import { HeadAdmin } from "@/component/HeadAdmin";
 import {
   Container,
   Heading,
   Flex
 } from "@chakra-ui/react";
-import { tableUser } from "@/component/table/tableUser";
+import { TableUser } from "@/component/table/TableUser";
 import { SidebarMenu } from "@/component/SidebarMenu";
 import { withAuth } from "@/lib/authorization";
 
 function User() {
   return (
     <>
-      {headAdmin()}
+      {HeadAdmin()}
       <main>
       <Flex>
           <SidebarMenu flex={1} /> <Container maxW="80%">
           <Heading marginBottom="8" marginTop="8">
             User
           </Heading>
-          {tableUser()}
+          {TableUser()}
         </Container></Flex>
        
       </main>

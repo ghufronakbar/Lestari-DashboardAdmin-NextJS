@@ -1,4 +1,4 @@
-import { headAdmin } from "@/component/headAdmin";
+import { HeadAdmin } from "@/component/HeadAdmin";
 import { Container, Flex, Heading } from "@chakra-ui/react";
 import { TableReqAccount } from "@/component/table/TableReqAccount";
 import { SidebarMenu } from "@/component/SidebarMenu";
@@ -7,7 +7,7 @@ import { withAuth } from "@/lib/authorization";
 function RequestAccount() {
   return (
     <>
-      {headAdmin()}
+      {HeadAdmin()}
       <main>
         <Flex>
           <SidebarMenu flex={1} />
