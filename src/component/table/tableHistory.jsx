@@ -58,10 +58,10 @@ export function TableHistory() {
       setError(false); // Reset error state if fetch is successful
     } catch (error) {
       toast({
-        title: error?.response?.data?.message || "Error fetching animals",
+        title: error?.response?.data?.message || "Error fetching history",
         status: "error",
       });
-      console.error("Error fetching animals:", error);
+      console.error("Error fetching history:", error);
       setIsLoading(false);
       setError(true);
     }
@@ -90,7 +90,7 @@ export function TableHistory() {
 
   const handlePagination = (newPage) => {
     setPage(newPage);
-    setHistory([]); // Clear animals when paginating
+    setHistory([]); // Clear history when paginating
     setError(false); // Reset error state when paginating
     router.push({
       pathname: router.pathname,
@@ -222,30 +222,54 @@ export function TableHistory() {
               >
                 <Text as="b">Previous</Text>
               </Button>
-              {Array.from(
-                { length: history?.pagination?.total_page },
-                (_, index) => (
+              {page > 3 && (
+                <>
                   <Button
-                    variant={page === index + 1 ? "solid" : "outline"}
+                    variant="outline"
                     colorScheme="teal"
-                    onClick={() => handlePagination(index + 1)}
-                    key={index}
+                    onClick={() => handlePagination(1)}
                   >
-                    {index + 1}
+                    1
                   </Button>
-                )
+                  {page > 4 && <Text>...</Text>}
+                </>
+              )}
+              {Array.from({ length: 5 }, (_, index) => page - 2 + index)
+                .filter((pageNumber) => pageNumber > 0 && pageNumber <= history.pagination.total_page)
+                .map((pageNumber) => (
+                  <Button
+                    key={pageNumber}
+                    variant={page === pageNumber ? "solid" : "outline"}
+                    colorScheme="teal"
+                    onClick={() => handlePagination(pageNumber)}
+                  >
+                    {pageNumber}
+                  </Button>
+                ))}
+              {page < history.pagination.total_page - 2 && (
+                <>
+                  {page < history.pagination.total_page - 3 && <Text>...</Text>}
+                  <Button
+                    variant="outline"
+                    colorScheme="teal"
+                    onClick={() => handlePagination(history.pagination.total_page)}
+                  >
+                    {history.pagination.total_page}
+                  </Button>
+                </>
               )}
               <Button
                 variant="outline"
                 colorScheme="teal"
                 onClick={() => handlePagination(page + 1)}
-                isDisabled={page === history?.pagination?.total_page}
+                isDisabled={page === history.pagination.total_page}
               >
                 <Text as="b">Next</Text>
               </Button>
             </HStack>
           ) : null}
         </Center>
+
       </TableContainer>
     </>
   );

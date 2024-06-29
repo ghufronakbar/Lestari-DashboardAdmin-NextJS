@@ -240,16 +240,6 @@ export function TableAnimal() {
           </Tbody>
         </Table>
         <Center>
-          <HStack mt={4}>
-            {animals?.pagination?.total_page > 0 ? (
-              <>
-                <Text as="b">Page {animals?.pagination?.page}</Text>{" "}
-                <Text>/ {animals?.pagination?.total_page}</Text>
-              </>
-            ) : null}
-          </HStack>
-        </Center>
-        <Center>
           {animals?.pagination?.total_page > 0 ? (
             <HStack mt={4}>
               <Button
@@ -260,30 +250,54 @@ export function TableAnimal() {
               >
                 <Text as="b">Previous</Text>
               </Button>
-              {Array.from(
-                { length: animals?.pagination?.total_page },
-                (_, index) => (
+              {page > 3 && (
+                <>
                   <Button
-                    variant={page === index + 1 ? "solid" : "outline"}
+                    variant="outline"
                     colorScheme="teal"
-                    onClick={() => handlePagination(index + 1)}
-                    key={index}
+                    onClick={() => handlePagination(1)}
                   >
-                    {index + 1}
+                    1
                   </Button>
-                )
+                  {page > 4 && <Text>...</Text>}
+                </>
+              )}
+              {Array.from({ length: 5 }, (_, index) => page - 2 + index)
+                .filter((pageNumber) => pageNumber > 0 && pageNumber <= animals.pagination.total_page)
+                .map((pageNumber) => (
+                  <Button
+                    key={pageNumber}
+                    variant={page === pageNumber ? "solid" : "outline"}
+                    colorScheme="teal"
+                    onClick={() => handlePagination(pageNumber)}
+                  >
+                    {pageNumber}
+                  </Button>
+                ))}
+              {page < animals.pagination.total_page - 2 && (
+                <>
+                  {page < animals.pagination.total_page - 3 && <Text>...</Text>}
+                  <Button
+                    variant="outline"
+                    colorScheme="teal"
+                    onClick={() => handlePagination(animals.pagination.total_page)}
+                  >
+                    {animals.pagination.total_page}
+                  </Button>
+                </>
               )}
               <Button
                 variant="outline"
                 colorScheme="teal"
                 onClick={() => handlePagination(page + 1)}
-                isDisabled={page === animals?.pagination?.total_page}
+                isDisabled={page === animals.pagination.total_page}
               >
                 <Text as="b">Next</Text>
               </Button>
             </HStack>
           ) : null}
         </Center>
+
       </TableContainer>
     </>
   );

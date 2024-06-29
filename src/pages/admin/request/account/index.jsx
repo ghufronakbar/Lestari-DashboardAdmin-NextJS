@@ -1,6 +1,6 @@
 import { headAdmin } from "@/component/headAdmin";
 import { Container, Flex, Heading } from "@chakra-ui/react";
-import { tableReqAccount } from "@/component/table/tableReqAccount";
+import { TableReqAccount } from "@/component/table/TableReqAccount";
 import { SidebarMenu } from "@/component/SidebarMenu";
 import { withAuth } from "@/lib/authorization";
 
@@ -15,7 +15,7 @@ function RequestAccount() {
             <Heading marginBottom="8" marginTop="8">
               Request Account
             </Heading>
-            {tableReqAccount()}
+            {TableReqAccount()}
           </Container>
         </Flex>
       </main>
