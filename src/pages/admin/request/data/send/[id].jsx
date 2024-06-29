@@ -15,6 +15,7 @@ import { SidebarMenu } from "@/component/SidebarMenu";
 import { Form } from "reactstrap";
 import { useRouter } from "next/router";
 import { withAuth } from "@/lib/authorization";
+import toISODateString from "@/lib/formatISOString";
 
 function SendData() {
   const router = useRouter();
@@ -63,8 +64,8 @@ function SendData() {
           latitude: coordinatesChecked,
           image: imageChecked,
           amount: amountChecked,
-          date_start: dateStart,
-          date_end: dateEnd,
+          date_start: toISODateString(dateStart),
+          date_end: toISODateString(dateEnd),
           id_request_data: id, // Mengambil id_request_data dari parameter URL
         };
   

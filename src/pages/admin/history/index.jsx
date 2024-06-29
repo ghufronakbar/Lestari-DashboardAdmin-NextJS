@@ -1,7 +1,7 @@
 import { headAdmin } from "@/component/headAdmin";
 import { Container, Flex, Heading } from "@chakra-ui/react";
 import { SidebarMenu } from "@/component/SidebarMenu";
-import { tableHistory } from "@/component/table/tableHistory";
+import { TableHistory } from "@/component/table/TableHistory";
 import { withAuth } from "@/lib/authorization";
 
 function HistoryData() {
@@ -15,7 +15,7 @@ function HistoryData() {
             <Heading marginBottom="8" marginTop="8">
               History
             </Heading>
-            {tableHistory()}
+            {TableHistory()}
           </Container>
         </Flex>
       </main>
