@@ -2,11 +2,14 @@ import { useRouter } from "next/router";
 import { useEffect, useState, createContext } from "react";
 import { jwtDecode } from "jwt-decode";
 
+
 export const AuthContext = createContext();
+
 export function withAuth(Component) {
-  return (props) => {
+  const WithAuth = (props) => {
     const router = useRouter();
     const [userData, setUserData] = useState(null);
+
     useEffect(() => {
       const token = localStorage.getItem("token");
       if (!token) {
@@ -16,14 +19,10 @@ export function withAuth(Component) {
           const payload = jwtDecode(token);
           if (!payload.id_admin || payload.id_admin.length === 0) {
             router.push("/admin/login");
-          }
-
-          if (payload.exp < Date.now() / 1000) {
+          } else if (payload.exp < Date.now() / 1000) {
             localStorage.removeItem("token");
             router.push("/admin/login");
-          }
-
-          else {
+          } else {
             setUserData(payload);
           }
         } catch (error) {
@@ -31,11 +30,16 @@ export function withAuth(Component) {
           router.push("/admin/login");
         }
       }
-    }, []);
+    }, [router]);
+
     return (
       <AuthContext.Provider value={userData}>
         <Component {...props} />
       </AuthContext.Provider>
     );
   };
+
+  WithAuth.displayName = `withAuth(${Component.displayName || Component.name || 'Component'})`;
+
+  return WithAuth;
 }
