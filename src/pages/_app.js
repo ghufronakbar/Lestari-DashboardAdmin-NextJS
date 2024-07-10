@@ -7,7 +7,7 @@ export default function App({ Component, pageProps }) {
   return (
     <QueryClientProvider client={queryClient}>
     <ChakraProvider>
-      <Component {...pageProps} />;
+      <Component {...pageProps} />
     </ChakraProvider>
   </QueryClientProvider>
   )

@@ -19,10 +19,13 @@ import {
 } from "@chakra-ui/react";
 import { axiosInstance } from "@/lib/axios";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Loading } from "../Loading";
 import formatDate from "@/lib/formatDate";
 import { CloseIcon } from "@chakra-ui/icons";
+import debounce from "@/lib/debounce";
+import { LoadingComponent } from "../LoadingComponent";
+import formatString from "@/lib/formatString";
 
 export function TableAnimal() {
   const router = useRouter();
@@ -33,11 +36,10 @@ export function TableAnimal() {
   const [page, setPage] = useState(router.query.page || 1);
   const [dateStart, setDateStart] = useState("");
   const [dateEnd, setDateEnd] = useState("");
-  const [error, setError] = useState(false);
-
-  let i = 1;
+  const [isLoadingComponent, setIsLoadingComponent] = useState(true);
 
   const fetchAnimals = async () => {
+    setIsLoadingComponent(true);
     try {
       const animalsResponse = await axiosInstance.get(`/animals`, {
         params: {
@@ -48,8 +50,8 @@ export function TableAnimal() {
         },
       });
       setIsLoading(false);
+      setIsLoadingComponent(false);
       setAnimals(animalsResponse.data);
-      setError(false); // Reset error state if fetch is successful
     } catch (error) {
       toast({
         title: error?.response?.data?.message || "Error fetching animals",
@@ -57,7 +59,6 @@ export function TableAnimal() {
       });
       console.error("Error fetching animals:", error);
       setIsLoading(false);
-      setError(true);
     }
   };
 
@@ -94,34 +95,64 @@ export function TableAnimal() {
     router.push(`/admin/animal/${id}`);
   };
 
+  const debouncedSearch = useCallback(
+    debounce((value) => {
+      setAnimals([]);
+      router.push({
+        pathname: router.pathname,
+        query: { ...router.query, search: value, page: 1 },
+      });
+    }, 1000),
+    [router, setAnimals]
+  );
+
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearch(value);
-    setAnimals([]); // Clear animals when searching
-    setError(false); // Reset error state when searching
-    router.push({
-      pathname: router.pathname,
-      query: { ...router.query, search: value, page: 1 },
-    });
+    debouncedSearch(value);
   };
 
   const handlePagination = (newPage) => {
     setPage(newPage);
-    setIsLoading(true); 
+    setIsLoading(true);
     router.push({
       pathname: router.pathname,
       query: { ...router.query, page: newPage },
     });
   };
 
+  const debouncedDateStart = useCallback(
+    debounce((value) => {
+      setAnimals([]);
+      router.push({
+        pathname: router.pathname,
+        query: { ...router.query, date_start: value, page: 1 },
+      });
+    }, 1000),
+    [router, setAnimals]
+  );
+
   const handleDateStartChange = (e) => {
     const value = e.target.value;
     setDateStart(value);
-    setError(false); // Reset error state when date changes
-    router.push({
-      pathname: router.pathname,
-      query: { ...router.query, date_start: value, page: 1 },
-    });
+    debouncedDateStart(value);
+  };
+
+  const debouncedDateEnd = useCallback(
+    debounce((value) => {
+      setAnimals([]);
+      router.push({
+        pathname: router.pathname,
+        query: { ...router.query, date_end: value, page: 1 },
+      });
+    }, 1000),
+    [router, setAnimals]
+  );
+
+  const handleDateEndChange = (e) => {
+    const value = e.target.value;
+    setDateEnd(value);
+    debouncedDateEnd(value);
   };
 
   const handleDeleteFilter = () => {
@@ -133,24 +164,16 @@ export function TableAnimal() {
     });
   };
 
-  const handleDateEndChange = (e) => {
-    const value = e.target.value;
-    setDateEnd(value);
-    setError(false); // Reset error state when date changes
-    router.push({
-      pathname: router.pathname,
-      query: { ...router.query, date_end: value, page: 1 },
-    });
-  };
-
   if (isLoading) return <Loading />;
   return (
     <>
       <Flex gap={4} my={4}>
         <Input
-          value={search}
+          defaultValue={search}
           onChange={handleSearchChange}
           placeholder="Search..."
+          focus={true}
+          autoFocus
         />
         <Input type="date" value={dateStart} onChange={handleDateStartChange} />
         <Input type="date" value={dateEnd} onChange={handleDateEndChange} />
@@ -173,7 +196,13 @@ export function TableAnimal() {
             </Tr>
           </Thead>
           <Tbody>
-            {animals?.values?.length === 0 ? (
+            {isLoadingComponent === true ? (
+              <Tr>
+                <Td colSpan={8}>
+                  <LoadingComponent />
+                </Td>
+              </Tr>
+            ) : animals?.values?.length === 0 && !isLoadingComponent ? (
               <>
                 <Tr>
                   <Td colSpan={8} textAlign="center">
@@ -185,9 +214,10 @@ export function TableAnimal() {
                 </Tr>
               </>
             ) : (
-              animals?.values?.map((animal) => (
+              animals.values.length > 0 &&
+              animals?.values?.map((animal, index) => (
                 <Tr key={animal.id_animal}>
-                  <Td>{i++}</Td>
+                  <Td>{index + 1}</Td>
                   <Td>
                     <Image
                       borderRadius="18"
@@ -202,7 +232,7 @@ export function TableAnimal() {
                     <Text>{animal.local_name}</Text>
                   </Td>
                   <Td>
-                    <Text as="b">{animal.habitat}</Text>
+                    <Text as="b">{formatString(animal.habitat, 25)}</Text>
                   </Td>
                   <Td>
                     <Text as="b">{animal.city}</Text>
@@ -262,7 +292,11 @@ export function TableAnimal() {
                 </>
               )}
               {Array.from({ length: 5 }, (_, index) => page - 2 + index)
-                .filter((pageNumber) => pageNumber > 0 && pageNumber <= animals.pagination.total_page)
+                .filter(
+                  (pageNumber) =>
+                    pageNumber > 0 &&
+                    pageNumber <= animals.pagination.total_page
+                )
                 .map((pageNumber) => (
                   <Button
                     key={pageNumber}
@@ -279,7 +313,9 @@ export function TableAnimal() {
                   <Button
                     variant="outline"
                     colorScheme="teal"
-                    onClick={() => handlePagination(animals.pagination.total_page)}
+                    onClick={() =>
+                      handlePagination(animals.pagination.total_page)
+                    }
                   >
                     {animals.pagination.total_page}
                   </Button>
@@ -296,7 +332,6 @@ export function TableAnimal() {
             </HStack>
           ) : null}
         </Center>
-
       </TableContainer>
     </>
   );

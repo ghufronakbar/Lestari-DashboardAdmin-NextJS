@@ -22,9 +22,11 @@ import { axiosInstance } from "@/lib/axios";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import formatDate from "@/lib/formatDate";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Loading } from "../Loading";
 import { CloseIcon } from "@chakra-ui/icons";
+import debounce from "@/lib/debounce";
+import { LoadingComponent } from "../LoadingComponent";
 
 export function TableReqAccount() {
   const router = useRouter();
@@ -33,17 +35,18 @@ export function TableReqAccount() {
   const [page, setPage] = useState(router.query.page || 1);
   const [dateStart, setDateStart] = useState("");
   const [dateEnd, setDateEnd] = useState("");
-  const [error, setError] = useState(false);
-  const [req, setReq] = useState([]);
+  const [requestAccounts, setRequestAccounts] = useState([]);
   const toast = useToast();
+  const [isLoadingComponent, setIsLoadingComponent] = useState(true);
+
 
   const handleDetailClick = (id_request_data) => {
     router.push(`/admin/request/account/${id_request_data}`);
   };
-  let i = 1;
 
   const fetchRequest = async () => {
     try {
+      setIsLoadingComponent(true);
       const reqResponse = await axiosInstance.get(`/request/accounts`, {
         params: {
           search: router.query.search,
@@ -54,32 +57,39 @@ export function TableReqAccount() {
         },
       });
       setIsLoading(false);
-      setReq(reqResponse.data);
-      setError(false); // Reset error state if fetch is successful
+      setRequestAccounts(reqResponse.data);     
+      setIsLoadingComponent(false); 
     } catch (error) {
       toast({
         title: error?.response?.data?.message || "Error fetching req",
         status: "error",
       });
       console.error("Error fetching req:", error);
-      setIsLoading(false);
-      setError(true);
+      setIsLoading(false);      
     }
   };
+
+  const debouncedSearch = useCallback(
+    debounce((value) => {
+      setRequestAccounts([]);
+      router.push({
+        pathname: router.pathname,
+        query: { ...router.query, search: value, page: 1 },
+      });
+    }, 1000),
+    [router, setRequestAccounts]
+  );
 
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearch(value);
-    setError(false); // Reset error state when searching
-    router.push({
-      pathname: router.pathname,
-      query: { ...router.query, search: value, page: 1 },
-    });
+    debouncedSearch(value);
   };
+
 
   const handlePagination = (newPage) => {
     setPage(newPage);
-    setReq([]); // Clear req when paginating
+    setRequestAccounts([]); // Clear req when paginating
     setIsloading(true); 
     router.push({
       pathname: router.pathname,
@@ -87,14 +97,39 @@ export function TableReqAccount() {
     });
   };
 
+  
+  const debouncedDateStart = useCallback(
+    debounce((value) => {
+      setRequestAccounts([]);
+      router.push({
+        pathname: router.pathname,
+        query: { ...router.query, date_start: value, page: 1 },
+      });
+    }, 1000),
+    [router, setRequestAccounts]
+  );
+
   const handleDateStartChange = (e) => {
     const value = e.target.value;
     setDateStart(value);
-    setError(false); // Reset error state when date changes
-    router.push({
-      pathname: router.pathname,
-      query: { ...router.query, date_start: value, page: 1 },
-    });
+    debouncedDateStart(value);
+  };
+
+  const debouncedDateEnd = useCallback(
+    debounce((value) => {
+      setRequestAccounts([]);
+      router.push({
+        pathname: router.pathname,
+        query: { ...router.query, date_end: value, page: 1 },
+      });
+    }, 1000),
+    [router, setRequestAccounts]
+  );
+
+  const handleDateEndChange = (e) => {
+    const value = e.target.value;
+    setDateEnd(value);
+    debouncedDateEnd(value);
   };
 
   const handleDeleteFilter = () => {
@@ -103,16 +138,6 @@ export function TableReqAccount() {
     setDateEnd("");
     router.push({
       pathname: router.pathname,
-    });
-  };
-
-  const handleDateEndChange = (e) => {
-    const value = e.target.value;
-    setDateEnd(value);
-    setError(false); // Reset error state when date changes
-    router.push({
-      pathname: router.pathname,
-      query: { ...router.query, date_end: value, page: 1 },
     });
   };
 
@@ -138,6 +163,8 @@ export function TableReqAccount() {
           value={search}
           onChange={handleSearchChange}
           placeholder="Search..."
+          focus={true}
+          autoFocus
         />
         <Input type="date" value={dateStart} onChange={handleDateStartChange} />
         <Input type="date" value={dateEnd} onChange={handleDateEndChange} />
@@ -146,7 +173,7 @@ export function TableReqAccount() {
         </Button>
       </Flex>
       <TableContainer>
-        <Table>
+        <Table size={"sm"}>
           <Thead>
             <Tr>
               <Th>No</Th>
@@ -159,7 +186,13 @@ export function TableReqAccount() {
             </Tr>
           </Thead>
           <Tbody>
-            {req?.values?.length === 0 ? (
+          {isLoadingComponent === true ? (
+              <Tr>
+                <Td colSpan={8}>
+                  <LoadingComponent />
+                </Td>
+              </Tr>
+            ) : requestAccounts?.values?.length === 0 && !isLoadingComponent ? (
               <>
                 <Tr>
                   <Td colSpan={8} textAlign="center">
@@ -171,9 +204,9 @@ export function TableReqAccount() {
                 </Tr>
               </>
             ) : (
-              req?.values?.map((reqacc) => (
+              requestAccounts?.values?.map((reqacc, index) => (
                 <Tr key={reqacc.id_request_account}>
-                  <Td>{i++}</Td>
+                  <Td>{index + 1}</Td>
                   <Td>
                     <Text as="b">{reqacc.name}</Text>
                     <Text>{reqacc.email}</Text>
@@ -254,16 +287,16 @@ export function TableReqAccount() {
         </Table>
         <Center>
           <HStack mt={4}>
-            {req?.pagination?.total_page > 0 ? (
+            {requestAccounts?.pagination?.total_page > 0 ? (
               <>
-                <Text as="b">Page {req?.pagination?.page}</Text>{" "}
-                <Text>/ {req?.pagination?.total_page}</Text>
+                <Text as="b">Page {requestAccounts?.pagination?.page}</Text>{" "}
+                <Text>/ {requestAccounts?.pagination?.total_page}</Text>
               </>
             ) : null}
           </HStack>
         </Center>
         <Center>
-          {req?.pagination?.total_page > 0 ? (
+          {requestAccounts?.pagination?.total_page > 0 ? (
             <HStack mt={4}>
               <Button
                 variant="outline"
@@ -288,7 +321,7 @@ export function TableReqAccount() {
               {Array.from({ length: 5 }, (_, index) => page - 2 + index)
                 .filter(
                   (pageNumber) =>
-                    pageNumber > 0 && pageNumber <= req.pagination.total_page
+                    pageNumber > 0 && pageNumber <= requestAccounts.pagination.total_page
                 )
                 .map((pageNumber) => (
                   <Button
@@ -300,15 +333,15 @@ export function TableReqAccount() {
                     {pageNumber}
                   </Button>
                 ))}
-              {page < req.pagination.total_page - 2 && (
+              {page < requestAccounts.pagination.total_page - 2 && (
                 <>
-                  {page < req.pagination.total_page - 3 && <Text>...</Text>}
+                  {page < requestAccounts.pagination.total_page - 3 && <Text>...</Text>}
                   <Button
                     variant="outline"
                     colorScheme="teal"
-                    onClick={() => handlePagination(req.pagination.total_page)}
+                    onClick={() => handlePagination(requestAccounts.pagination.total_page)}
                   >
-                    {req.pagination.total_page}
+                    {requestAccounts.pagination.total_page}
                   </Button>
                 </>
               )}
@@ -316,7 +349,7 @@ export function TableReqAccount() {
                 variant="outline"
                 colorScheme="teal"
                 onClick={() => handlePagination(page + 1)}
-                isDisabled={page === req.pagination.total_page}
+                isDisabled={page === requestAccounts.pagination.total_page}
               >
                 <Text as="b">Next</Text>
               </Button>

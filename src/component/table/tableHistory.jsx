@@ -22,9 +22,11 @@ import { axiosInstance } from "@/lib/axios";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { Loading } from "../Loading";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import formatDate from "@/lib/formatDate";
 import { CloseIcon } from "@chakra-ui/icons";
+import debounce from "@/lib/debounce";
+import { LoadingComponent } from "../LoadingComponent";
 
 export function TableHistory() {
   const router = useRouter();
@@ -33,17 +35,16 @@ export function TableHistory() {
   const [page, setPage] = useState(router.query.page || 1);
   const [dateStart, setDateStart] = useState("");
   const [dateEnd, setDateEnd] = useState("");
-  const [error, setError] = useState(false);
-  const [history, setHistory] = useState([]);
+  const [histories, setHistories] = useState([]);
   const toast = useToast();
+  const [isLoadingComponent, setIsLoadingComponent] = useState(true);
 
   const handleDetailClick = (id_request_data) => {
     router.push(`/admin/history/${id_request_data}`);
-  };
-
-  let i = 1;
+  };  
 
   const fetchHistory = async () => {
+    setIsLoadingComponent(true);
     try {
       const historyResponse = await axiosInstance.get(`/history/request/data`, {
         params: {
@@ -54,16 +55,15 @@ export function TableHistory() {
         },
       });
       setIsLoading(false);
-      setHistory(historyResponse.data);
-      setError(false); // Reset error state if fetch is successful
+      setHistories(historyResponse.data);
+      setIsLoadingComponent(false);
     } catch (error) {
       toast({
         title: error?.response?.data?.message || "Error fetching history",
         status: "error",
       });
       console.error("Error fetching history:", error);
-      setIsLoading(false);
-      setError(true);
+      setIsLoading(false);      
     }
   };
 
@@ -78,34 +78,67 @@ export function TableHistory() {
     router.query.date_start,
     router.query.date_end,
   ]);
+
+  const debouncedSearch = useCallback(
+    debounce((value) => {
+      setHistories([]);
+      router.push({
+        pathname: router.pathname,
+        query: { ...router.query, search: value, page: 1 },
+      });
+    }, 1000),
+    [router, setHistories]
+  );
+
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearch(value);
-    setError(false); // Reset error state when searching
-    router.push({
-      pathname: router.pathname,
-      query: { ...router.query, search: value, page: 1 },
-    });
+    debouncedSearch(value);
   };
 
   const handlePagination = (newPage) => {
     setPage(newPage);
-    setHistory([]); // Clear history when paginating
-    setIsloading(true); 
+    setHistories([]);
+    setIsLoading(true);
     router.push({
       pathname: router.pathname,
       query: { ...router.query, page: newPage },
     });
   };
 
+
+  const debouncedDateStart = useCallback(
+    debounce((value) => {
+      setHistories([]);
+      router.push({
+        pathname: router.pathname,
+        query: { ...router.query, date_start: value, page: 1 },
+      });
+    }, 1000),
+    [router, setHistories]
+  );
+
   const handleDateStartChange = (e) => {
     const value = e.target.value;
     setDateStart(value);
-    setError(false); // Reset error state when date changes
-    router.push({
-      pathname: router.pathname,
-      query: { ...router.query, date_start: value, page: 1 },
-    });
+    debouncedDateStart(value);
+  };
+
+  const debouncedDateEnd = useCallback(
+    debounce((value) => {
+      setHistories([]);
+      router.push({
+        pathname: router.pathname,
+        query: { ...router.query, date_end: value, page: 1 },
+      });
+    }, 1000),
+    [router, setHistories]
+  );
+
+  const handleDateEndChange = (e) => {
+    const value = e.target.value;
+    setDateEnd(value);
+    debouncedDateEnd(value);
   };
 
   const handleDeleteFilter = () => {
@@ -117,15 +150,6 @@ export function TableHistory() {
     });
   };
 
-  const handleDateEndChange = (e) => {
-    const value = e.target.value;
-    setDateEnd(value);
-    setError(false); // Reset error state when date changes
-    router.push({
-      pathname: router.pathname,
-      query: { ...router.query, date_end: value, page: 1 },
-    });
-  };
 
   if (isLoading) return <Loading />;
   return (
@@ -135,6 +159,8 @@ export function TableHistory() {
           value={search}
           onChange={handleSearchChange}
           placeholder="Search..."
+          focus={true}
+          autoFocus
         />
         <Input type="date" value={dateStart} onChange={handleDateStartChange} />
         <Input type="date" value={dateEnd} onChange={handleDateEndChange} />
@@ -143,7 +169,7 @@ export function TableHistory() {
         </Button>
       </Flex>
       <TableContainer>
-        <Table>
+        <Table size={"sm"}>
           <Thead>
             <Tr>
               <Th>No</Th>
@@ -156,7 +182,13 @@ export function TableHistory() {
             </Tr>
           </Thead>
           <Tbody>
-            {history?.values?.length === 0 ? (
+          {isLoadingComponent === true ? (
+              <Tr>
+                <Td colSpan={8}>
+                  <LoadingComponent />
+                </Td>
+              </Tr>
+            ) : histories?.values?.length === 0 && !isLoadingComponent ? (
               <>
                 <Tr>
                   <Td colSpan={8} textAlign="center">
@@ -168,9 +200,9 @@ export function TableHistory() {
                 </Tr>
               </>
             ) : (
-              history?.values?.map((reqdata) => (
+              histories?.values?.map((reqdata,index) => (
                 <Tr key={reqdata.id_history_request_data}>
-                  <Td>{i++}</Td>
+                  <Td>{index + 1}</Td>
                   <Td>
                     <Text as="b">{reqdata.name}</Text>
                     <Text>{reqdata.email}</Text>
@@ -203,16 +235,16 @@ export function TableHistory() {
         </Table>
         <Center>
           <HStack mt={4}>
-            {history?.pagination?.total_page > 0 ? (
+            {histories?.pagination?.total_page > 0 ? (
               <>
-                <Text as="b">Page {history?.pagination?.page}</Text>{" "}
-                <Text>/ {history?.pagination?.total_page}</Text>
+                <Text as="b">Page {histories?.pagination?.page}</Text>{" "}
+                <Text>/ {histories?.pagination?.total_page}</Text>
               </>
             ) : null}
           </HStack>
         </Center>
         <Center>
-          {history?.pagination?.total_page > 0 ? (
+          {histories?.pagination?.total_page > 0 ? (
             <HStack mt={4}>
               <Button
                 variant="outline"
@@ -235,7 +267,11 @@ export function TableHistory() {
                 </>
               )}
               {Array.from({ length: 5 }, (_, index) => page - 2 + index)
-                .filter((pageNumber) => pageNumber > 0 && pageNumber <= history.pagination.total_page)
+                .filter(
+                  (pageNumber) =>
+                    pageNumber > 0 &&
+                    pageNumber <= histories.pagination.total_page
+                )
                 .map((pageNumber) => (
                   <Button
                     key={pageNumber}
@@ -246,15 +282,17 @@ export function TableHistory() {
                     {pageNumber}
                   </Button>
                 ))}
-              {page < history.pagination.total_page - 2 && (
+              {page < histories.pagination.total_page - 2 && (
                 <>
-                  {page < history.pagination.total_page - 3 && <Text>...</Text>}
+                  {page < histories.pagination.total_page - 3 && <Text>...</Text>}
                   <Button
                     variant="outline"
                     colorScheme="teal"
-                    onClick={() => handlePagination(history.pagination.total_page)}
+                    onClick={() =>
+                      handlePagination(histories.pagination.total_page)
+                    }
                   >
-                    {history.pagination.total_page}
+                    {histories.pagination.total_page}
                   </Button>
                 </>
               )}
@@ -262,14 +300,13 @@ export function TableHistory() {
                 variant="outline"
                 colorScheme="teal"
                 onClick={() => handlePagination(page + 1)}
-                isDisabled={page === history.pagination.total_page}
+                isDisabled={page === histories.pagination.total_page}
               >
                 <Text as="b">Next</Text>
               </Button>
             </HStack>
           ) : null}
         </Center>
-
       </TableContainer>
     </>
   );

@@ -23,6 +23,7 @@ import {
 import { axiosInstance } from "@/lib/axios";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { Loading } from "../Loading";
 
 export function DetailReqAccount() {
   const router = useRouter();
@@ -93,7 +94,7 @@ export function DetailReqAccount() {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <Loading/>
   if (error) return <div>Error fetching data</div>;
 
   return (

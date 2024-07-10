@@ -22,9 +22,11 @@ import { axiosInstance } from "@/lib/axios";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import formatDate from "@/lib/formatDate";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Loading } from "../Loading";
 import { CloseIcon } from "@chakra-ui/icons";
+import debounce from "@/lib/debounce";
+import { LoadingComponent } from "../LoadingComponent";
 
 export function TableReqData() {
   const router = useRouter();
@@ -32,18 +34,18 @@ export function TableReqData() {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(router.query.page || 1);
   const [dateStart, setDateStart] = useState("");
-  const [dateEnd, setDateEnd] = useState("");
-  const [error, setError] = useState(false);
-  const [req, setReq] = useState([]);
+  const [dateEnd, setDateEnd] = useState("");  
+  const [requestDatas, setRequestDatas] = useState([]);
   const toast = useToast();
+  const [isLoadingComponent, setIsLoadingComponent] = useState(true);
+
 
   const handleDetailClick = (id_request_data) => {
     router.push(`/admin/request/data/${id_request_data}`);
-  };
-
-  let i = 1;
+  };  
 
   const fetchRequest = async () => {
+    setIsLoadingComponent(true);
     try {
       const reqResponse = await axiosInstance.get(`/request/datas`, {
         params: {
@@ -55,32 +57,39 @@ export function TableReqData() {
         },
       });
       setIsLoading(false);
-      setReq(reqResponse.data);
-      setError(false); // Reset error state if fetch is successful
+      setRequestDatas(reqResponse.data);  
+      setIsLoadingComponent(false);    
     } catch (error) {
       toast({
         title: error?.response?.data?.message || "Error fetching req",
         status: "error",
       });
       console.error("Error fetching req:", error);
-      setIsLoading(false);
-      setError(true);
+      setIsLoading(false);      
     }
   };
+
+  const debouncedSearch = useCallback(
+    debounce((value) => {
+      setRequestDatas([]);
+      router.push({
+        pathname: router.pathname,
+        query: { ...router.query, search: value, page: 1 },
+      });
+    }, 1000),
+    [router, setRequestDatas]
+  );
 
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearch(value);
-    setError(false); // Reset error state when searching
-    router.push({
-      pathname: router.pathname,
-      query: { ...router.query, search: value, page: 1 },
-    });
+    debouncedSearch(value);
   };
+
 
   const handlePagination = (newPage) => {
     setPage(newPage);
-    setReq([]); // Clear req when paginating
+    setRequestDatas([]); // Clear req when paginating
     setIsloading(true); 
     router.push({
       pathname: router.pathname,
@@ -88,14 +97,39 @@ export function TableReqData() {
     });
   };
 
+
+  const debouncedDateStart = useCallback(
+    debounce((value) => {
+      setRequestDatas([]);
+      router.push({
+        pathname: router.pathname,
+        query: { ...router.query, date_start: value, page: 1 },
+      });
+    }, 1000),
+    [router, setRequestDatas]
+  );
+
   const handleDateStartChange = (e) => {
     const value = e.target.value;
     setDateStart(value);
-    setError(false); // Reset error state when date changes
-    router.push({
-      pathname: router.pathname,
-      query: { ...router.query, date_start: value, page: 1 },
-    });
+    debouncedDateStart(value);
+  };
+
+  const debouncedDateEnd = useCallback(
+    debounce((value) => {
+      setRequestDatas([]);
+      router.push({
+        pathname: router.pathname,
+        query: { ...router.query, date_end: value, page: 1 },
+      });
+    }, 1000),
+    [router, setRequestDatas]
+  );
+
+  const handleDateEndChange = (e) => {
+    const value = e.target.value;
+    setDateEnd(value);
+    debouncedDateEnd(value);
   };
 
   const handleDeleteFilter = () => {
@@ -104,16 +138,6 @@ export function TableReqData() {
     setDateEnd("");
     router.push({
       pathname: router.pathname,
-    });
-  };
-
-  const handleDateEndChange = (e) => {
-    const value = e.target.value;
-    setDateEnd(value);
-    setError(false); // Reset error state when date changes
-    router.push({
-      pathname: router.pathname,
-      query: { ...router.query, date_end: value, page: 1 },
     });
   };
 
@@ -138,6 +162,8 @@ export function TableReqData() {
           value={search}
           onChange={handleSearchChange}
           placeholder="Search..."
+          focus={true}
+          autoFocus
         />
         <Input type="date" value={dateStart} onChange={handleDateStartChange} />
         <Input type="date" value={dateEnd} onChange={handleDateEndChange} />
@@ -146,7 +172,7 @@ export function TableReqData() {
         </Button>
       </Flex>
       <TableContainer>
-        <Table>
+        <Table size={"sm"}>
           <Thead>
             <Tr>
               <Th>No</Th>
@@ -159,7 +185,13 @@ export function TableReqData() {
             </Tr>
           </Thead>
           <Tbody>
-            {req?.values?.length === 0 ? (
+          {isLoadingComponent === true ? (
+              <Tr>
+                <Td colSpan={8}>
+                  <LoadingComponent />
+                </Td>
+              </Tr>
+            ) : requestDatas?.values?.length === 0 && !isLoadingComponent ? (
               <>
                 <Tr>
                   <Td colSpan={8} textAlign="center">
@@ -171,9 +203,9 @@ export function TableReqData() {
                 </Tr>
               </>
             ) : (
-              req?.values?.map((reqdata) => (
+              requestDatas?.values?.map((reqdata, index) => (
                 <Tr key={reqdata.id_request_data}>
-                  <Td>{i++}</Td>
+                  <Td>{index + 1}</Td>
                   <Td>
                     <Text as="b">{reqdata.name}</Text>
                     <Text>{reqdata.email}</Text>
@@ -252,16 +284,16 @@ export function TableReqData() {
         </Table>
         <Center>
           <HStack mt={4}>
-            {req?.pagination?.total_page > 0 ? (
+            {requestDatas?.pagination?.total_page > 0 ? (
               <>
-                <Text as="b">Page {req?.pagination?.page}</Text>{" "}
-                <Text>/ {req?.pagination?.total_page}</Text>
+                <Text as="b">Page {requestDatas?.pagination?.page}</Text>{" "}
+                <Text>/ {requestDatas?.pagination?.total_page}</Text>
               </>
             ) : null}
           </HStack>
         </Center>
         <Center>
-          {req?.pagination?.total_page > 0 ? (
+          {requestDatas?.pagination?.total_page > 0 ? (
             <HStack mt={4}>
               <Button
                 variant="outline"
@@ -286,7 +318,7 @@ export function TableReqData() {
               {Array.from({ length: 5 }, (_, index) => page - 2 + index)
                 .filter(
                   (pageNumber) =>
-                    pageNumber > 0 && pageNumber <= req.pagination.total_page
+                    pageNumber > 0 && pageNumber <= requestDatas.pagination.total_page
                 )
                 .map((pageNumber) => (
                   <Button
@@ -298,15 +330,15 @@ export function TableReqData() {
                     {pageNumber}
                   </Button>
                 ))}
-              {page < req.pagination.total_page - 2 && (
+              {page < requestDatas.pagination.total_page - 2 && (
                 <>
-                  {page < req.pagination.total_page - 3 && <Text>...</Text>}
+                  {page < requestDatas.pagination.total_page - 3 && <Text>...</Text>}
                   <Button
                     variant="outline"
                     colorScheme="teal"
-                    onClick={() => handlePagination(req.pagination.total_page)}
+                    onClick={() => handlePagination(requestDatas.pagination.total_page)}
                   >
-                    {req.pagination.total_page}
+                    {requestDatas.pagination.total_page}
                   </Button>
                 </>
               )}
@@ -314,7 +346,7 @@ export function TableReqData() {
                 variant="outline"
                 colorScheme="teal"
                 onClick={() => handlePagination(page + 1)}
-                isDisabled={page === req.pagination.total_page}
+                isDisabled={page === requestDatas.pagination.total_page}
               >
                 <Text as="b">Next</Text>
               </Button>

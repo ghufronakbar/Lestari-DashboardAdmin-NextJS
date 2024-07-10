@@ -25,23 +25,52 @@ function SendData() {
   const handleSendData = async () => {
     try {
       // Mendapatkan nilai dari checkbox
-      const localNameChecked = document.getElementById("localNameCheckbox").checked ? 1 : 0;
-      const latinNameChecked = document.getElementById("latinNameCheckbox").checked ? 1 : 0;
-      const habitatChecked = document.getElementById("habitatCheckbox").checked ? 1 : 0;
-      const descriptionChecked = document.getElementById("descriptionCheckbox").checked ? 1 : 0;
-      const cityChecked = document.getElementById("cityCheckbox").checked ? 1 : 0;
-      const coordinatesChecked = document.getElementById("coordinatesCheckbox").checked ? 1 : 0;
-      const imageChecked = document.getElementById("imageCheckbox").checked ? 1 : 0;
-      const amountChecked = document.getElementById("amountCheckbox").checked ? 1 : 0;
-  
+      const localNameChecked = document.getElementById("localNameCheckbox")
+        .checked
+        ? 1
+        : 0;
+      const latinNameChecked = document.getElementById("latinNameCheckbox")
+        .checked
+        ? 1
+        : 0;
+      const habitatChecked = document.getElementById("habitatCheckbox").checked
+        ? 1
+        : 0;
+      const descriptionChecked = document.getElementById("descriptionCheckbox")
+        .checked
+        ? 1
+        : 0;
+      const cityChecked = document.getElementById("cityCheckbox").checked
+        ? 1
+        : 0;
+      const coordinatesChecked = document.getElementById("coordinatesCheckbox")
+        .checked
+        ? 1
+        : 0;
+      const imageChecked = document.getElementById("imageCheckbox").checked
+        ? 1
+        : 0;
+      const amountChecked = document.getElementById("amountCheckbox").checked
+        ? 1
+        : 0;
+
       // Mendapatkan nilai dari input date
       const dateStart = document.getElementById("dateStartInput").value;
       const dateEnd = document.getElementById("dateEndInput").value;
-  
+
       // Memeriksa apakah setidaknya satu checkbox telah dicentang
-      const checkboxes = [localNameChecked, latinNameChecked, habitatChecked, descriptionChecked, cityChecked, coordinatesChecked, imageChecked, amountChecked];
-      const atLeastOneChecked = checkboxes.some(checkbox => checkbox === 1);
-  
+      const checkboxes = [
+        localNameChecked,
+        latinNameChecked,
+        habitatChecked,
+        descriptionChecked,
+        cityChecked,
+        coordinatesChecked,
+        imageChecked,
+        amountChecked,
+      ];
+      const atLeastOneChecked = checkboxes.some((checkbox) => checkbox === 1);
+
       if (!atLeastOneChecked) {
         toast({
           title: "At least one checkbox must be checked",
@@ -68,27 +97,28 @@ function SendData() {
           date_end: toISODateString(dateEnd),
           id_request_data: id, // Mengambil id_request_data dari parameter URL
         };
-  
+
         // Melakukan request POST
-        await axiosInstance.post(`/request/data/approve/send`, requestData);
+        const response = await axiosInstance.post(
+          `/request/data/approve/send`,
+          requestData
+        );
         toast({
-          title: "Data has been sent",
+          title: response?.data?.message,
           status: "success",
         });
         router.push(`/admin/request/data/${id}`);
       }
     } catch (error) {
-      if (error.response.status === 400 && error.response.data === "There's no data in range") {
-          toast({
-              title: "No data in selected range",
-              status: "error",
-          });
-      } else {
-          console.error("Error sending data:", error);
-      }
-  }
+      toast({
+        title: error?.response?.data?.message || "Error sending data",
+        status: "error",
+      });
+
+      console.error("Error sending data:", error);
+    }
   };
-  
+
   return (
     <>
       {HeadAdmin()}

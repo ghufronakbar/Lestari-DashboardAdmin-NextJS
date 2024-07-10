@@ -1,12 +1,14 @@
 import {
+  Alert,
+  AlertIcon,
   Box,
   Button,
   Center,
   Flex,
   HStack,
-  Icon,
   Image,
   Input,
+  Spinner,
   Table,
   TableContainer,
   Tbody,
@@ -15,7 +17,6 @@ import {
   Th,
   Thead,
   Tr,
-  VStack,
   useToast,
 } from "@chakra-ui/react";
 import { axiosInstance } from "@/lib/axios";
@@ -27,23 +28,25 @@ import {
   WarningIcon,
   WarningTwoIcon,
 } from "@chakra-ui/icons";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { baseURL } from "@/lib/baseUrl";
 import { Loading } from "../Loading";
 import formatDate from "@/lib/formatDate";
 import { useRouter } from "next/router";
+import debounce from "@/lib/debounce";
+import { LoadingComponent } from "../LoadingComponent";
 
 export function TableUser() {
   const router = useRouter();
-  const [user, setRequestData] = useState(null);
   const toast = useToast();
   const [isLoading, setIsloading] = useState(true);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(router.query.page || 1);
   const [dateStart, setDateStart] = useState("");
   const [dateEnd, setDateEnd] = useState("");
-  const [error, setError] = useState(false);
-  const [req, setReq] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [isLoadingComponent, setIsLoadingComponent] = useState(true);
+  const [disabled, setDisabled] = useState(false);
 
   const suspendHandle = async (id) => {
     try {
@@ -75,9 +78,8 @@ export function TableUser() {
     }
   };
 
-  let i = 1;
-
   const fetchRequest = async () => {
+    setIsLoadingComponent(true);
     try {
       const reqResponse = await axiosInstance.get(`/users`, {
         params: {
@@ -89,45 +91,76 @@ export function TableUser() {
         },
       });
       setIsloading(false);
-      setReq(reqResponse.data);
-      setError(false); // Reset error state if fetch is successful
+      setUsers(reqResponse.data);
+      setIsLoadingComponent(false);
+      setDisabled(false);
     } catch (error) {
       toast({
         title: error?.response?.data?.message || "Error fetching req",
         status: "error",
       });
       console.error("Error fetching req:", error);
-      setIsLoading(false);
-      setError(true);
+      setIsloading(false);
     }
   };
+  const debouncedSearch = useCallback(
+    debounce((value) => {
+      setUsers([]);
+      router.push({
+        pathname: router.pathname,
+        query: { ...router.query, search: value, page: 1 },
+      });
+    }, 1000),
+    [router, setUsers]
+  );
 
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearch(value);
-    setError(false); // Reset error state when searching
-    router.push({
-      pathname: router.pathname,
-      query: { ...router.query, search: value, page: 1 },
-    });
+    debouncedSearch(value);
   };
 
   const handlePagination = (newPage) => {
     setPage(newPage);
-    setIsloading(true); 
+    setIsloading(true);
     router.push({
       pathname: router.pathname,
       query: { ...router.query, page: newPage },
     });
   };
 
+  const debouncedDateStart = useCallback(
+    debounce((value) => {
+      setUsers([]);
+      router.push({
+        pathname: router.pathname,
+        query: { ...router.query, date_start: value, page: 1 },
+      });
+    }, 1000),
+    [router, setUsers]
+  );
+
   const handleDateStartChange = (e) => {
     const value = e.target.value;
     setDateStart(value);
-    router.push({
-      pathname: router.pathname,
-      query: { ...router.query, date_start: value, page: 1 },
-    });
+    debouncedDateStart(value);
+  };
+
+  const debouncedDateEnd = useCallback(
+    debounce((value) => {
+      setUsers([]);
+      router.push({
+        pathname: router.pathname,
+        query: { ...router.query, date_end: value, page: 1 },
+      });
+    }, 1000),
+    [router, setUsers]
+  );
+
+  const handleDateEndChange = (e) => {
+    const value = e.target.value;
+    setDateEnd(value);
+    debouncedDateEnd(value);
   };
 
   const handleDeleteFilter = () => {
@@ -136,15 +169,6 @@ export function TableUser() {
     setDateEnd("");
     router.push({
       pathname: router.pathname,
-    });
-  };
-
-  const handleDateEndChange = (e) => {
-    const value = e.target.value;
-    setDateEnd(value);
-    router.push({
-      pathname: router.pathname,
-      query: { ...router.query, date_end: value, page: 1 },
     });
   };
 
@@ -170,6 +194,8 @@ export function TableUser() {
           value={search}
           onChange={handleSearchChange}
           placeholder="Search..."
+          focus={true}
+          autoFocus
         />
         <Input type="date" value={dateStart} onChange={handleDateStartChange} />
         <Input type="date" value={dateEnd} onChange={handleDateEndChange} />
@@ -178,7 +204,7 @@ export function TableUser() {
         </Button>
       </Flex>
       <TableContainer>
-        <Table>
+        <Table size={"sm"}>
           <Thead>
             <Tr>
               <Th>No</Th>
@@ -191,103 +217,130 @@ export function TableUser() {
             </Tr>
           </Thead>
           <Tbody>
-            {req.values.map((user) => (
-              <Tr key={user.id_user}>
-                <Td>{i++}</Td>
-                <Td>
-                  <Image
-                    borderRadius="18"
-                    boxSize="60px"
-                    objectFit="cover"
-                    src={user.picture}
-                    alt={user.name}
-                  />
+            {isLoadingComponent === true ? (
+              <Tr>
+                <Td colSpan={8}>
+                  <LoadingComponent />
                 </Td>
-                <Td>
-                  <Text as="b">{user.name}</Text>
-                  <Text>{user.email}</Text>
-                </Td>
-                <Td>
-                  <Text as="b">{user.phone}</Text>
-                </Td>
-                <Td>
-                  <Center>
-                    <Text as="b">
+              </Tr>
+            ) : users?.values?.length === 0 && !isLoadingComponent ? (
+              <>
+                <Tr>
+                  <Td colSpan={8} textAlign="center">
+                    <Alert status="info">
+                      <AlertIcon />
+                      No user found
+                    </Alert>
+                  </Td>
+                </Tr>
+              </>
+            ) : (
+              users.values.map((user, index) => (
+                <Tr key={user.id_user}>
+                  <Td>{index + 1}</Td>
+                  <Td>
+                    <Image
+                      borderRadius="18"
+                      boxSize="60px"
+                      objectFit="cover"
+                      src={user.picture}
+                      alt={user.name}
+                    />
+                  </Td>
+                  <Td>
+                    <Text as="b">{user.name}</Text>
+                    <Text>{user.email}</Text>
+                  </Td>
+                  <Td>
+                    <Text as="b">{user.phone}</Text>
+                  </Td>
+                  <Td>
+                    <Center>
+                      <Text as="b">
+                        {user.status == 1 ? (
+                          <Box
+                            as="button"
+                            borderRadius="md"
+                            bg="#48BB78"
+                            color="white"
+                            px={4}
+                            h={8}
+                          >
+                            Active
+                          </Box>
+                        ) : (
+                          <Box
+                            as="button"
+                            borderRadius="md"
+                            bg="#E53E3E"
+                            color="white"
+                            px={4}
+                            h={8}
+                          >
+                            Suspended
+                          </Box>
+                        )}
+                      </Text>
+                    </Center>
+                  </Td>
+                  <Td>
+                    <Text as="b">{formatDate(user.created_at)}</Text>
+                    <Text>{formatDate(user.updated_at)}</Text>
+                  </Td>
+                  <Td>
+                    <Center>
                       {user.status == 1 ? (
                         <Box
                           as="button"
-                          borderRadius="md"
-                          bg="#48BB78"
-                          color="white"
-                          px={4}
-                          h={8}
+                          onClick={() => {
+                            suspendHandle(user.id_user);
+                            setDisabled(true);
+                          }}
+                          disabled={disabled}
                         >
-                          Active
+                          <Center>
+                            <WarningIcon />
+                          </Center>
+                          <Center>
+                            <Text>Suspend</Text>
+                          </Center>
                         </Box>
                       ) : (
                         <Box
                           as="button"
-                          borderRadius="md"
-                          bg="#E53E3E"
-                          color="white"
-                          px={4}
-                          h={8}
+                          onClick={() => {
+                            unsuspendHandle(user.id_user);
+                            setDisabled(true);
+                          }}
+                          disabled={disabled}
                         >
-                          Suspended
+                          <Center>
+                            <UnlockIcon />
+                          </Center>
+                          <Center>
+                            <Text>Unsuspend</Text>
+                          </Center>
                         </Box>
                       )}
-                    </Text>
-                  </Center>
-                </Td>
-                <Td>
-                  <Text as="b">{formatDate(user.created_at)}</Text>
-                  <Text>{formatDate(user.updated_at)}</Text>
-                </Td>
-                <Td>
-                  <Center>
-                    {user.status == 1 ? (
-                      <Box
-                        as="button"
-                        onClick={() => suspendHandle(user.id_user)}
-                      >
-                        <Center>
-                          <WarningIcon />
-                        </Center>
-                        <Center>
-                          <Text>Suspend</Text>
-                        </Center>
-                      </Box>
-                    ) : (
-                      <Box
-                        as="button"
-                        onClick={() => unsuspendHandle(user.id_user)}
-                      >
-                        <Center>
-                          <UnlockIcon />
-                        </Center>
-                        <Center>
-                          <Text>Unsuspend</Text>
-                        </Center>
-                      </Box>
-                    )}
-                  </Center>
-                </Td>
-              </Tr>
-            ))}
+                    </Center>
+                  </Td>
+                </Tr>
+              ))
+            )}
           </Tbody>
         </Table>
         <Center>
           <HStack mt={4}>
-            {req?.pagination?.total_page > 0 ? (
+            {users?.pagination?.total_page > 0 ? (
               <>
-                <Text as="b">Page {req?.pagination?.page}</Text>{" "}
-                <Text>/ {req?.pagination?.total_page}</Text>
+                <Text as="b">Page {users?.pagination?.page}</Text>{" "}
+                <Text>/ {users?.pagination?.total_page}</Text>
               </>
             ) : null}
           </HStack>
         </Center>
         <Center>
-          {req?.pagination?.total_page > 0 ? (
+          {users?.pagination?.total_page > 0 ? (
             <HStack mt={4}>
               <Button
                 variant="outline"
@@ -312,7 +365,7 @@ export function TableUser() {
               {Array.from({ length: 5 }, (_, index) => page - 2 + index)
                 .filter(
                   (pageNumber) =>
-                    pageNumber > 0 && pageNumber <= req.pagination.total_page
+                    pageNumber > 0 && pageNumber <= users.pagination.total_page
                 )
                 .map((pageNumber) => (
                   <Button
@@ -324,15 +377,17 @@ export function TableUser() {
                     {pageNumber}
                   </Button>
                 ))}
-              {page < req.pagination.total_page - 2 && (
+              {page < users.pagination.total_page - 2 && (
                 <>
-                  {page < req.pagination.total_page - 3 && <Text>...</Text>}
+                  {page < users.pagination.total_page - 3 && <Text>...</Text>}
                   <Button
                     variant="outline"
                     colorScheme="teal"
-                    onClick={() => handlePagination(req.pagination.total_page)}
+                    onClick={() =>
+                      handlePagination(users.pagination.total_page)
+                    }
                   >
-                    {req.pagination.total_page}
+                    {users.pagination.total_page}
                   </Button>
                 </>
               )}
@@ -340,7 +395,7 @@ export function TableUser() {
                 variant="outline"
                 colorScheme="teal"
                 onClick={() => handlePagination(page + 1)}
-                isDisabled={page === req.pagination.total_page}
+                isDisabled={page === users.pagination.total_page}
               >
                 <Text as="b">Next</Text>
               </Button>

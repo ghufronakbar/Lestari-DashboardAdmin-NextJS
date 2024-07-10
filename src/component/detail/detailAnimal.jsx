@@ -1,20 +1,12 @@
 import {
   Box,
-  Button,
   Center,
   Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
   Table,
   Flex,
   Text,
   useToast,
   Spacer,
-  Heading,
   TableContainer,
   Tbody,
   Tr,
@@ -22,14 +14,11 @@ import {
   Td,
   Image,
   HStack,
-  VStack,
-  Tab,
-  TableCaption,
 } from "@chakra-ui/react";
 import { axiosInstance } from "@/lib/axios";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { baseURL } from "@/lib/baseUrl";
+import { Loading } from "../Loading";
 
 export function DetailAnimal() {
   const router = useRouter();
@@ -68,7 +57,7 @@ export function DetailAnimal() {
     return new Date(dateString).toLocaleDateString("en-US", options);
   }
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <Loading />;
   if (error) return <div>Error fetching data</div>;
 
   return (
@@ -98,8 +87,8 @@ export function DetailAnimal() {
                     borderRadius="lg"
                     overflow="hidden"
                   >
-                    <Text as="b">AUTHOR</Text>
-                    <Flex mt={4}>
+                    <HStack justify={"space-evenly"}>
+                      <Text as="b">AUTHOR</Text>
                       <Image
                         borderRadius="18"
                         boxSize="60px"
@@ -107,7 +96,8 @@ export function DetailAnimal() {
                         src={animal.user_picture}
                         alt={animal.name}
                       />
-
+                    </HStack>
+                    <Flex mt={4}>
                       <Table>
                         <Tr>
                           <Th>Name</Th>
