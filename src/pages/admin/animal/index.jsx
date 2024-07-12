@@ -1,6 +1,41 @@
-import { Container, Flex, Heading } from "@chakra-ui/react";
+import { Container } from "@chakra-ui/react";
 import SidebarMenu from "@/component/SidebarMenu";
 import { withAuth } from "@/lib/authorization";
+import {
+  Alert,
+  AlertIcon,
+  Button,
+  Center,
+  Flex,
+  Heading,
+  HStack,
+  Image,
+  Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
+  useToast,
+} from "@chakra-ui/react";
+import { axiosInstance } from "@/lib/axios";
+import { useRouter } from "next/router";
+import { useEffect, useState, useCallback } from "react";
+import  Loading  from "@/component/Loading";
+import formatDate from "@/lib/formatDate";
+import { CloseIcon } from "@chakra-ui/icons";
+import debounce from "@/lib/debounce";
+import  LoadingComponent  from "@/component/LoadingComponent";
 
 function Animal() {
   return (
