@@ -1,6 +1,6 @@
 
 import { Container, Flex } from "@chakra-ui/react";
-import { SidebarMenu } from "@/component/SidebarMenu";
+import  SidebarMenu  from "@/component/SidebarMenu";
 import { withAuth } from "@/lib/authorization";
 import HeadAdmin from "@/component/HeadAdmin";
 import DetailAnimal  from "@/component/detail/DetailAnimal";

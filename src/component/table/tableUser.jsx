@@ -30,13 +30,13 @@ import {
 } from "@chakra-ui/icons";
 import { useState, useEffect, useCallback } from "react";
 import { baseURL } from "@/lib/baseUrl";
-import { Loading } from "../Loading";
+import  Loading  from "../Loading";
 import formatDate from "@/lib/formatDate";
 import { useRouter } from "next/router";
 import debounce from "@/lib/debounce";
-import { LoadingComponent } from "../LoadingComponent";
+import LoadingComponent from "../LoadingComponent";
 
-export function TableUser() {
+const TableUser = () => {
   const router = useRouter();
   const toast = useToast();
   const [isLoading, setIsloading] = useState(true);
@@ -406,3 +406,5 @@ export function TableUser() {
     </>
   );
 }
+
+export default TableUser

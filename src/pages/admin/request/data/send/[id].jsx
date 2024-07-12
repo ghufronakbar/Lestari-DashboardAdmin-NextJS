@@ -11,7 +11,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { axiosInstance } from "@/lib/axios";
-import { SidebarMenu } from "@/component/SidebarMenu";
+import  SidebarMenu  from "@/component/SidebarMenu";
 import { Form } from "reactstrap";
 import { useRouter } from "next/router";
 import { withAuth } from "@/lib/authorization";

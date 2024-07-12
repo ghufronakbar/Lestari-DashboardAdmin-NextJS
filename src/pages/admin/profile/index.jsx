@@ -1,6 +1,6 @@
 import FormProfile from "@/component/from/FormProfile";
 import HeadAdmin  from "@/component/HeadAdmin";
-import { SidebarMenu } from "@/component/SidebarMenu";
+import  SidebarMenu  from "@/component/SidebarMenu";
 import { withAuth } from "@/lib/authorization";
 import { Container, Flex, Heading } from "@chakra-ui/react";
 

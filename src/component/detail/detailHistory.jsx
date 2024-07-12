@@ -24,9 +24,9 @@ import {
 import { axiosInstance } from "@/lib/axios";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { Loading } from "../Loading";
+import  Loading  from "../Loading";
 
-export function DetailHistory() {
+const DetailHistory = () => {
   const router = useRouter();
   const { id } = router.query;
   const [requestData, setRequestData] = useState(null);
@@ -291,3 +291,5 @@ export function DetailHistory() {
     </>
   );
 }
+
+export default DetailHistory

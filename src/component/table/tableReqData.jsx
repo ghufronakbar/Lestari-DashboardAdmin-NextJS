@@ -23,12 +23,12 @@ import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import formatDate from "@/lib/formatDate";
 import { useCallback, useEffect, useState } from "react";
-import { Loading } from "../Loading";
+import  Loading  from "../Loading";
 import { CloseIcon } from "@chakra-ui/icons";
 import debounce from "@/lib/debounce";
-import { LoadingComponent } from "../LoadingComponent";
+import  LoadingComponent  from "../LoadingComponent";
 
-export function TableReqData() {
+const TableReqData = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -357,3 +357,5 @@ export function TableReqData() {
     </>
   );
 }
+
+export default TableReqData

@@ -28,14 +28,14 @@ import {
 import { axiosInstance } from "@/lib/axios";
 import { useRouter } from "next/router";
 import { useEffect, useState, useCallback } from "react";
-import { Loading } from "../Loading";
+import  Loading  from "../Loading";
 import formatDate from "@/lib/formatDate";
 import { CloseIcon } from "@chakra-ui/icons";
 import debounce from "@/lib/debounce";
-import { LoadingComponent } from "../LoadingComponent";
+import  LoadingComponent  from "../LoadingComponent";
 import formatString from "@/lib/formatString";
 
-export function TableAdmin() {
+const TableAdmin = () => {
   const router = useRouter();
   const toast = useToast();
   const [admins, setAdmins] = useState([]);
@@ -353,3 +353,5 @@ export function TableAdmin() {
     </>
   );
 }
+
+export default TableAdmin

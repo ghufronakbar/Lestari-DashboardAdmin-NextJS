@@ -18,9 +18,9 @@ import {
 import { axiosInstance } from "@/lib/axios";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { Loading } from "../Loading";
+import  Loading  from "../Loading";
 
-export function DetailAnimal() {
+const DetailAnimal = () => {
   const router = useRouter();
   const { id } = router.query;
   const [animal, setAnimal] = useState(null);
@@ -167,4 +167,6 @@ export function DetailAnimal() {
       )}
     </>
   );
-}
+};
+
+export default DetailAnimal;

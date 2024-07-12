@@ -21,14 +21,14 @@ import {
 import { axiosInstance } from "@/lib/axios";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
-import { Loading } from "../Loading";
+import  Loading  from "../Loading";
+import  LoadingComponent  from "../LoadingComponent";
 import { useCallback, useEffect, useState } from "react";
 import formatDate from "@/lib/formatDate";
 import { CloseIcon } from "@chakra-ui/icons";
 import debounce from "@/lib/debounce";
-import { LoadingComponent } from "../LoadingComponent";
 
-export function TableHistory() {
+const TableHistory = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -311,3 +311,5 @@ export function TableHistory() {
     </>
   );
 }
+
+export default TableHistory;

@@ -1,6 +1,6 @@
 import { Center, Spinner, VStack } from "@chakra-ui/react";
 
-export function Loading() {
+const Loading = () => {
   return (
     <>
       <VStack
@@ -26,3 +26,5 @@ export function Loading() {
     </>
   );
 }
+
+export default Loading

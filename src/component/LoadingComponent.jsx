@@ -1,6 +1,6 @@
 import { Box, Skeleton, Spinner, Stack } from "@chakra-ui/react";
 
-export function LoadingComponent({ flex }) {
+const LoadingComponent = ({ flex }) => {
   return (
     <>
       <Stack my={4}>
@@ -11,3 +11,5 @@ export function LoadingComponent({ flex }) {
     </>
   );
 }
+
+export default LoadingComponent

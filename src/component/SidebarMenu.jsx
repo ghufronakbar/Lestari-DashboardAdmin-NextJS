@@ -7,7 +7,8 @@ import { useContext, useEffect, useState } from "react";
 import { Menu, MenuItem, Sidebar, SubMenu } from "react-pro-sidebar";
 import { axiosInstance } from "@/lib/axios";
 
-export function SidebarMenu() {
+
+const SidebarMenu = () => {
   const userData = useContext(AuthContext);
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
   const router = useRouter();  
@@ -108,3 +109,5 @@ export function SidebarMenu() {
     </>
   );
 }
+
+export default SidebarMenu

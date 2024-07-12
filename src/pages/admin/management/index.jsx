@@ -1,6 +1,6 @@
 import HeadAdmin  from "@/component/HeadAdmin";
-import { SidebarMenu } from "@/component/SidebarMenu";
-import { TableAdmin } from "@/component/table/TableAdmin";
+import SidebarMenu  from "@/component/SidebarMenu";
+import  TableAdmin  from "@/component/table/TableAdmin";
 import { withAuth } from "@/lib/authorization";
 import { Button, Container, Flex, Heading, HStack } from "@chakra-ui/react";
 import { useRouter } from "next/router";

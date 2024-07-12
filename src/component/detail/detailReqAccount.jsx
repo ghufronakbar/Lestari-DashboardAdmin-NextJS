@@ -23,9 +23,9 @@ import {
 import { axiosInstance } from "@/lib/axios";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { Loading } from "../Loading";
+import  Loading  from "../Loading";
 
-export function DetailReqAccount() {
+const DetailReqAccount = () => {
   const router = useRouter();
   const { id } = router.query;
   const [requestAccount, setRequestAccount] = useState(null);
@@ -233,4 +233,4 @@ export function DetailReqAccount() {
   );
 }
 
-
+export default DetailReqAccount
