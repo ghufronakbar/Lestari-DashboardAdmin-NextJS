@@ -1,6 +1,6 @@
 import Head from "next/head"
 
-export const HeadAdmin = () => {
+const HeadAdmin = () => {
         return (
             <Head>
                 <title>Admin - Lestari</title>
@@ -11,3 +11,5 @@ export const HeadAdmin = () => {
         )
     
 }
+
+export default HeadAdmin

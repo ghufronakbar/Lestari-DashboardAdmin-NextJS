@@ -7,7 +7,7 @@ import { withAuth } from "@/lib/authorization";
 function RequestAccount() {
   return (
     <>
-      {HeadAdmin()}
+      <HeadAdmin />
       <main>
         <Flex>
           <SidebarMenu flex={1} />
@@ -15,7 +15,7 @@ function RequestAccount() {
             <Heading marginBottom="8" marginTop="8">
               Request Account
             </Heading>
-            {TableReqAccount()}
+            <TableReqAccount />
           </Container>
         </Flex>
       </main>

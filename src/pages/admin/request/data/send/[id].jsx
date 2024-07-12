@@ -121,7 +121,7 @@ function SendData() {
 
   return (
     <>
-      {HeadAdmin()}
+      <HeadAdmin/>
       <main>
         <Flex>
           <SidebarMenu flex={1} />

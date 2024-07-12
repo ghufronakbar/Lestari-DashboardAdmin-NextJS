@@ -7,11 +7,11 @@ import { withAuth } from "@/lib/authorization";
 function RequestDataID() {
   return (
     <>
-      {HeadAdmin()}
+      <HeadAdmin/>
       <main>
         <Flex>
           <SidebarMenu flex={1} />
-          <Container maxW="80%">{DetailAnimal()}</Container>
+          <Container maxW="80%"><DetailAnimal/></Container>
         </Flex>
       </main>
     </>

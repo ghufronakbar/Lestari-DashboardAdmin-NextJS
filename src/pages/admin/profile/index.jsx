@@ -7,7 +7,7 @@ import { Container, Flex, Heading } from "@chakra-ui/react";
 const Profile = () => {
   return (
     <>
-      {HeadAdmin()}
+      <HeadAdmin />
       <main>
         <Flex>
           <SidebarMenu flex={1} />
@@ -15,7 +15,7 @@ const Profile = () => {
             <Heading marginBottom="8" marginTop="8">
               Edit Profile
             </Heading>
-            {FormProfile()}
+            <FormProfile />
           </Container>
         </Flex>
       </main>

@@ -7,7 +7,7 @@ import { Container, Flex, Heading, HStack } from "@chakra-ui/react";
 const AddAdmin = () => {
   return (
     <>
-      {HeadAdmin()}
+      <HeadAdmin />
       <main>
         <Flex>
           <SidebarMenu flex={1} />
@@ -19,7 +19,7 @@ const AddAdmin = () => {
             >
               <Heading>Add Admin</Heading>
             </HStack>
-            {FormAdmin()}
+            <FormAdmin />
           </Container>
         </Flex>
       </main>

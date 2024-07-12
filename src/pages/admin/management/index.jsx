@@ -9,7 +9,7 @@ const AdminManagemet = () => {
   const router = useRouter();
   return (
     <>
-      {HeadAdmin()}
+      <HeadAdmin/>
       <main>
         <Flex>
           <SidebarMenu flex={1} />
@@ -28,7 +28,7 @@ const AdminManagemet = () => {
                 Add
               </Button>
             </HStack>
-            {TableAdmin()}
+            <TableAdmin/>
           </Container>
         </Flex>
       </main>

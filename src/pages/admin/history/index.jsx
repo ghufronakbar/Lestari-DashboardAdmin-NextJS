@@ -7,7 +7,7 @@ import { withAuth } from "@/lib/authorization";
 function HistoryData() {
   return (
     <>
-      {HeadAdmin()}
+      <HeadAdmin/>
       <main>
         <Flex>
           <SidebarMenu flex={1} />
@@ -15,7 +15,7 @@ function HistoryData() {
             <Heading marginBottom="8" marginTop="8">
               History
             </Heading>
-            {TableHistory()}
+            <TableHistory/>
           </Container>
         </Flex>
       </main>

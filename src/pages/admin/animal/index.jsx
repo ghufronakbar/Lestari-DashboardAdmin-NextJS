@@ -7,7 +7,7 @@ import { withAuth } from "@/lib/authorization";
 function Animal() {
   return (
     <>
-      {HeadAdmin()}
+      <HeadAdmin/>
       <main>
         <Flex>
           <SidebarMenu flex={1} />{" "}
@@ -15,7 +15,7 @@ function Animal() {
             <Heading marginBottom="8" marginTop="8">
               Animal
             </Heading>
-            {TableAnimal()}
+            <TableAnimal/>
           </Container>
         </Flex>
       </main>

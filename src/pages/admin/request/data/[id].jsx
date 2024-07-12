@@ -7,7 +7,7 @@ import { withAuth } from "@/lib/authorization";
 function RequestDataID() {
   return (
     <>
-      {HeadAdmin()}
+      <HeadAdmin/>
       <main>
         <Flex>
           <SidebarMenu flex={1} />
@@ -15,7 +15,7 @@ function RequestDataID() {
             <Heading marginBottom="8" marginTop="8">
               Request Data
             </Heading>
-            {DetailReqData()}
+            <DetailReqData/>
           </Container>
         </Flex>
       </main>
