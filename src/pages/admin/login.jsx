@@ -1,18 +1,54 @@
 import { useState } from "react";
-// import axios from "axios";
 import { axiosInstance } from "@/lib/axios";
-// import { Main } from "next/document";
 import {
   Button,
   Container,
   FormControl,
   FormLabel,
   Heading,
+  HStack,
   Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   useToast,
 } from "@chakra-ui/react";
 
 import { useRouter } from "next/router";
+
+const ModalForgotPassword = ({ isOpen, onClose, forgotEmail, setForgotEmail, handleForgotPassword }) => {
+  return (
+    <>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Forgot Password</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Input
+              type="email"
+              value={forgotEmail}
+              onChange={(e) => setForgotEmail(e.target.value)}
+            />
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              colorScheme="teal"
+              mr={3}
+              onClick={handleForgotPassword}
+            >
+              Submit
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
+  );
+};
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -20,14 +56,16 @@ const Login = () => {
   const [error, setError] = useState("");
   const toast = useToast();
   const router = useRouter();
+  const [isOpen, setIsOpen] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState("");
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
       const response = await axiosInstance.post("/login", {
-        email: email,
-        password: password,
+        email,
+        password,
       });
 
       const { success, message, token } = response.data;
@@ -56,8 +94,33 @@ const Login = () => {
     }
   };
 
+  const handleForgotPassword = async () => {
+    try {
+      const response = await axiosInstance.post("/reset-password", {
+        email: forgotEmail,
+      });
+      toast({
+        title: response.data.message,
+        status: "info",
+      });
+      setIsOpen(false);
+      setForgotEmail("");
+    } catch (error) {
+      console.error("Error resetting password:", error);
+      toast({
+        title: error?.response?.data?.message || "Error resetting password",
+        status: "error",
+      });
+    }
+  };
+
+  const handleCloseModal = () => {
+    setIsOpen(false);
+    setForgotEmail("");
+  };
+
   return (
-    <>      
+    <>
       <main>
         <Container>
           <br />
@@ -86,13 +149,30 @@ const Login = () => {
                 required
               />
             </FormControl>
-            <Button mt={6} type="submit">
-              Login
-            </Button>
+            <HStack>
+              <Button mt={6} type="submit" colorScheme="teal">
+                Login
+              </Button>
+              <Button
+                mt={6}
+                colorScheme="teal"
+                variant={"outline"}
+                onClick={() => setIsOpen(true)}
+              >
+                Forgot Password
+              </Button>
+            </HStack>
           </form>
           {error && <div style={{ color: "red" }}>{error}</div>}
         </Container>
       </main>
+      <ModalForgotPassword
+        isOpen={isOpen}
+        onClose={handleCloseModal}
+        forgotEmail={forgotEmail}
+        setForgotEmail={setForgotEmail}
+        handleForgotPassword={handleForgotPassword}
+      />
     </>
   );
 };
