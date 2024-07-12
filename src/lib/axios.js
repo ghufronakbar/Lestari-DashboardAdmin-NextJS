@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-    baseURL: "http://localhost:5000/v1/web"
-    // baseURL: "https://apilestari-ghufronakbars-projects.vercel.app/v1/web"
+    // baseURL: "http://localhost:5000/v1/web"
+    baseURL: "https://lestari-backend-alt.vercel.app"
 })
 
 axiosInstance.interceptors.request.use((config) => {
