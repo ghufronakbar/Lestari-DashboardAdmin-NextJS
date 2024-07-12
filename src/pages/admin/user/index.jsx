@@ -1,4 +1,4 @@
-import { HeadAdmin } from "@/component/HeadAdmin";
+import HeadAdmin  from "@/component/HeadAdmin";
 import {
   Container,
   Heading,
