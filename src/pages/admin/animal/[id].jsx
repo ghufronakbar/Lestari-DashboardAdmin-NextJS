@@ -1,9 +1,9 @@
 
 import { Container, Flex } from "@chakra-ui/react";
 import { SidebarMenu } from "@/component/SidebarMenu";
-import { DetailAnimal } from "@/component/detail/DetailAnimal";
 import { withAuth } from "@/lib/authorization";
 import HeadAdmin from "@/component/HeadAdmin";
+import DetailAnimal  from "@/component/detail/DetailAnimal";
 
 function RequestDataID() {
   return (
