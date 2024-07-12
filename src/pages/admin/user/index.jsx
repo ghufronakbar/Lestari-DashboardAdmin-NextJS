@@ -1,4 +1,3 @@
-import HeadAdmin from "@/component/HeadAdmin";
 import { Container, Heading, Flex } from "@chakra-ui/react";
 import TableUser from "@/component/table/TableUser";
 import SidebarMenu from "@/component/SidebarMenu";
@@ -6,8 +5,7 @@ import { withAuth } from "@/lib/authorization";
 
 const User = () => {
   return (
-    <>
-      <HeadAdmin />
+    <>      
       <main>
         <Flex>
           <SidebarMenu flex={1} />{" "}

@@ -1,4 +1,3 @@
-import HeadAdmin from "@/component/HeadAdmin";
 import SidebarMenu from "@/component/SidebarMenu";
 import TableAdmin from "@/component/table/TableAdmin";
 import { withAuth } from "@/lib/authorization";
@@ -8,8 +7,7 @@ import { useRouter } from "next/router";
 const AdminManagemet = () => {
   const router = useRouter();
   return (
-    <>
-      <HeadAdmin />
+    <>      
       <main>
         <Flex>
           <SidebarMenu flex={1} />

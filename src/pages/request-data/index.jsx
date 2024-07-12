@@ -11,7 +11,6 @@ import {
   useToast,
 } from "@chakra-ui/react";
 
-import HeadAdmin from "@/component/HeadAdmin";
 import Head from "next/head";
 
 function RequestData() {

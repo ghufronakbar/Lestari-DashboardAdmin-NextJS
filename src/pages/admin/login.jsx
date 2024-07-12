@@ -13,7 +13,6 @@ import {
 } from "@chakra-ui/react";
 
 import { useRouter } from "next/router";
-import HeadAdmin from "@/component/HeadAdmin";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -58,8 +57,7 @@ const Login = () => {
   };
 
   return (
-    <>
-      {HeadAdmin()}
+    <>      
       <main>
         <Container>
           <br />

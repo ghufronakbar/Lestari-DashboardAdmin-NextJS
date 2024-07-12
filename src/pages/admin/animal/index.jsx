@@ -1,5 +1,3 @@
-import HeadAdmin from "@/component/HeadAdmin";
-
 import { Container, Flex, Heading } from "@chakra-ui/react";
 import SidebarMenu from "@/component/SidebarMenu";
 import { withAuth } from "@/lib/authorization";
@@ -7,8 +5,7 @@ import TableAnimal from "@/component/table/TableAnimal";
 
 function Animal() {
   return (
-    <>
-      <HeadAdmin />
+    <>      
       <main>
         <Flex>
           <SidebarMenu flex={1} />{" "}
