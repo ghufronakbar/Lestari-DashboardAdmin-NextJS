@@ -13,14 +13,14 @@ import {
 } from "@chakra-ui/react";
 
 import { useRouter } from "next/router";
-import HeadAdmin  from "@/component/HeadAdmin";
+import HeadAdmin from "@/component/HeadAdmin";
 
-function Login() {
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const toast = useToast();
-  const router = useRouter()
+  const router = useRouter();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -41,9 +41,8 @@ function Login() {
           status: "success",
         });
 
-        router.push(`/admin/animal`)
-      } else {        
-        
+        router.push(`/admin/animal`);
+      } else {
         toast({
           title: "Email or Password doesn't match",
           status: "error",
@@ -98,6 +97,6 @@ function Login() {
       </main>
     </>
   );
-}
+};
 
 export default Login;

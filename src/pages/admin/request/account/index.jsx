@@ -1,7 +1,7 @@
-import HeadAdmin  from "@/component/HeadAdmin";
+import HeadAdmin from "@/component/HeadAdmin";
 import { Container, Flex, Heading } from "@chakra-ui/react";
-import  TableReqAccount  from "@/component/table/TableReqAccount";
-import  SidebarMenu  from "@/component/SidebarMenu";
+import TableReqAccount from "@/component/table/TableReqAccount";
+import SidebarMenu from "@/component/SidebarMenu";
 import { withAuth } from "@/lib/authorization";
 
 function RequestAccount() {

@@ -1,4 +1,4 @@
-import HeadAdmin  from "@/component/HeadAdmin";
+import HeadAdmin from "@/component/HeadAdmin";
 import {
   Box,
   Button,
@@ -11,7 +11,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { axiosInstance } from "@/lib/axios";
-import  SidebarMenu  from "@/component/SidebarMenu";
+import SidebarMenu from "@/component/SidebarMenu";
 import { Form } from "reactstrap";
 import { useRouter } from "next/router";
 import { withAuth } from "@/lib/authorization";
@@ -121,7 +121,7 @@ function SendData() {
 
   return (
     <>
-      <HeadAdmin/>
+      <HeadAdmin />
       <main>
         <Flex>
           <SidebarMenu flex={1} />

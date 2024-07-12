@@ -1,13 +1,14 @@
-import HeadAdmin  from "@/component/HeadAdmin";
-import TableAnimal  from "@/component/table/TableAnimal";
+import HeadAdmin from "@/component/HeadAdmin";
+
 import { Container, Flex, Heading } from "@chakra-ui/react";
-import  SidebarMenu  from "@/component/SidebarMenu";
+import SidebarMenu from "@/component/SidebarMenu";
 import { withAuth } from "@/lib/authorization";
+import TableAnimal from "@/component/table/TableAnimal";
 
 function Animal() {
   return (
     <>
-      <HeadAdmin/>
+      <HeadAdmin />
       <main>
         <Flex>
           <SidebarMenu flex={1} />{" "}
@@ -15,7 +16,7 @@ function Animal() {
             <Heading marginBottom="8" marginTop="8">
               Animal
             </Heading>
-            <TableAnimal/>
+            <TableAnimal />
           </Container>
         </Flex>
       </main>
