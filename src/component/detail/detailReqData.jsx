@@ -254,4 +254,4 @@ const DetailReqData = () => {
   );
 }
 
-export default DetailReqDataID
+export default DetailReqData
