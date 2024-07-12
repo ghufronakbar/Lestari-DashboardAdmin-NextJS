@@ -1,5 +1,5 @@
 import FormAdmin from "@/component/from/FormAdmin";
-import { HeadAdmin } from "@/component/HeadAdmin";
+import HeadAdmin  from "@/component/HeadAdmin";
 import { SidebarMenu } from "@/component/SidebarMenu";
 import { withAuth } from "@/lib/authorization";
 import { Container, Flex, Heading, HStack } from "@chakra-ui/react";

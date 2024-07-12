@@ -10,7 +10,8 @@ import {
   useToast,
 } from "@chakra-ui/react";
 
-import { HeadAdmin } from "@/component/HeadAdmin";
+import HeadAdmin from "@/component/HeadAdmin";
+import Head from "next/head";
 
 function ForgotPassword() {
   const toast = useToast();
@@ -65,13 +66,12 @@ function ForgotPassword() {
           title: "OTP Has Been Expired!",
           status: "error",
         });
-      } else if(errorMessage == `${email} Is Not User!`){
+      } else if (errorMessage == `${email} Is Not User!`) {
         toast({
-            title: `${email} Is Not User!`,
-            status: "error",
-          });
-      }
-      else {
+          title: `${email} Is Not User!`,
+          status: "error",
+        });
+      } else {
         console.error("Error:", errorMessage);
       }
     }
@@ -79,7 +79,12 @@ function ForgotPassword() {
 
   return (
     <>
-      {HeadAdmin()}
+      <Head>
+        <title>Lestari</title>
+        <meta name="admin page" content="admin page for lestari app" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="" />
+      </Head>{" "}
       <main>
         <Container>
           <br />

@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 
 import { useRouter } from "next/router";
-import { HeadAdmin } from "@/component/HeadAdmin";
+import HeadAdmin  from "@/component/HeadAdmin";
 
 function Login() {
   const [email, setEmail] = useState("");

@@ -1,4 +1,4 @@
-import { HeadAdmin } from "@/component/HeadAdmin";
+import HeadAdmin  from "@/component/HeadAdmin";
 import { TableAnimal } from "@/component/table/TableAnimal";
 import { Container, Flex, Heading } from "@chakra-ui/react";
 import { SidebarMenu } from "@/component/SidebarMenu";

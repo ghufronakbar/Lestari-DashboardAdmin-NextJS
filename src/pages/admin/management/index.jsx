@@ -1,4 +1,4 @@
-import { HeadAdmin } from "@/component/HeadAdmin";
+import HeadAdmin  from "@/component/HeadAdmin";
 import { SidebarMenu } from "@/component/SidebarMenu";
 import { TableAdmin } from "@/component/table/TableAdmin";
 import { withAuth } from "@/lib/authorization";

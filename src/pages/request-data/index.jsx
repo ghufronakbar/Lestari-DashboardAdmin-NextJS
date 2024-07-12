@@ -11,7 +11,8 @@ import {
   useToast,
 } from "@chakra-ui/react";
 
-import { HeadAdmin } from "@/component/HeadAdmin";
+import HeadAdmin from "@/component/HeadAdmin";
+import Head from "next/head";
 
 function RequestData() {
   const toast = useToast();
@@ -26,7 +27,12 @@ function RequestData() {
     e.preventDefault();
     try {
       const response = await axiosInstance.post("/user/request-data", {
-        name, email,  profession, instances, subject, body
+        name,
+        email,
+        profession,
+        instances,
+        subject,
+        body,
       });
       toast({
         title: response?.data?.message,
@@ -43,7 +49,12 @@ function RequestData() {
 
   return (
     <>
-      {HeadAdmin()}
+      <Head>
+        <title>Lestari</title>
+        <meta name="admin page" content="admin page for lestari app" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="" />
+      </Head>{" "}
       <main>
         <Container>
           <br />
@@ -88,7 +99,10 @@ function RequestData() {
             </FormControl>
             <FormControl mt={4}>
               <FormLabel>Body</FormLabel>
-              <Textarea value={body} onChange={(e) => setBody(e.target.value)} />
+              <Textarea
+                value={body}
+                onChange={(e) => setBody(e.target.value)}
+              />
             </FormControl>
             <Button mt={6} type="submit">
               SUBMIT
