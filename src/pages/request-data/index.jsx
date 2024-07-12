@@ -55,7 +55,7 @@ function RequestData() {
         <link rel="icon" href="" />
       </Head>{" "}
       <main>
-        <Container>
+        <Container mb={16}>
           <br />
           <br />
           <br />
@@ -103,7 +103,7 @@ function RequestData() {
                 onChange={(e) => setBody(e.target.value)}
               />
             </FormControl>
-            <Button mt={6} type="submit">
+            <Button mt={6} type="submit" colorScheme="teal">
               SUBMIT
             </Button>
           </form>

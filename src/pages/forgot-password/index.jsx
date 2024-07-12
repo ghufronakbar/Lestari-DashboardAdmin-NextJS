@@ -10,7 +10,6 @@ import {
   useToast,
 } from "@chakra-ui/react";
 
-
 import Head from "next/head";
 
 function ForgotPassword() {
@@ -110,7 +109,12 @@ function ForgotPassword() {
                 onChange={(e) => setOtp(e.target.value)}
               />
             </FormControl>
-            <Button mt={6} type="submit">
+            <Button
+              mt={6}
+              type="submit"
+              colorScheme={"teal"}
+              variant={!otp ? "solid" : "outline"}
+            >
               {!otp ? "Send OTP" : "Reset Password"}
             </Button>
           </form>
