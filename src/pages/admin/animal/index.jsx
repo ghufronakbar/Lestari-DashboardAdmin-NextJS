@@ -36,6 +36,7 @@ import formatDate from "@/lib/formatDate";
 import { CloseIcon } from "@chakra-ui/icons";
 import debounce from "@/lib/debounce";
 import  LoadingComponent  from "@/component/LoadingComponent";
+import formatString from "@/lib/formatString";
 
 function Animal() {
   return (
