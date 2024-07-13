@@ -1,4 +1,4 @@
-import { Container } from "@chakra-ui/react";
+import { Container, Stack } from "@chakra-ui/react";
 import SidebarMenu from "@/component/SidebarMenu";
 import { withAuth } from "@/lib/authorization";
 import {
@@ -9,7 +9,6 @@ import {
   Flex,
   Heading,
   HStack,
-  Image,
   Input,
   Modal,
   ModalBody,
@@ -31,16 +30,17 @@ import {
 import { axiosInstance } from "@/lib/axios";
 import { useRouter } from "next/router";
 import { useEffect, useState, useCallback } from "react";
-import  Loading  from "@/component/Loading";
+import Loading from "@/component/Loading";
 import formatDate from "@/lib/formatDate";
-import { CloseIcon } from "@chakra-ui/icons";
+import { CloseIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 import debounce from "@/lib/debounce";
-import  LoadingComponent  from "@/component/LoadingComponent";
+import LoadingComponent from "@/component/LoadingComponent";
 import formatString from "@/lib/formatString";
+import Image from "next/image";
 
 function Animal() {
   return (
-    <>      
+    <>
       <main>
         <Flex>
           <SidebarMenu flex={1} />{" "}
@@ -252,10 +252,13 @@ const TableAnimal = () => {
                       borderRadius="18"
                       boxSize="60px"
                       objectFit="cover"
-                      src={animal.image}
+                      width={60}
+                      height={60}
+                      src={animal.image  !== null ? animal.image : "/profile.webp"}
                       alt={animal.latin_name}
                     />
                   </Td>
+                  {/* {animal.image} */}
                   <Td>
                     <Text as="b">{animal.latin_name}</Text>
                     <Text>{animal.local_name}</Text>
@@ -267,8 +270,15 @@ const TableAnimal = () => {
                     <Text as="b">{animal.city}</Text>
                   </Td>
                   <Td>
-                    <Text isNumeric>{animal.longitude}</Text>
-                    <Text isNumeric>{animal.latitude}</Text>
+                    <HStack justify={"space-between"}>
+                      <Stack>
+                        <Text isNumeric>{animal.longitude}</Text>
+                        <Text isNumeric>{animal.latitude}</Text>
+                      </Stack>
+                      <a href={animal.url_google_map} target="_blank">
+                        <ExternalLinkIcon />
+                      </a>
+                    </HStack>
                   </Td>
                   <Td>
                     <Text as="b">{formatDate(animal.date)}</Text>
@@ -364,6 +374,6 @@ const TableAnimal = () => {
       </TableContainer>
     </>
   );
-}
+};
 
 export default withAuth(Animal);

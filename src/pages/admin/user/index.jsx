@@ -8,8 +8,7 @@ import {
   Box,
   Button,
   Center,  
-  HStack,
-  Image,
+  HStack,  
   Input,
   Spinner,
   Table,
@@ -38,6 +37,7 @@ import formatDate from "@/lib/formatDate";
 import { useRouter } from "next/router";
 import debounce from "@/lib/debounce";
 import LoadingComponent from "@/component/LoadingComponent";
+import Image from "next/image";
 
 const User = () => {
   return (
@@ -264,8 +264,10 @@ const TableUser = () => {
                       borderRadius="18"
                       boxSize="60px"
                       objectFit="cover"
-                      src={user.picture}
-                      alt={user.name}
+                      width={60}
+                      height={60}                      
+                      src={user.picture !== null ? user.picture : "/profile.webp"}
+                      alt={user?.name}
                     />
                   </Td>
                   <Td>

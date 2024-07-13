@@ -13,14 +13,14 @@ import {
   Tbody,
   Tr,
   Th,
-  Td,
-  Image,
+  Td,  
   HStack,
 } from "@chakra-ui/react";
 import { axiosInstance } from "@/lib/axios";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Loading from "../../../component/Loading";
+import Image from "next/image";
 
 function RequestDataID() {
   const router = useRouter();
@@ -76,11 +76,12 @@ function RequestDataID() {
                       <Image
                         borderRadius="18"
                         objectFit="cover"
-                        src={animal.image}
+                        width={200}
+                        height={200}
+                        src={animal.image  !== null ? animal.image : "/profile.webp"}
                         alt={animal.latin_name}
                       />
                     </Center>
-
                     <Text mt={4}>{animal.description}</Text>
                   </Box>
                   <Spacer />
@@ -103,8 +104,10 @@ function RequestDataID() {
                             <Image
                               borderRadius="18"
                               boxSize="60px"
+                              width={60}
+                              height={60}
                               objectFit="cover"
-                              src={animal.user_picture}
+                              src={animal.user_picture  !== null ? animal.user_picture : "/profile.webp"}
                               alt={animal.name}
                             />
                           </HStack>
