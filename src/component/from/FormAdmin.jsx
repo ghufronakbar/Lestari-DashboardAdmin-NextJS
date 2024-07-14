@@ -90,7 +90,7 @@ const FormAdmin = () => {
           <Box flex={5} mt={4}>
             <Flex direction={{ base: "column", md: "row" }} gap={4} w={"100%"}>
               <FormControl w={{ base: "100%", md: "50%" }}>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>Name</FormLabel>
                 <Input
                   placeholder="Name"
                   value={name}
