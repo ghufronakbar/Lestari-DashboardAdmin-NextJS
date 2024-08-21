@@ -4,19 +4,49 @@ import Image from 'next/image';
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
+    if (isMobileMenuOpen) {
+      setIsClosing(true);
+      setTimeout(() => {
+        setIsMobileMenuOpen(false);
+        setIsClosing(false);
+      }, 300); 
+    } else {
+      setIsMobileMenuOpen(true);
+      setIsClosing(true);
+      setTimeout(() => {
+        setIsClosing(false);
+      }, 1); 
+    }
   };
 
   const closeMobileMenu = () => {
-    setIsMobileMenuOpen(false);
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsMobileMenuOpen(false);
+      setIsClosing(false);
+    }, 300); // Durasi animasi sama dengan durasi transition
   };
 
   const handleScroll = () => {
     const scrollPosition = window.scrollY;
     const screenHeight = window.innerHeight;
+
     setIsScrolled(scrollPosition > screenHeight * 0.8);
+
+    if (scrollPosition < 20) {
+      setIsVisible(true);
+    } else if (scrollPosition > lastScrollY && scrollPosition > 20) {
+      setIsVisible(false);
+    } else if (scrollPosition < lastScrollY) {
+      setIsVisible(true);
+    }
+
+    setLastScrollY(scrollPosition);
   };
 
   useEffect(() => {
@@ -24,7 +54,7 @@ export default function Navbar() {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [lastScrollY]);
 
   const navItems = [
     { label: 'Home', href: '#hero' },
@@ -46,11 +76,11 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 z-50 w-full max-w-full px-4 py-1 rounded-none shadow-md lg:px-8 lg:py-2 transition-colors duration-300 ${
+      className={`fixed top-0 z-50 w-full max-w-full px-4 py-1 rounded-none shadow-md lg:px-8 lg:py-2 transition-all duration-300 ${
         isScrolled
           ? 'bg-white text-black border-white/80'
           : 'bg-transparent text-white'
-      }`}
+      } ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}
     >
       <div className="flex items-center justify-between">
         <div
@@ -76,7 +106,7 @@ export default function Navbar() {
           </div>
           <div className="flex items-center gap-x-1">
             <div
-              onClick={() => window.location.href = '/pengaduan'}
+              onClick={() => (window.location.href = '/registrasi')}
               className="hidden select-none rounded-lg bg-primary py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none lg:inline-block hover:bg-secondary duration-300 cursor-pointer"
             >
               Registrasi
@@ -98,10 +128,10 @@ export default function Navbar() {
 
       {/* Menu Mobile */}
       {isMobileMenuOpen && (
-        <div className='absolute top-0 left-0 z-30 lg:hidden w-screen h-screen' onClick={closeMobileMenu}>
+        <div className={`absolute top-0 left-0 z-30 lg:hidden w-screen h-screen transition-all duration-300 bg-black bg-opacity-30 ${isClosing ? 'backdrop-blur-sm' : 'backdrop-blur'}`} onClick={closeMobileMenu}>
           <div
-            className={`fixed inset-0 z-40 bg-white border-t h-fit border-gray-200 lg:hidden transform transition-transform duration-300 ease-in-out ${
-              isMobileMenuOpen ? 'translate-y-0' : 'translate-y-full'
+            className={`fixed inset-x-0 top-0 z-40 bg-white border-t h-fit border-gray-200 transform transition-transform duration-300 ease-in-out ${
+              isClosing ? 'translate-y-[-100%]' : 'translate-y-0'
             }`}
           >
             <ul className="flex flex-col p-4 space-y-4">
@@ -123,10 +153,10 @@ export default function Navbar() {
                 onClick={(e) => {
                   e.stopPropagation();
                   closeMobileMenu();
-                  window.location.href = '/pengaduan';
+                  window.location.href = '/registrasi';
                 }}
               >
-                Pengaduan
+                Registrasi
               </li>
             </ul>
           </div>

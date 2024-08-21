@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 export default function Hero() {
   const scrollJelajahi = () => {
     const element = document.getElementById('visi');
