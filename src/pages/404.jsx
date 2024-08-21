@@ -1,34 +1,27 @@
-import { Flex, Heading, Text } from "@chakra-ui/react";
-import Image from "next/image";
+import NotFoundAdmin from "@/component/NotFoundAdmin";
+import NotFoundUser from "@/component/NotFoundUser";
+import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
-export default function Custom404() {
+const Custom404 = () => {
   const router = useRouter();
-  return (
-    <Flex
-      justifyContent="center"
-      alignItems="center"
-      minHeight="100vh"
-      flexDirection="column"
-    >
-      <Heading>Lestari: Page 404 - Not Found</Heading>
-      <Image
-      src='/404.jpg'
-      width={500}
-      height={500}/>      
-      <Text marginTop="4">
-        Return to{" "}
-        <Text
-          as="span"
-          color="blue"
-          cursor="pointer"
-          onClick={() => {
-            router.push(`/admin/animal`);
-          }}
-        >
-          Dashboard
-        </Text>
-      </Text>
-    </Flex>
-  );
+  const pathname = router.asPath;
+  const [isAdmin, setIsAdmin] = useState(false);  
+  
+  useEffect(() => {
+    if(router.isReady) {           
+      if(pathname.includes("/admin")) {
+        setIsAdmin(true);    
+      }
+    }
+  }, [router.isReady, pathname])
+
+  if(isAdmin) {
+    return <NotFoundAdmin />
+  } else {
+    return <NotFoundUser />
+  }
 }
+
+export default Custom404
