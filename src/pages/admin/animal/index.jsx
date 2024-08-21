@@ -34,13 +34,24 @@ import Image from "next/image";
 function Animal() {
   return (
     <>
-      <main>
-        <Flex>
-          <SidebarMenu flex={1} />{" "}
+      <main>                            
+            <Flex>
+          <SidebarMenu flex={1} />
           <Container maxW="80%">
-            <Heading marginBottom="8" marginTop="8">
-              Animal
-            </Heading>
+            <HStack
+              marginBottom="8"
+              marginTop="8"
+              justifyContent="space-between"
+            >
+              <Heading>Admin</Heading>
+              <Button
+                colorScheme={"teal"}
+                py={4}
+                onClick={() => router.push("/admin/management/add")}
+              >
+                Add
+              </Button>
+            </HStack>
             <TableAnimal />
           </Container>
         </Flex>
