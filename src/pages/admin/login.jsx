@@ -27,23 +27,26 @@ const ModalForgotPassword = ({ isOpen, onClose, forgotEmail, setForgotEmail, han
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Forgot Password</ModalHeader>
-          <ModalCloseButton />
+          <ModalCloseButton />            
           <ModalBody>
+
             <Input
               type="email"
               value={forgotEmail}
               onChange={(e) => setForgotEmail(e.target.value)}
-            />
+              placeholder="Enter your email"
+              />
           </ModalBody>
           <ModalFooter>
             <Button
               colorScheme="teal"
               mr={3}
               onClick={handleForgotPassword}
-            >
+              type="submit"
+              >
               Submit
             </Button>
-          </ModalFooter>
+          </ModalFooter>              
         </ModalContent>
       </Modal>
     </>

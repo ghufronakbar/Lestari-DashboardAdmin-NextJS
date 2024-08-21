@@ -58,13 +58,20 @@ const SidebarMenu = () => {
             >
               🖥️ Admin
             </MenuItem>
-          )}
+          )}          
           <MenuItem
             onClick={() => {
               router.push(`/admin/animal`);
             }}
           >
             🐦‍⬛ Animal
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              router.push(`/admin/suggestion`);
+            }}
+          >
+            🔎 Manage Suggestion
           </MenuItem>
           <MenuItem
             onClick={() => {

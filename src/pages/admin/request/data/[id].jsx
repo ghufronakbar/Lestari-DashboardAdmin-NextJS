@@ -26,6 +26,8 @@ import { axiosInstance } from "@/lib/axios";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import  Loading  from "@/component/Loading";
+import { InfoIcon } from "@chakra-ui/icons";
+import Image from "next/image";
 
 function RequestDataID() {
   return (
@@ -53,6 +55,7 @@ const DetailReqData = () => {
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const toast = useToast();
+  const [isAttachmentOpen, setIsAttachmentOpen] = useState(false);  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -116,6 +119,8 @@ const DetailReqData = () => {
     }
   };
 
+
+
   if (loading) return <Loading/>
   if (error) return <div>Error fetching data</div>;
 
@@ -128,11 +133,12 @@ const DetailReqData = () => {
               <Text fontWeight="semibold" fontSize="3xl" mb={2}>
                 {requestAccount.subject}
               </Text>
+              <ModalImage image={requestAccount.attachment} isOpen={isAttachmentOpen} onClose={() => setIsAttachmentOpen(false)} title={requestAccount.subject} />
+              <Text style={{ alignItems: "center", display: "flex", gap: "5px", cursor: "pointer" }} fontSize={"sm"} onClick={() => {setIsAttachmentOpen(true)}}>See Attachment <InfoIcon/></Text>
               <Text>{requestAccount.body}</Text>
             </Box>
             <Spacer/>
-            <Box flex={4} mt={4}>
-              
+            <Box flex={4} mt={4}>              
                 <Box
                   p={8}
                   borderWidth="1px"
@@ -163,7 +169,7 @@ const DetailReqData = () => {
                       </Tr>
                     </Tbody>
                   </Table>
-<Table>
+                  <Table>
                       <Tbody>
                         <Tr>
                           <Th>Profession</Th>
@@ -272,6 +278,24 @@ const DetailReqData = () => {
       </Modal>
     </>
   );
+}
+
+const ModalImage = ({ isOpen, onClose, image, title }) => {
+  return (
+    <Modal isOpen={isOpen} onClose={onClose} size={"3xl"}>
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>Attachment</ModalHeader>        
+        <ModalCloseButton />
+        <ModalBody>
+          <Image src={image} alt={title} width={500} height={500} style={{ width: "100%", height: "auto", objectFit: "contain" }} />
+        </ModalBody>
+        <ModalFooter>
+          <Button onClick={onClose}>Close</Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>    
+  )
 }
 
 

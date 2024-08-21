@@ -10,13 +10,6 @@ import {
   Heading,
   HStack,
   Input,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
   Table,
   TableContainer,
   Tbody,
@@ -254,7 +247,9 @@ const TableAnimal = () => {
                       objectFit="cover"
                       width={60}
                       height={60}
-                      src={animal.image  !== null ? animal.image : "/profile.webp"}
+                      src={
+                        animal.image !== null ? animal.image : "/profile.webp"
+                      }
                       alt={animal.latin_name}
                     />
                   </Td>
