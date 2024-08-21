@@ -213,7 +213,7 @@ const SidebarMenu = () => {
         <div
           className={`border-2 ${
             isDarkMode ? "border-gray-800" : "border-gray-200"
-          } w-8 h-8 flex items-center justify-center rounded-lg p-2 cursor-pointer transition-all duration-300 ${
+          } w-12 h-12 flex items-center justify-center rounded-lg p-2 cursor-pointer transition-all duration-300 ${
             isDarkMode ? "hover:bg-gray-700" : "hover:bg-gray-300"
           }`}
           onClick={(e) => {

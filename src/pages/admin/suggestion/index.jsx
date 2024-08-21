@@ -24,10 +24,9 @@ import { axiosInstance } from "@/lib/axios";
 import { useRouter } from "next/router";
 import { useEffect, useState, useCallback } from "react";
 import Loading from "@/component/Loading";
-import { AddIcon, CloseIcon, PlusSquareIcon } from "@chakra-ui/icons";
+import { AddIcon, CloseIcon } from "@chakra-ui/icons";
 import debounce from "@/lib/debounce";
 import LoadingComponent from "@/component/LoadingComponent";
-
 
 function Suggestion() {
     const [isAddOpen, setIsAddOpen] = useState(false);
@@ -39,7 +38,7 @@ function Suggestion() {
     })
     const handleAdd = async () => {
         try {
-            const response = await axiosInstance.post("/admin/suggestions",{local_name: dataSuggest.localName, latin_name: dataSuggest.latinName} );
+            const response = await axiosInstance.post("/suggestions",{local_name: dataSuggest.localName, latin_name: dataSuggest.latinName} );
             toast({
                 title: "Suggestion added successfully",
                 status: "success",
@@ -63,14 +62,14 @@ function Suggestion() {
   return (
     <>
       <main>
-        <Flex>
+        <Flex>          
           <SidebarMenu flex={1} />{" "}
           <Container maxW="80%">            
             <Heading marginBottom="8" marginTop="8">
               Suggestion
             </Heading>
             <Button colorScheme={"teal"} leftIcon={<AddIcon />} onClick={() => setIsAddOpen(true)}>Add</Button>
-            <ModalAddSuggestion isOpen={isAddOpen} onClose={() => setIsAddOpen(false)} dataSuggest={dataSuggest} setDataSuggest={setDataSuggest} onSubmit={handleAdd} />
+            <ModalSuggestion isOpen={isAddOpen} onClose={() => setIsAddOpen(false)} dataSuggest={dataSuggest} setDataSuggest={setDataSuggest} onSubmit={handleAdd} title={"Add Suggestion"} />
             <TableSuggestion refetch={isRefetch} afterRefetch={() => setIsRefetch(false)} />
           </Container>
         </Flex>
@@ -79,13 +78,13 @@ function Suggestion() {
   );
 }
 
-const ModalAddSuggestion = ({ isOpen, onClose, dataSuggest, setDataSuggest, onSubmit }) => {
+const ModalSuggestion = ({ isOpen, onClose, dataSuggest, setDataSuggest, onSubmit, title }) => {
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Add Suggestion</ModalHeader>
+          <ModalHeader>{title}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <FormControl>
@@ -100,7 +99,7 @@ const ModalAddSuggestion = ({ isOpen, onClose, dataSuggest, setDataSuggest, onSu
             <FormLabel>Latin Name</FormLabel>
             <Input
               placeholder="Latin Name"
-              value={dataSuggest.englishName}
+              value={dataSuggest.latinName}
               onChange={(e) => setDataSuggest({ ...dataSuggest, latinName: e.target.value })}
             />
             </FormControl>
@@ -135,11 +134,17 @@ const TableSuggestion = ({refetch, afterRefetch}) => {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(router.query.page || 1);  
   const [isLoadingComponent, setIsLoadingComponent] = useState(true);
+  const [isEditOpen, setIsEditOpen] = useState(false);  
+  const [dataSuggest, setDataSuggest] = useState({
+    idSuggestion: 0,
+    localName: "",
+    latinName: "",
+  })
 
   const fetchSuggestions = async () => {
     setIsLoadingComponent(true);
     try {
-      const suggestionsResponse = await axiosInstance.get(`/admin/suggestions`, {
+      const suggestionsResponse = await axiosInstance.get(`/suggestions`, {
         params: {
           search: router.query.search,
           page: router.query.page,          
@@ -177,7 +182,7 @@ const TableSuggestion = ({refetch, afterRefetch}) => {
 
   const handleDelete = async (id) => {
     try {
-      await axiosInstance.delete(`/admin/suggestions/${id}`);
+      await axiosInstance.delete(`/suggestions/${id}`);
       toast({
         title: "Suggestion has been deleted",
         status: "warning",
@@ -227,9 +232,48 @@ const TableSuggestion = ({refetch, afterRefetch}) => {
     });
   };
 
+  const handleEdit = async () => {
+    if(!dataSuggest.localName || !dataSuggest.latinName){
+        toast({
+            title: "Please fill in all required fields",
+            status: "error",
+            isClosable: true,
+        })
+        return
+    }
+    try {      
+        const response = await axiosInstance.put(`/suggestions/${dataSuggest.idSuggestion}`,{local_name: dataSuggest.localName, latin_name: dataSuggest.latinName} );
+        toast({
+            title: "Suggestion edited successfully",
+            status: "success",
+            isClosable: true,
+        })
+        setIsEditOpen(false);
+        setDataSuggest({
+            localName: "",
+            latinName: "",
+        })
+        await fetchSuggestions();
+    } catch (error) {
+        console.log(error);
+        toast({
+            title: error?.response?.data?.message || "Failed to edit suggestion",                
+            status: "error",                
+            isClosable: true,
+        })            
+    }
+}
+
+const handleOpenModal = async (data) =>{
+  await setDataSuggest({localName: data.local_name, latinName: data.latin_name, idSuggestion: data.id_suggestion});
+  await setIsEditOpen(true);
+}
+
+
   if (isLoading) return <Loading />;
   return (
-    <>
+    <>    
+    <ModalSuggestion isOpen={isEditOpen} onClose={() => {setIsEditOpen(false);setDataSuggest({localName: "", latinName: "", idSuggestion: 0})}} dataSuggest={dataSuggest} setDataSuggest={setDataSuggest} onSubmit={() => handleEdit()} title={"Edit Suggestion"} />
       <Flex gap={4} my={4}>
         <Input
           defaultValue={search}
@@ -249,7 +293,7 @@ const TableSuggestion = ({refetch, afterRefetch}) => {
               <Th>No</Th>              
               <Th>Local Name</Th>
               <Th>Latin Name</Th>              
-              <Th></Th>
+              <Th colSpan={2}></Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -262,7 +306,7 @@ const TableSuggestion = ({refetch, afterRefetch}) => {
             ) : suggestions?.values?.length === 0 && !isLoadingComponent ? (
               <>
                 <Tr>
-                  <Td colSpan={8} textAlign="center">
+                  <Td colSpan={5} textAlign="center">
                     <Alert status="info">
                       <AlertIcon />
                       No suggestions found
@@ -276,12 +320,21 @@ const TableSuggestion = ({refetch, afterRefetch}) => {
                 <Tr key={suggestion.id_suggestion}>
                   <Td>{index + 1}</Td>                              
                   <Td>
-                    <Text as="b">{suggestion.latin_name}</Text>                    
+                    <Text as="b">{suggestion.local_name}</Text>                    
                   </Td>
                   <Td>                    
-                    <Text>{suggestion.local_name}</Text>
+                    <Text>{suggestion.latin_name}</Text>
                   </Td>                                    
                   <Td>                   
+                    <HStack>
+                    <Center marginTop={1}>
+                      <Button
+                        colorScheme="teal"
+                        onClick={() => {handleOpenModal(suggestion)}}
+                      >
+                        Edit
+                      </Button>
+                    </Center>
                     <Center marginTop={1}>
                       <Button
                         colorScheme="red"
@@ -290,6 +343,7 @@ const TableSuggestion = ({refetch, afterRefetch}) => {
                         Delete
                       </Button>
                     </Center>
+                    </HStack>
                   </Td>
                 </Tr>
               ))
