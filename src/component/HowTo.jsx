@@ -10,16 +10,16 @@ function HowTo() {
       <h2 className="text-black font-bold font-regular text-sm md:text-xl lg:text-2xl font-poppins text-center">
         Tatacara Penggunaan Aplikasi
       </h2>
-      <div className="w-full flex flex-col xl:flex-row gap-6">
+      <div className="w-full flex flex-col xl:flex-row gap-6 sm:gap-12 items-center">
         <Image
           width={400}
           height={300}
           src={imageHowTo}
           alt="Gambar Tatacara"
-          className="w-full h-auto object-cover hover:scale-105 transition-all rounded-lg cursor-pointer"
+          className="xl:w-auto xl:h-full w-full h-auto aspect-video object-cover hover:scale-105 transition-all rounded-lg cursor-pointer"
           onClick={() => setIsVisible(true)}
-        />
-        <div className="w-full grid grid-cols-2 gap-6">
+        />        
+        <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-6">
           {howToItems.map((item, index) => (
             <div key={index} className="w-full flex flex-col text-start">
               <h3 className="text-xs md:text-sm lg:text-base text-black font-semibold">

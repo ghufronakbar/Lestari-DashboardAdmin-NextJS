@@ -16,10 +16,10 @@ export default function Home() {
       <title>Lestari</title>
       <meta name="Data Satwa Liar" content="Pendataan Data Satwa" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <link rel="icon" href="/favicon.ico" />
+      <link rel="icon" href="/images/logo.png" />
     </Head>
     <main>
-    <div className="bg-hero bg-cover bg-center bg-fixed flex flex-col">
+    <div className="bg-hero bg-cover bg-center bg-fixed flex flex-col font-poppins">
       <Navbar />
       <Hero />
       <Feature />

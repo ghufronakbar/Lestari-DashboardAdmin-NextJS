@@ -62,7 +62,7 @@ function ForgotPassword() {
         <title>Lupa Password | Lestari</title>
         <meta name="Lestari" content="Lestari" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/logo.png" />
+        <link rel="icon" href="/images/logo.png" />
       </Head>{" "}
       <main>
         <Container>

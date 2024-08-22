@@ -27,10 +27,10 @@ export default function App({ Component, pageProps }) {
     <QueryClientProvider client={queryClient}>
       <ChakraProvider>
         <Head>
-          <title>Admin - Lestari</title>
-          <meta name="admin page" content="admin page for lestari app" />
+          <title>Lestari</title>
+          <meta name="Lestari" content="Legion " />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <link rel="icon" href="" />
+          <link rel="icon" href="/images/logo.png" />
         </Head>
         {isAdmin && !isLoginRoute && <SidebarMenu/>}
         <Component {...pageProps} />
