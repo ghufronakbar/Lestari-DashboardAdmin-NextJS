@@ -6,7 +6,7 @@ export default function NotFoundUser() {
   const router = useRouter();
   return (    
       <Box style={{ display: "flex", alignItems: "center", flexDirection: "column", alignItems: "center", justifyContent: "center", width: "100vw", height: "100vh", }}>
-      <Heading>Lestari: Page 404 - Not Found</Heading>
+      <Heading>Lestari: Halaman Tidak Ditemukan</Heading>
       <Image
       src='/404.jpg'
       alt="Lestari: Page 404 - Not Found"
@@ -14,7 +14,7 @@ export default function NotFoundUser() {
       width={500}
       height={500}/>            
       <Text marginTop="4">
-        Return to{" "}
+        Kembali ke{" "}
         <Text
           as="span"
           color="blue"
@@ -23,7 +23,7 @@ export default function NotFoundUser() {
             router.push(`/`);
           }}
         >
-          Home
+          Beranda
         </Text>
       </Text>
       </Box>    
