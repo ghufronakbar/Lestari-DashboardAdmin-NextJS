@@ -22,7 +22,6 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { axiosInstance } from "@/lib/axios";
-import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import formatDate from "@/lib/formatDate";
 import { useCallback, useEffect, useState } from "react";
@@ -39,7 +38,7 @@ function RequestData() {
           <SidebarMenu flex={1} />
           <Container maxW="80%">
             <Heading marginBottom="8" marginTop="8">
-              Request Data
+              Permintaan Data
             </Heading>
             <TableReqData />
           </Container>
@@ -60,7 +59,6 @@ const TableReqData = () => {
   const toast = useToast();
   const [isLoadingComponent, setIsLoadingComponent] = useState(true);
 
-
   const handleDetailClick = (id_request_data) => {
     router.push(`/admin/request/data/${id_request_data}`);
   };  
@@ -74,7 +72,7 @@ const TableReqData = () => {
           page: router.query.page,
           date_start: router.query.date_start,
           date_end: router.query.date_end,
-          apporove: router.query.aprove,
+          approve: router.query.approve,
         },
       });
       setIsLoading(false);
@@ -82,10 +80,10 @@ const TableReqData = () => {
       setIsLoadingComponent(false);    
     } catch (error) {
       toast({
-        title: error?.response?.data?.message || "Error fetching req",
+        title: error?.response?.data?.message || "Gagal memuat data permintaan",
         status: "error",
       });
-      console.error("Error fetching req:", error);
+      console.error("Gagal memuat data permintaan:", error);
       setIsLoading(false);      
     }
   };
@@ -107,17 +105,15 @@ const TableReqData = () => {
     debouncedSearch(value);
   };
 
-
   const handlePagination = (newPage) => {
     setPage(newPage);
-    setRequestDatas([]); // Clear req when paginating
-    setIsloading(true); 
+    setRequestDatas([]); // Kosongkan permintaan saat paginasi
+    setIsLoading(true); 
     router.push({
       pathname: router.pathname,
       query: { ...router.query, page: newPage },
     });
   };
-
 
   const debouncedDateStart = useCallback(
     debounce((value) => {
@@ -172,7 +168,7 @@ const TableReqData = () => {
     router.query.page,
     router.query.date_start,
     router.query.date_end,
-    router.query.aprove,
+    router.query.approve,
   ]);
 
   if (isLoading) return <Loading />;
@@ -182,7 +178,7 @@ const TableReqData = () => {
         <Input
           value={search}
           onChange={handleSearchChange}
-          placeholder="Search..."
+          placeholder="Cari..."
           focus={true}
           autoFocus
         />
@@ -197,11 +193,11 @@ const TableReqData = () => {
           <Thead>
             <Tr>
               <Th>No</Th>
-              <Th>User</Th>
-              <Th>Company</Th>
-              <Th>Needs</Th>
+              <Th>Pengguna</Th>
+              <Th>Perusahaan</Th>
+              <Th>Kebutuhan</Th>
               <Th>Status</Th>
-              <Th>Date</Th>
+              <Th>Tanggal</Th>
               <Th></Th>
             </Tr>
           </Thead>
@@ -218,7 +214,7 @@ const TableReqData = () => {
                   <Td colSpan={8} textAlign="center">
                     <Alert status="info">
                       <AlertIcon />
-                      No request found
+                      Tidak ada permintaan ditemukan
                     </Alert>
                   </Td>
                 </Tr>
@@ -253,7 +249,7 @@ const TableReqData = () => {
                                   px={4}
                                   h={8}
                                 >
-                                  Pending
+                                  Tertunda
                                 </Box>
                               )}
                               {reqdata.approve == 1 && (
@@ -265,7 +261,7 @@ const TableReqData = () => {
                                   px={4}
                                   h={8}
                                 >
-                                  Rejected
+                                  Ditolak
                                 </Box>
                               )}
                               {reqdata.approve == 2 && (
@@ -277,7 +273,7 @@ const TableReqData = () => {
                                   px={4}
                                   h={8}
                                 >
-                                  Approved
+                                  Disetujui
                                 </Box>
                               )}
                             </Text>
@@ -307,7 +303,7 @@ const TableReqData = () => {
           <HStack mt={4}>
             {requestDatas?.pagination?.total_page > 0 ? (
               <>
-                <Text as="b">Page {requestDatas?.pagination?.page}</Text>{" "}
+                <Text as="b">Halaman {requestDatas?.pagination?.page}</Text>{" "}
                 <Text>/ {requestDatas?.pagination?.total_page}</Text>
               </>
             ) : null}
@@ -322,7 +318,7 @@ const TableReqData = () => {
                 onClick={() => handlePagination(page - 1)}
                 isDisabled={page === 1}
               >
-                <Text as="b">Previous</Text>
+                <Text as="b">Sebelumnya</Text>
               </Button>
               {page > 3 && (
                 <>
@@ -369,7 +365,7 @@ const TableReqData = () => {
                 onClick={() => handlePagination(page + 1)}
                 isDisabled={page === requestDatas.pagination.total_page}
               >
-                <Text as="b">Next</Text>
+                <Text as="b">Berikutnya</Text>
               </Button>
             </HStack>
           ) : null}
@@ -378,6 +374,5 @@ const TableReqData = () => {
     </>
   );
 }
-
 
 export default withAuth(RequestData);

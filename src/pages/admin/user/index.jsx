@@ -9,8 +9,7 @@ import {
   Button,
   Center,  
   HStack,  
-  Input,
-  Spinner,
+  Input,  
   Table,
   TableContainer,
   Tbody,
@@ -22,16 +21,12 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { axiosInstance } from "@/lib/axios";
-import { useQuery } from "@tanstack/react-query";
 import {
-  CloseIcon,
-  LockIcon,
+  CloseIcon,  
   UnlockIcon,
-  WarningIcon,
-  WarningTwoIcon,
+  WarningIcon,  
 } from "@chakra-ui/icons";
 import { useState, useEffect, useCallback } from "react";
-import { baseURL } from "@/lib/baseUrl";
 import  Loading  from "@/component/Loading";
 import formatDate from "@/lib/formatDate";
 import { useRouter } from "next/router";
@@ -47,7 +42,7 @@ const User = () => {
           <SidebarMenu flex={1} />{" "}
           <Container maxW="80%">
             <Heading marginBottom="8" marginTop="8">
-              User
+              Pengguna
             </Heading>
             <TableUser />
           </Container>
@@ -73,12 +68,12 @@ const TableUser = () => {
     try {
       await axiosInstance.put(`/user/suspend`, { status: 0, id });
       toast({
-        title: "User has been suspended",
+        title: "Pengguna telah ditangguhkan",
         status: "warning",
       });
       fetchRequest();
     } catch (error) {
-      console.error("Error suspending user:", error);
+      console.error("Kesalahan saat menangguhkan pengguna:", error);
     }
   };
 
@@ -90,12 +85,12 @@ const TableUser = () => {
       });
       console.log(response);
       toast({
-        title: "User has been activated",
+        title: "Pengguna telah diaktifkan kembali",
         status: "success",
       });
       fetchRequest();
     } catch (error) {
-      console.error("Error activating user:", error);
+      console.error("Kesalahan saat mengaktifkan kembali pengguna:", error);
     }
   };
 
@@ -117,10 +112,10 @@ const TableUser = () => {
       setDisabled(false);
     } catch (error) {
       toast({
-        title: error?.response?.data?.message || "Error fetching req",
+        title: error?.response?.data?.message || "Terjadi kesalahan saat mengambil data",
         status: "error",
       });
-      console.error("Error fetching req:", error);
+      console.error("Kesalahan saat mengambil data:", error);
       setIsloading(false);
     }
   };
@@ -214,7 +209,7 @@ const TableUser = () => {
         <Input
           value={search}
           onChange={handleSearchChange}
-          placeholder="Search..."
+          placeholder="Cari..."
           focus={true}
           autoFocus
         />
@@ -229,11 +224,11 @@ const TableUser = () => {
           <Thead>
             <Tr>
               <Th>No</Th>
-              <Th>User</Th>
+              <Th>Pengguna</Th>
               <Th></Th>
-              <Th>Phone</Th>
+              <Th>Telepon</Th>
               <Th>Status</Th>
-              <Th rowSpan={2}>Registered & Updated At</Th>
+              <Th rowSpan={2}>Terdaftar & Diperbarui Pada</Th>
               <Th></Th>
             </Tr>
           </Thead>
@@ -250,7 +245,7 @@ const TableUser = () => {
                   <Td colSpan={8} textAlign="center">
                     <Alert status="info">
                       <AlertIcon />
-                      No user found
+                      Tidak ada pengguna ditemukan
                     </Alert>
                   </Td>
                 </Tr>
@@ -289,7 +284,7 @@ const TableUser = () => {
                             px={4}
                             h={8}
                           >
-                            Active
+                            Aktif
                           </Box>
                         ) : (
                           <Box
@@ -300,7 +295,7 @@ const TableUser = () => {
                             px={4}
                             h={8}
                           >
-                            Suspended
+                            Ditangguhkan
                           </Box>
                         )}
                       </Text>
@@ -325,7 +320,7 @@ const TableUser = () => {
                             <WarningIcon />
                           </Center>
                           <Center>
-                            <Text>Suspend</Text>
+                            <Text>Tangguhkan</Text>
                           </Center>
                         </Box>
                       ) : (
@@ -341,7 +336,7 @@ const TableUser = () => {
                             <UnlockIcon />
                           </Center>
                           <Center>
-                            <Text>Unsuspend</Text>
+                            <Text>Aktifkan Kembali</Text>
                           </Center>
                         </Box>
                       )}
@@ -356,7 +351,7 @@ const TableUser = () => {
           <HStack mt={4}>
             {users?.pagination?.total_page > 0 ? (
               <>
-                <Text as="b">Page {users?.pagination?.page}</Text>{" "}
+                <Text as="b">Halaman {users?.pagination?.page}</Text>{" "}
                 <Text>/ {users?.pagination?.total_page}</Text>
               </>
             ) : null}
@@ -371,7 +366,7 @@ const TableUser = () => {
                 onClick={() => handlePagination(page - 1)}
                 isDisabled={page === 1}
               >
-                <Text as="b">Previous</Text>
+                <Text as="b">Sebelumnya</Text>
               </Button>
               {page > 3 && (
                 <>
@@ -420,7 +415,7 @@ const TableUser = () => {
                 onClick={() => handlePagination(page + 1)}
                 isDisabled={page === users.pagination.total_page}
               >
-                <Text as="b">Next</Text>
+                <Text as="b">Berikutnya</Text>
               </Button>
             </HStack>
           ) : null}
@@ -429,6 +424,5 @@ const TableUser = () => {
     </>
   );
 }
-
 
 export default withAuth(User);

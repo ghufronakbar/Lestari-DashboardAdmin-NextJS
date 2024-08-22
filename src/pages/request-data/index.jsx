@@ -21,10 +21,29 @@ function RequestData() {
   const [instances, setInstances] = useState();
   const [subject, setSubject] = useState();
   const [body, setBody] = useState();
+  const [attachment, setAttachment] = useState();
 
   const handleRequestGuest = async (e) => {
     e.preventDefault();
+    if(!name || !email || !profession || !instances || !subject || !body){
+      toast({
+        title: "Semua kolom harus diisi!",
+        status: "error",
+      });
+      return
+    }
+    if(!attachment){
+      toast({
+        title: "Lampiran harus diisi!",
+        status: "error",
+      });
+      return
+    }
     try {
+      const formData = new FormData();
+      formData.append("image", attachment);
+      const uploadAttachment = await axiosInstance.post("/user/request-data/attachment", formData);            
+      
       const response = await axiosInstance.post("/user/request-data", {
         name,
         email,
@@ -32,15 +51,23 @@ function RequestData() {
         instances,
         subject,
         body,
+        attachment: uploadAttachment.data.image_url
       });
       toast({
         title: response?.data?.message,
         status: "success",
       });
+      setName("");
+      setEmail("");
+      setProfession("");
+      setInstances("");
+      setSubject("");
+      setBody("");
+      setAttachment(null);      
     } catch (error) {
       console.log(error);
       toast({
-        title: error?.response?.data?.message,
+        title: error?.response?.data?.message || "Terdapat kesalahan, ulangi beberapa saat lagi!",
         status: "error",
       });
     }
@@ -48,11 +75,11 @@ function RequestData() {
 
   return (
     <>
-      <Head>
-        <title>Lestari</title>
-        <meta name="admin page" content="admin page for lestari app" />
+     <Head>
+        <title>Permintaan Data | Lestari</title>
+        <meta name="Lestari" content="Lestari" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="" />
+        <link rel="icon" href="/logo.png" />
       </Head>{" "}
       <main>
         <Container mb={16}>
@@ -61,10 +88,10 @@ function RequestData() {
           <br />
           <br />
           <br />
-          <Heading>Request Data</Heading>
+          <Heading>Permintaan Data</Heading>
           <form onSubmit={handleRequestGuest}>
             <FormControl mt={4}>
-              <FormLabel>Name</FormLabel>
+              <FormLabel>Nama</FormLabel>
               <Input value={name} onChange={(e) => setName(e.target.value)} />
             </FormControl>
             <FormControl mt={4}>
@@ -76,35 +103,39 @@ function RequestData() {
               />
             </FormControl>
             <FormControl mt={4}>
-              <FormLabel>Instances</FormLabel>
+              <FormLabel>Institusi</FormLabel>
               <Input
                 value={instances}
                 onChange={(e) => setInstances(e.target.value)}
               />
             </FormControl>
             <FormControl mt={4}>
-              <FormLabel>Profession</FormLabel>
+              <FormLabel>Profesi</FormLabel>
               <Input
                 value={profession}
                 onChange={(e) => setProfession(e.target.value)}
               />
             </FormControl>
             <FormControl mt={4}>
-              <FormLabel>Subject</FormLabel>
+              <FormLabel>Subjek</FormLabel>
               <Input
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
               />
             </FormControl>
             <FormControl mt={4}>
-              <FormLabel>Body</FormLabel>
+              <FormLabel>Isi</FormLabel>
               <Textarea
                 value={body}
                 onChange={(e) => setBody(e.target.value)}
               />
             </FormControl>
+            <FormControl mt={4}>
+              <FormLabel>Lampiran</FormLabel>
+              <Input type="file" onChange={(e) => setAttachment(e.target.files[0])} value={attachment}/> 
+            </FormControl>
             <Button mt={6} type="submit" colorScheme="teal">
-              SUBMIT
+              Kirim
             </Button>
           </form>
         </Container>

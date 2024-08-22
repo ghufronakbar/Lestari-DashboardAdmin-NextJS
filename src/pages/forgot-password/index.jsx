@@ -18,12 +18,12 @@ function ForgotPassword() {
   const [otp, setOtp] = useState("");
 
   const handleForgotPassword = async (e) => {
-    e.preventDefault(); // Mencegah perilaku default dari form
+    e.preventDefault(); 
 
     try {
       if (!email) {
         toast({
-          title: "Input Your Email!",
+          title: "Masukkan Email Anda!",
           status: "error",
         });
       } else if (email && !otp) {
@@ -32,57 +32,37 @@ function ForgotPassword() {
         });
 
         toast({
-          title: "Check Your Email for OTP Code!",
+          title: "Periksa Email Anda untuk Kode OTP!",
           status: "info",
         });
       } else if (email && otp) {
-        await axiosInstance.post("/user/forgot_password", {
+        await axiosInstance.post("/user/forgot-password", {
           email: email,
           otp: otp,
         });
 
         toast({
-          title: "Success reset your password! Check your email!",
+          title: "Berhasil mengatur ulang kata sandi Anda! Periksa email Anda!",
           status: "success",
         });
       }
     } catch (error) {
-      const errorMessage = error.response
-        ? error.response.data
-        : "An error occurred";
-      if (errorMessage === "OTP Has Been Used!") {
-        toast({
-          title: "OTP Has Been Used!",
-          status: "error",
-        });
-      } else if (errorMessage === "OTP Incorrect!") {
-        toast({
-          title: "OTP Incorrect!",
-          status: "error",
-        });
-      } else if (errorMessage === "OTP Has Been Expired!") {
-        toast({
-          title: "OTP Has Been Expired!",
-          status: "error",
-        });
-      } else if (errorMessage == `${email} Is Not User!`) {
-        toast({
-          title: `${email} Is Not User!`,
-          status: "error",
-        });
-      } else {
-        console.error("Error:", errorMessage);
-      }
+      console.error("Error resetting password:", error);
+      console.log(error?.message);
+      toast({
+        title: error?.response?.data?.message || "Terdapat kesalahan, ulangi beberapa saat lagi!",
+        status: "error",
+      });
     }
   };
 
   return (
     <>
       <Head>
-        <title>Lestari</title>
-        <meta name="admin page" content="admin page for lestari app" />
+        <title>Lupa Password | Lestari</title>
+        <meta name="Lestari" content="Lestari" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="" />
+        <link rel="icon" href="/logo.png" />
       </Head>{" "}
       <main>
         <Container>
@@ -91,7 +71,7 @@ function ForgotPassword() {
           <br />
           <br />
           <br />
-          <Heading>Reset Password</Heading>
+          <Heading>Reset Kata Sandi</Heading>
           <form onSubmit={handleForgotPassword}>
             <FormControl mt={4}>
               <FormLabel>Email</FormLabel>
@@ -115,7 +95,7 @@ function ForgotPassword() {
               colorScheme={"teal"}
               variant={!otp ? "solid" : "outline"}
             >
-              {!otp ? "Send OTP" : "Reset Password"}
+              {!otp ? "Kirim OTP" : "Reset Kata Sandi"}
             </Button>
           </form>
         </Container>

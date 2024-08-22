@@ -32,6 +32,7 @@ import formatString from "@/lib/formatString";
 import Image from "next/image";
 
 function Animal() {
+  const router=useRouter()
   return (
     <>
       <main>                            
@@ -43,14 +44,7 @@ function Animal() {
               marginTop="8"
               justifyContent="space-between"
             >
-              <Heading>Admin</Heading>
-              <Button
-                colorScheme={"teal"}
-                py={4}
-                onClick={() => router.push("/admin/management/add")}
-              >
-                Add
-              </Button>
+              <Heading>Satwa</Heading>              
             </HStack>
             <TableAnimal />
           </Container>
@@ -87,10 +81,10 @@ const TableAnimal = () => {
       setAnimals(animalsResponse.data);
     } catch (error) {
       toast({
-        title: error?.response?.data?.message || "Error fetching animals",
+        title: error?.response?.data?.message || "Gagal memuat data hewan",
         status: "error",
       });
-      console.error("Error fetching animals:", error);
+      console.error("Gagal memuat data hewan:", error);
       setIsLoading(false);
     }
   };
@@ -111,16 +105,16 @@ const TableAnimal = () => {
     try {
       await axiosInstance.delete(`/animal/delete/${id}`);
       toast({
-        title: "Animal has been deleted",
+        title: "Hewan telah dihapus",
         status: "warning",
       });
       fetchAnimals();
     } catch (error) {
       toast({
-        title: "Error deleting animal",
+        title: "Gagal menghapus hewan",
         status: "error",
       });
-      console.error("Error deleting animal:", error);
+      console.error("Gagal menghapus hewan:", error);
     }
   };
 
@@ -204,7 +198,7 @@ const TableAnimal = () => {
         <Input
           defaultValue={search}
           onChange={handleSearchChange}
-          placeholder="Search..."
+          placeholder="Cari..."
           focus={true}
           autoFocus
         />
@@ -220,11 +214,11 @@ const TableAnimal = () => {
             <Tr>
               <Th>No</Th>
               <Th></Th>
-              <Th>Name</Th>
+              <Th>Nama</Th>
               <Th>Habitat</Th>
-              <Th>Location</Th>
-              <Th>Coordinates</Th>
-              <Th>Stored</Th>
+              <Th>Lokasi</Th>
+              <Th>Koordinat</Th>
+              <Th>Tersimpan</Th>
               <Th colSpan={2}></Th>
             </Tr>
           </Thead>
@@ -241,7 +235,7 @@ const TableAnimal = () => {
                   <Td colSpan={8} textAlign="center">
                     <Alert status="info">
                       <AlertIcon />
-                      No animals found
+                      Tidak ada hewan ditemukan
                     </Alert>
                   </Td>
                 </Tr>
@@ -264,7 +258,6 @@ const TableAnimal = () => {
                       alt={animal.latin_name}
                     />
                   </Td>
-                  {/* {animal.image} */}
                   <Td>
                     <Text as="b">{animal.latin_name}</Text>
                     <Text>{animal.local_name}</Text>
@@ -304,7 +297,7 @@ const TableAnimal = () => {
                         colorScheme="red"
                         onClick={() => handleDelete(animal.id_animal)}
                       >
-                        Delete
+                        Hapus
                       </Button>
                     </Center>
                   </Td>
@@ -322,7 +315,7 @@ const TableAnimal = () => {
                 onClick={() => handlePagination(page - 1)}
                 isDisabled={page === 1}
               >
-                <Text as="b">Previous</Text>
+                <Text as="b">Sebelumnya</Text>
               </Button>
               {page > 3 && (
                 <>
@@ -372,7 +365,7 @@ const TableAnimal = () => {
                 onClick={() => handlePagination(page + 1)}
                 isDisabled={page === animals.pagination.total_page}
               >
-                <Text as="b">Next</Text>
+                <Text as="b">Berikutnya</Text>
               </Button>
             </HStack>
           ) : null}

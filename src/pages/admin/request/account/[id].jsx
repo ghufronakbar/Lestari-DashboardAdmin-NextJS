@@ -25,7 +25,8 @@ import {
 import { axiosInstance } from "@/lib/axios";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import  Loading  from "@/component/Loading";
+import Loading from "@/component/Loading";
+import formatDate from "@/lib/formatDate";
 
 function RequestDataID() {
   return (
@@ -35,7 +36,7 @@ function RequestDataID() {
           <SidebarMenu flex={1} />
           <Container maxW="80%">
             <Heading marginBottom="8" marginTop="8">
-              Request Account
+              Permintaan Akun
             </Heading>
             <DetailReqAccount />
           </Container>
@@ -44,6 +45,7 @@ function RequestDataID() {
     </>
   );
 }
+
 const DetailReqAccount = () => {
   const router = useRouter();
   const { id } = router.query;
@@ -52,7 +54,6 @@ const DetailReqAccount = () => {
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const toast = useToast();
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -63,7 +64,7 @@ const DetailReqAccount = () => {
       } catch (error) {
         setError(error);
         setLoading(false);
-        console.error("Error fetching detail request data:", error);
+        console.error("Gagal memuat detail data permintaan:", error);
       }
     };
 
@@ -72,29 +73,19 @@ const DetailReqAccount = () => {
     }
   }, [id]);
 
-  function formatDate(dateString) {
-    const options = {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    };
-    return new Date(dateString).toLocaleDateString("en-US", options);
-  }
-
   const handleApprove = async () => {
     try {
       await axiosInstance.put(`/request/account/approve/${id}`, { approve: 2 });
       setIsModalOpen(false);
-      // Refresh data after approval
+      // Muat ulang data setelah persetujuan
       const reqDataResponse = await axiosInstance.get(`/request/account/${id}`);
       setRequestAccount(reqDataResponse.data.values[0]);
       toast({
-        title: "Request has been approved",
+        title: "Permintaan telah disetujui",
         status: "success",
       });
     } catch (error) {
-      console.error("Error approving request:", error);
+      console.error("Gagal menyetujui permintaan:", error);
     }
   };
 
@@ -105,16 +96,16 @@ const DetailReqAccount = () => {
       const reqDataResponse = await axiosInstance.get(`/request/account/${id}`);
       setRequestAccount(reqDataResponse.data.values[0]);
       toast({
-        title: "Request has been rejected",
+        title: "Permintaan telah ditolak",
         status: "warning",
       });
     } catch (error) {
-      console.error("Error rejecting request:", error);
+      console.error("Gagal menolak permintaan:", error);
     }
   };
 
   if (loading) return <Loading/>
-  if (error) return <div>Error fetching data</div>;
+  if (error) return <div>Gagal memuat data</div>;
 
   return (
     <>
@@ -141,21 +132,19 @@ const DetailReqAccount = () => {
                   <Table>
                     <Tbody>
                       <Tr>
-                        <Th>Profession</Th>
+                        <Th>Profesi</Th>
                         <Td>{requestAccount.profession}</Td>
                       </Tr>
                       <Tr>
-                        <Th>Instances</Th>
+                        <Th>Instansi</Th>
                         <Td>{requestAccount.instances}</Td>
                       </Tr>
                       <Tr>
-                        <Th>Send at</Th>
+                        <Th>Dikirim pada</Th>
                         <Td>{formatDate(requestAccount.date)}</Td>
                       </Tr>
                     </Tbody>
                   </Table>
-
-
                   </TableContainer>
                 </Box>
                 <Center mt={4}>
@@ -180,12 +169,12 @@ const DetailReqAccount = () => {
                       h={8}
                       onClick={() => {
                         toast({
-                          title: "Request has been rejected",
+                          title: "Permintaan telah ditolak",
                           status: "warning",
                         });
                       }}
                     >
-                      Rejected
+                      Ditolak
                     </Button>
                   )}
                   {requestAccount.approve == 2 && (
@@ -197,13 +186,12 @@ const DetailReqAccount = () => {
                       h={8}
                       onClick={() => {
                         toast({
-                          title: "Request has been approved",
+                          title: "Permintaan telah disetujui",
                           status: "success",
                         });
                       }}
-                     
                     >
-                      Approved
+                      Disetujui
                     </Button>
                   )}
                 </Center>
@@ -215,7 +203,7 @@ const DetailReqAccount = () => {
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Confirm Request</ModalHeader>
+          <ModalHeader>Konfirmasi Permintaan</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Flex>
@@ -228,7 +216,7 @@ const DetailReqAccount = () => {
                   h={8}
                   onClick={handleReject} 
                 >
-                  Reject
+                  Tolak
                 </Button>
               </Center>
               <Center flex={1}>
@@ -238,9 +226,9 @@ const DetailReqAccount = () => {
                   color="white"
                   px={4}
                   h={8}
-                  onClick={handleApprove} // Handle approve action
+                  onClick={handleApprove} 
                 >
-                  Approve
+                  Setujui
                 </Button>
               </Center>
             </Flex>

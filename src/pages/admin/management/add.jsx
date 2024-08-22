@@ -15,7 +15,7 @@ const AddAdmin = () => {
               marginTop="8"
               justifyContent="space-between"
             >
-              <Heading>Add Admin</Heading>
+              <Heading>Tambah Admin</Heading>
             </HStack>
             <FormAdmin />
           </Container>
@@ -39,15 +39,15 @@ const FormAdmin = () => {
       });
       setIsOpen(false);
       toast({
-        title: response?.data?.message || "Success creating admin, check email",
+        title: response?.data?.message || "Berhasil membuat admin, cek email",
         status: "success",
       });
       setEmail("");
       setName("");
     } catch (error) {
-      console.error("Error creating admin:", error);
+      console.error("Gagal membuat admin:", error);
       toast({
-        title: error?.response?.data?.message || "Error creating admin",
+        title: error?.response?.data?.message || "Gagal membuat admin",
         status: "error",
       });
     }
@@ -63,9 +63,9 @@ const FormAdmin = () => {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Add Admin</ModalHeader>
+          <ModalHeader>Tambah Admin</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>Are you sure to add an admin?</ModalBody>
+          <ModalBody>Apakah Anda yakin ingin menambahkan admin?</ModalBody>
           <ModalFooter>
             <Button
               colorScheme="teal"
@@ -74,7 +74,7 @@ const FormAdmin = () => {
                 handleAdd();
               }}
             >
-              Yes
+              Ya
             </Button>
             <Button
               variant="ghost"
@@ -82,7 +82,7 @@ const FormAdmin = () => {
                 setIsOpen(false);
               }}
             >
-              No
+              Tidak
             </Button>
           </ModalFooter>
         </ModalContent>
@@ -96,9 +96,9 @@ const FormAdmin = () => {
           <Box flex={5} mt={4}>
             <Flex direction={{ base: "column", md: "row" }} gap={4} w={"100%"}>
               <FormControl w={{ base: "100%", md: "50%" }}>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>Nama</FormLabel>
                 <Input
-                  placeholder="Name"
+                  placeholder="Nama"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
@@ -123,7 +123,7 @@ const FormAdmin = () => {
                   setIsOpen(true);
                 }}
               >
-                Add
+                Tambah
               </Button>
             </Center>
           </Box>
@@ -133,7 +133,5 @@ const FormAdmin = () => {
     </>
   );
 };
-
-
 
 export default withAuth(AddAdmin);

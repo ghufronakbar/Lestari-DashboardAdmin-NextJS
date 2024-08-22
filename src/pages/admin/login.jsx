@@ -26,15 +26,14 @@ const ModalForgotPassword = ({ isOpen, onClose, forgotEmail, setForgotEmail, han
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Forgot Password</ModalHeader>
+          <ModalHeader>Lupa Kata Sandi</ModalHeader>
           <ModalCloseButton />            
           <ModalBody>
-
             <Input
               type="email"
               value={forgotEmail}
               onChange={(e) => setForgotEmail(e.target.value)}
-              placeholder="Enter your email"
+              placeholder="Masukkan email Anda"
               />
           </ModalBody>
           <ModalFooter>
@@ -44,7 +43,7 @@ const ModalForgotPassword = ({ isOpen, onClose, forgotEmail, setForgotEmail, han
               onClick={handleForgotPassword}
               type="submit"
               >
-              Submit
+              Kirim
             </Button>
           </ModalFooter>              
         </ModalContent>
@@ -55,8 +54,7 @@ const ModalForgotPassword = ({ isOpen, onClose, forgotEmail, setForgotEmail, han
 
 const Login = () => {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [password, setPassword] = useState("");  
   const toast = useToast();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
@@ -75,23 +73,22 @@ const Login = () => {
 
       if (success) {
         localStorage.setItem("token", token);
-        // Redirect to dashboard or other page
         toast({
-          title: "Login Successfully",
+          title: "Login Berhasil",
           status: "success",
         });
 
         router.push(`/admin/animal`);
       } else {
         toast({
-          title: "Email or Password doesn't match",
+          title: "Email atau Kata Sandi tidak cocok",
           status: "error",
         });
       }
     } catch (error) {
       console.error("Error logging in:", error.message);
       toast({
-        title: "Email or Password doesn't match",
+        title: "Email atau Kata Sandi tidak cocok",
         status: "error",
       });
     }
@@ -111,7 +108,7 @@ const Login = () => {
     } catch (error) {
       console.error("Error resetting password:", error);
       toast({
-        title: error?.response?.data?.message || "Error resetting password",
+        title: error?.response?.data?.message || "Kesalahan dalam mereset kata sandi",
         status: "error",
       });
     }
@@ -144,7 +141,7 @@ const Login = () => {
             </FormControl>
 
             <FormControl mt={4}>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>Kata Sandi</FormLabel>
               <Input
                 type="password"
                 value={password}
@@ -154,7 +151,7 @@ const Login = () => {
             </FormControl>
             <HStack>
               <Button mt={6} type="submit" colorScheme="teal">
-                Login
+                Masuk
               </Button>
               <Button
                 mt={6}
@@ -162,11 +159,10 @@ const Login = () => {
                 variant={"outline"}
                 onClick={() => setIsOpen(true)}
               >
-                Forgot Password
+                Lupa Kata Sandi
               </Button>
             </HStack>
-          </form>
-          {error && <div style={{ color: "red" }}>{error}</div>}
+          </form>          
         </Container>
       </main>
       <ModalForgotPassword

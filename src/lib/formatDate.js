@@ -5,7 +5,7 @@ const formatDate = (dateString) => {
         month: "long",
         year: "numeric",
     };
-    return new Date(dateString).toLocaleDateString("en-US", options);
+    return new Date(dateString).toLocaleDateString("in-ID", options);
 }
 
 export default formatDate

@@ -27,8 +27,8 @@ import {
 import { axiosInstance } from "@/lib/axios";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import  Loading  from "@/component/Loading";
-
+import Loading from "@/component/Loading";
+import formatDate from "@/lib/formatDate";
 
 function HistoryDataID() {
   return (
@@ -38,7 +38,7 @@ function HistoryDataID() {
           <SidebarMenu flex={1} />
           <Container maxW="80%">
             <Heading marginBottom="8" marginTop="8">
-              Request Data
+              Data Permintaan
             </Heading>
             <DetailHistory />
           </Container>
@@ -68,7 +68,7 @@ const DetailHistory = () => {
       } catch (error) {
         setError(error);
         setLoading(false);
-        console.error("Error fetching detail request data:", error);
+        console.error("Gagal memuat detail data permintaan:", error);
       }
     };
 
@@ -76,16 +76,6 @@ const DetailHistory = () => {
       fetchData();
     }
   }, [id]);
-
-  function formatDate(dateString) {
-    const options = {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    };
-    return new Date(dateString).toLocaleDateString("en-US", options);
-  }
 
   const handleApprove = async () => {
     try {
@@ -95,11 +85,11 @@ const DetailHistory = () => {
       const reqDataResponse = await axiosInstance.get(`/request/data/${id}`);
       setRequestData(reqDataResponse.data.values[0]);
       toast({
-        title: "Request has been approved",
+        title: "Permintaan telah disetujui",
         status: "success",
       });
     } catch (error) {
-      console.error("Error approving request:", error);
+      console.error("Gagal menyetujui permintaan:", error);
     }
   };
 
@@ -110,16 +100,16 @@ const DetailHistory = () => {
       const reqDataResponse = await axiosInstance.get(`/request/data/${id}`);
       setRequestData(reqDataResponse.data.values[0]);
       toast({
-        title: "Request has been rejected",
+        title: "Permintaan telah ditolak",
         status: "warning",
       });
     } catch (error) {
-      console.error("Error rejecting request:", error);
+      console.error("Gagal menolak permintaan:", error);
     }
   };
 
   if (loading) return <Loading/>
-  if (error) return <div>Error fetching data</div>;
+  if (error) return <div>Gagal memuat data</div>;
 
   return (
     <>
@@ -146,23 +136,23 @@ const DetailHistory = () => {
                     <Table>
                       <Tbody>
                         <Tr>
-                          <Th>Profession</Th>
+                          <Th>Profesi</Th>
                           <Td>{requestData.profession}</Td>
                         </Tr>
                         <Tr>
-                          <Th>Instances</Th>
+                          <Th>Instansi</Th>
                           <Td>{requestData.instances}</Td>
                         </Tr>
                         <Tr>
-                          <Th>Send at</Th>
+                          <Th>Dikirim pada</Th>
                           <Td>{formatDate(requestData.date)}</Td>
                         </Tr>
                         <Tr>
-                          <Th>From</Th>
+                          <Th>Dari</Th>
                           <Td>{formatDate(requestData.date_start)}</Td>
                         </Tr>
                         <Tr>
-                          <Th>To</Th>
+                          <Th>Sampai</Th>
                           <Td>{formatDate(requestData.date_end)}</Td>
                         </Tr>
                       </Tbody>
@@ -187,7 +177,7 @@ const DetailHistory = () => {
                       h={8}
                       margin={1}
                     >
-                      Local Name
+                      Nama Lokal
                     </Box>
                   )}
                   {requestData.latin_name == 1 && (
@@ -200,7 +190,7 @@ const DetailHistory = () => {
                       h={8}
                       margin={1}
                     >
-                      Latin Name
+                      Nama Latin
                     </Box>
                   )}
                   {requestData.habitat == 1 && (
@@ -226,7 +216,7 @@ const DetailHistory = () => {
                       h={8}
                       margin={1}
                     >
-                      Description
+                      Deskripsi
                     </Box>
                   )}
                   {requestData.city == 1 && (
@@ -239,7 +229,7 @@ const DetailHistory = () => {
                       h={8}
                       margin={1}
                     >
-                      City
+                      Kota
                     </Box>
                   )}
                   {requestData.longitude == 1 && (
@@ -252,7 +242,7 @@ const DetailHistory = () => {
                       h={8}
                       margin={1}
                     >
-                      Coordinates
+                      Koordinat
                     </Box>
                   )}
                   {requestData.amount == 1 && (
@@ -265,7 +255,7 @@ const DetailHistory = () => {
                       h={8}
                       margin={1}
                     >
-                      Amount
+                      Jumlah
                     </Box>
                   )}
                 </Box>
@@ -277,7 +267,7 @@ const DetailHistory = () => {
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Confirm Request</ModalHeader>
+          <ModalHeader>Konfirmasi Permintaan</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Flex>
@@ -290,7 +280,7 @@ const DetailHistory = () => {
                   h={8}
                   onClick={handleReject} // Handle reject action
                 >
-                  Reject
+                  Tolak
                 </Button>
               </Center>
               <Center flex={1}>
@@ -302,7 +292,7 @@ const DetailHistory = () => {
                   h={8}
                   onClick={handleApprove} // Handle approve action
                 >
-                  Approve
+                  Setujui
                 </Button>
               </Center>
             </Flex>
@@ -313,6 +303,5 @@ const DetailHistory = () => {
     </>
   );
 }
-
 
 export default withAuth(HistoryDataID);

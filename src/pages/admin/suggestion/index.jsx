@@ -40,7 +40,7 @@ function Suggestion() {
         try {
             const response = await axiosInstance.post("/suggestions",{local_name: dataSuggest.localName, latin_name: dataSuggest.latinName} );
             toast({
-                title: "Suggestion added successfully",
+                title: "Saran berhasil ditambahkan",
                 status: "success",
                 isClosable: true,
             })
@@ -53,7 +53,7 @@ function Suggestion() {
         } catch (error) {
             console.log(error);
             toast({
-                title: error.response.data.message || "Failed to add suggestion",                
+                title: error.response.data.message || "Gagal menambahkan saran",                
                 status: "error",                
                 isClosable: true,
             })            
@@ -66,10 +66,10 @@ function Suggestion() {
           <SidebarMenu flex={1} />{" "}
           <Container maxW="80%">            
             <Heading marginBottom="8" marginTop="8">
-              Suggestion
+              Saran
             </Heading>
-            <Button colorScheme={"teal"} leftIcon={<AddIcon />} onClick={() => setIsAddOpen(true)}>Add</Button>
-            <ModalSuggestion isOpen={isAddOpen} onClose={() => setIsAddOpen(false)} dataSuggest={dataSuggest} setDataSuggest={setDataSuggest} onSubmit={handleAdd} title={"Add Suggestion"} />
+            <Button colorScheme={"teal"} leftIcon={<AddIcon />} onClick={() => setIsAddOpen(true)}>Tambah</Button>
+            <ModalSuggestion isOpen={isAddOpen} onClose={() => setIsAddOpen(false)} dataSuggest={dataSuggest} setDataSuggest={setDataSuggest} onSubmit={handleAdd} title={"Tambah Saran"} />
             <TableSuggestion refetch={isRefetch} afterRefetch={() => setIsRefetch(false)} />
           </Container>
         </Flex>
@@ -88,17 +88,17 @@ const ModalSuggestion = ({ isOpen, onClose, dataSuggest, setDataSuggest, onSubmi
           <ModalCloseButton />
           <ModalBody>
             <FormControl>
-            <FormLabel>Local Name</FormLabel>
+            <FormLabel>Nama Lokal</FormLabel>
             <Input
-              placeholder="Local Name"              
+              placeholder="Nama Lokal"              
               value={dataSuggest.localName}
               onChange={(e) => setDataSuggest({ ...dataSuggest, localName: e.target.value })}
             />
             </FormControl>
             <FormControl mt={4}>
-            <FormLabel>Latin Name</FormLabel>
+            <FormLabel>Nama Latin</FormLabel>
             <Input
-              placeholder="Latin Name"
+              placeholder="Nama Latin"
               value={dataSuggest.latinName}
               onChange={(e) => setDataSuggest({ ...dataSuggest, latinName: e.target.value })}
             />
@@ -110,14 +110,14 @@ const ModalSuggestion = ({ isOpen, onClose, dataSuggest, setDataSuggest, onSubmi
               mr={3}
               onClick={onClose}              
             >
-              Close
+              Tutup
             </Button>
             <Button
               colorScheme="teal"
               mr={3}              
               onClick={onSubmit}
             >
-              Save
+              Simpan
             </Button>
           </ModalFooter>
         </ModalContent>
@@ -155,10 +155,10 @@ const TableSuggestion = ({refetch, afterRefetch}) => {
       setSuggestions(suggestionsResponse.data);
     } catch (error) {
       toast({
-        title: error?.response?.data?.message || "Error fetching suggestions",
+        title: error?.response?.data?.message || "Terjadi kesalahan saat mengambil saran",
         status: "error",
       });
-      console.error("Error fetching suggestions:", error);
+      console.error("Terjadi kesalahan saat mengambil saran:", error);
       setIsLoading(false);
     }
   };
@@ -184,16 +184,16 @@ const TableSuggestion = ({refetch, afterRefetch}) => {
     try {
       await axiosInstance.delete(`/suggestions/${id}`);
       toast({
-        title: "Suggestion has been deleted",
+        title: "Saran telah dihapus",
         status: "warning",
       });
       fetchSuggestions();
     } catch (error) {
       toast({
-        title: "Error deleting suggestion",
+        title: "Terjadi kesalahan saat menghapus saran",
         status: "error",
       });
-      console.error("Error deleting suggestion:", error);
+      console.error("Terjadi kesalahan saat menghapus saran:", error);
     }
   };
 
@@ -235,7 +235,7 @@ const TableSuggestion = ({refetch, afterRefetch}) => {
   const handleEdit = async () => {
     if(!dataSuggest.localName || !dataSuggest.latinName){
         toast({
-            title: "Please fill in all required fields",
+            title: "Silakan isi semua bidang yang diperlukan",
             status: "error",
             isClosable: true,
         })
@@ -244,7 +244,7 @@ const TableSuggestion = ({refetch, afterRefetch}) => {
     try {      
         const response = await axiosInstance.put(`/suggestions/${dataSuggest.idSuggestion}`,{local_name: dataSuggest.localName, latin_name: dataSuggest.latinName} );
         toast({
-            title: "Suggestion edited successfully",
+            title: "Saran berhasil diedit",
             status: "success",
             isClosable: true,
         })
@@ -257,7 +257,7 @@ const TableSuggestion = ({refetch, afterRefetch}) => {
     } catch (error) {
         console.log(error);
         toast({
-            title: error?.response?.data?.message || "Failed to edit suggestion",                
+            title: error?.response?.data?.message || "Gagal mengedit saran",                
             status: "error",                
             isClosable: true,
         })            
@@ -273,12 +273,12 @@ const handleOpenModal = async (data) =>{
   if (isLoading) return <Loading />;
   return (
     <>    
-    <ModalSuggestion isOpen={isEditOpen} onClose={() => {setIsEditOpen(false);setDataSuggest({localName: "", latinName: "", idSuggestion: 0})}} dataSuggest={dataSuggest} setDataSuggest={setDataSuggest} onSubmit={() => handleEdit()} title={"Edit Suggestion"} />
+    <ModalSuggestion isOpen={isEditOpen} onClose={() => {setIsEditOpen(false);setDataSuggest({localName: "", latinName: "", idSuggestion: 0})}} dataSuggest={dataSuggest} setDataSuggest={setDataSuggest} onSubmit={() => handleEdit()} title={"Edit Saran"} />
       <Flex gap={4} my={4}>
         <Input
           defaultValue={search}
           onChange={handleSearchChange}
-          placeholder="Search..."
+          placeholder="Cari..."
           focus={true}
           autoFocus
         />      
@@ -291,8 +291,8 @@ const handleOpenModal = async (data) =>{
           <Thead>
             <Tr>
               <Th>No</Th>              
-              <Th>Local Name</Th>
-              <Th>Latin Name</Th>              
+              <Th>Nama Lokal</Th>
+              <Th>Nama Latin</Th>              
               <Th colSpan={2}></Th>
             </Tr>
           </Thead>
@@ -309,7 +309,7 @@ const handleOpenModal = async (data) =>{
                   <Td colSpan={5} textAlign="center">
                     <Alert status="info">
                       <AlertIcon />
-                      No suggestions found
+                      Tidak ada saran yang ditemukan
                     </Alert>
                   </Td>
                 </Tr>
@@ -340,7 +340,7 @@ const handleOpenModal = async (data) =>{
                         colorScheme="red"
                         onClick={() => handleDelete(suggestion.id_suggestion)}
                       >
-                        Delete
+                        Hapus
                       </Button>
                     </Center>
                     </HStack>
@@ -359,7 +359,7 @@ const handleOpenModal = async (data) =>{
                 onClick={() => handlePagination(page - 1)}
                 isDisabled={page === 1}
               >
-                <Text as="b">Previous</Text>
+                <Text as="b">Sebelumnya</Text>
               </Button>
               {page > 3 && (
                 <>
@@ -409,7 +409,7 @@ const handleOpenModal = async (data) =>{
                 onClick={() => handlePagination(page + 1)}
                 isDisabled={page === suggestions.pagination.total_page}
               >
-                <Text as="b">Next</Text>
+                <Text as="b">Berikutnya</Text>
               </Button>
             </HStack>
           ) : null}

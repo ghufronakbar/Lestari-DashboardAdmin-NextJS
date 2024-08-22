@@ -38,7 +38,7 @@ function HistoryData() {
           <SidebarMenu flex={1} />
           <Container maxW="80%">
             <Heading marginBottom="8" marginTop="8">
-              History
+              Riwayat
             </Heading>
             <TableHistory />
           </Container>
@@ -78,10 +78,10 @@ const TableHistory = () => {
       setIsLoadingComponent(false);
     } catch (error) {
       toast({
-        title: error?.response?.data?.message || "Error fetching history",
+        title: error?.response?.data?.message || "Gagal memuat riwayat",
         status: "error",
       });
-      console.error("Error fetching history:", error);
+      console.error("Gagal memuat riwayat:", error);
       setIsLoading(false);
     }
   };
@@ -175,7 +175,7 @@ const TableHistory = () => {
         <Input
           value={search}
           onChange={handleSearchChange}
-          placeholder="Search..."
+          placeholder="Cari..."
           focus={true}
           autoFocus
         />
@@ -190,11 +190,10 @@ const TableHistory = () => {
           <Thead>
             <Tr>
               <Th>No</Th>
-              <Th>User</Th>
-              <Th>Company</Th>
-              <Th>Needs</Th>
-
-              <Th>Date</Th>
+              <Th>Pengguna</Th>
+              <Th>Perusahaan</Th>
+              <Th>Kebutuhan</Th>
+              <Th>Tanggal</Th>
               <Th></Th>
             </Tr>
           </Thead>
@@ -211,7 +210,7 @@ const TableHistory = () => {
                   <Td colSpan={8} textAlign="center">
                     <Alert status="info">
                       <AlertIcon />
-                      No history found
+                      Tidak ada riwayat ditemukan
                     </Alert>
                   </Td>
                 </Tr>
@@ -254,7 +253,7 @@ const TableHistory = () => {
           <HStack mt={4}>
             {histories?.pagination?.total_page > 0 ? (
               <>
-                <Text as="b">Page {histories?.pagination?.page}</Text>{" "}
+                <Text as="b">Halaman {histories?.pagination?.page}</Text>{" "}
                 <Text>/ {histories?.pagination?.total_page}</Text>
               </>
             ) : null}
@@ -269,7 +268,7 @@ const TableHistory = () => {
                 onClick={() => handlePagination(page - 1)}
                 isDisabled={page === 1}
               >
-                <Text as="b">Previous</Text>
+                <Text as="b">Sebelumnya</Text>
               </Button>
               {page > 3 && (
                 <>
@@ -321,7 +320,7 @@ const TableHistory = () => {
                 onClick={() => handlePagination(page + 1)}
                 isDisabled={page === histories.pagination.total_page}
               >
-                <Text as="b">Next</Text>
+                <Text as="b">Berikutnya</Text>
               </Button>
             </HStack>
           ) : null}

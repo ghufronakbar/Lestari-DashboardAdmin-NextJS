@@ -72,12 +72,12 @@ function SendData() {
 
       if (!atLeastOneChecked) {
         toast({
-          title: "At least one checkbox must be checked",
+          title: "Setidaknya satu checkbox harus dicentang",
           status: "warning",
         });
       } else if (!dateStart || !dateEnd) {
         toast({
-          title: "Date can't be null",
+          title: "Tanggal tidak boleh kosong",
           status: "warning",
         });
       } else {
@@ -110,11 +110,11 @@ function SendData() {
       }
     } catch (error) {
       toast({
-        title: error?.response?.data?.message || "Error sending data",
+        title: error?.response?.data?.message || "Terjadi kesalahan saat mengirim data",
         status: "error",
       });
 
-      console.error("Error sending data:", error);
+      console.error("Terjadi kesalahan saat mengirim data:", error);
     }
   };
 
@@ -125,17 +125,17 @@ function SendData() {
           <SidebarMenu flex={1} />
           <Container maxW="80%">
             <Heading marginBottom="8" marginTop="8">
-              Send Data
+              Kirim Data
             </Heading>
 
             <Box p={8} borderWidth="1px" borderRadius="lg" overflow="hidden">
               <Form>
                 <Flex>
                   <FormLabel flex={1} marginRight={10}>
-                    Date Start
+                    Tanggal Mulai
                   </FormLabel>
                   <FormLabel flex={1} marginRight={10}>
-                    Date End
+                    Tanggal Akhir
                   </FormLabel>
                 </Flex>
                 <Flex>
@@ -143,14 +143,14 @@ function SendData() {
                     id="dateStartInput"
                     flex={1}
                     marginRight={10}
-                    placeholder="Date Start"
+                    placeholder="Tanggal Mulai"
                     type="date"
                   ></Input>
                   <Input
                     id="dateEndInput"
                     flex={1}
                     marginRight={10}
-                    placeholder="Date Start"
+                    placeholder="Tanggal Akhir"
                     type="date"
                   ></Input>
                 </Flex>
@@ -161,7 +161,7 @@ function SendData() {
                     colorScheme="teal"
                     flex={1}
                   >
-                    Local Name
+                    Nama Lokal
                   </Checkbox>
                   <Checkbox
                     id="latinNameCheckbox"
@@ -169,7 +169,7 @@ function SendData() {
                     colorScheme="teal"
                     flex={1}
                   >
-                    Latin Name
+                    Nama Latin
                   </Checkbox>
                 </Flex>
                 <Flex marginTop={8}>
@@ -187,7 +187,7 @@ function SendData() {
                     colorScheme="teal"
                     flex={1}
                   >
-                    Description
+                    Deskripsi
                   </Checkbox>
                 </Flex>
                 <Flex marginTop={8}>
@@ -197,7 +197,7 @@ function SendData() {
                     colorScheme="teal"
                     flex={1}
                   >
-                    City
+                    Kota
                   </Checkbox>
                   <Checkbox
                     id="coordinatesCheckbox"
@@ -205,7 +205,7 @@ function SendData() {
                     colorScheme="teal"
                     flex={1}
                   >
-                    Coordinates
+                    Koordinat
                   </Checkbox>
                 </Flex>
                 <Flex marginTop={8}>
@@ -215,7 +215,7 @@ function SendData() {
                     colorScheme="teal"
                     flex={1}
                   >
-                    Image
+                    Gambar
                   </Checkbox>
                   <Checkbox
                     id="amountCheckbox"
@@ -223,7 +223,7 @@ function SendData() {
                     colorScheme="teal"
                     flex={1}
                   >
-                    Amount
+                    Jumlah
                   </Checkbox>
                 </Flex>
                 <Button
@@ -235,7 +235,7 @@ function SendData() {
                   marginTop={8}
                   onClick={handleSendData}
                 >
-                  Send
+                  Kirim
                 </Button>
               </Form>
             </Box>

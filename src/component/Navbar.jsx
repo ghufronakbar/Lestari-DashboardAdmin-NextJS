@@ -57,7 +57,7 @@ export default function Navbar() {
   }, [lastScrollY]);
 
   const navItems = [
-    { label: 'Home', href: '#hero' },
+    { label: 'Beranda', href: '#hero' },
     { label: 'Tentang Kami', href: '#visi' },
     { label: 'Tata Cara', href: '#tatacara' },
     { label: 'Keanekaragaman', href: '#keanekaragaman' },

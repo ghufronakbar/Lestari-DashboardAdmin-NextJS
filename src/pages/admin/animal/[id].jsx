@@ -3,11 +3,9 @@ import SidebarMenu from "@/component/SidebarMenu";
 import { withAuth } from "@/lib/authorization";
 import {
   Box,
-  Center,
-  Modal,
+  Center,  
   Table,  
-  Text,
-  useToast,
+  Text,  
   Spacer,
   TableContainer,
   Tbody,
@@ -21,6 +19,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Loading from "../../../component/Loading";
 import Image from "next/image";
+import formatDate from "@/lib/formatDate";
 
 function RequestDataID() {
   const router = useRouter();
@@ -28,8 +27,6 @@ function RequestDataID() {
   const [animal, setAnimal] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const toast = useToast();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,7 +37,7 @@ function RequestDataID() {
       } catch (error) {
         setError(error);
         setLoading(false);
-        console.error("Error fetching detail request data:", error);
+        console.error("Gagal memuat detail data permintaan:", error);
       }
     };
 
@@ -49,18 +46,8 @@ function RequestDataID() {
     }
   }, [id]);
 
-  function formatDate(dateString) {
-    const options = {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    };
-    return new Date(dateString).toLocaleDateString("en-US", options);
-  }
-
   if (loading) return <Loading />;
-  if (error) return <div>Error fetching data</div>;
+  if (error) return <div>Gagal memuat data</div>;
 
   return (
     <>
@@ -100,7 +87,7 @@ function RequestDataID() {
                           overflow="hidden"
                         >
                           <HStack justify={"space-evenly"}>
-                            <Text as="b">AUTHOR</Text>
+                            <Text as="b">PENULIS</Text>
                             <Image
                               borderRadius="18"
                               boxSize="60px"
@@ -114,7 +101,7 @@ function RequestDataID() {
                           <Flex mt={4}>
                             <Table>
                               <Tr>
-                                <Th>Name</Th>
+                                <Th>Nama</Th>
                                 <Td>{animal.name}</Td>
                               </Tr>
                               <Tr>
@@ -122,7 +109,7 @@ function RequestDataID() {
                                 <Td>{animal.email}</Td>
                               </Tr>
                               <Tr>
-                                <Th>Phone</Th>
+                                <Th>Telepon</Th>
                                 <Td>{animal.phone}</Td>
                               </Tr>
                             </Table>
@@ -132,11 +119,11 @@ function RequestDataID() {
                           <Table>
                             <Tbody>
                               <Tr>
-                                <Th>Local Name</Th>
+                                <Th>Nama Lokal</Th>
                                 <Td>{animal.local_name}</Td>
                               </Tr>
                               <Tr>
-                                <Th>Latin Name</Th>
+                                <Th>Nama Latin</Th>
                                 <Td>{animal.latin_name}</Td>
                               </Tr>
                               <Tr>
@@ -144,26 +131,26 @@ function RequestDataID() {
                                 <Td>{animal.habitat}</Td>
                               </Tr>
                               <Tr>
-                                <Th>City</Th>
+                                <Th>Kota</Th>
                                 <Td>{animal.city}</Td>
                               </Tr>
                               <Tr>
-                                <Th>Amount</Th>
+                                <Th>Jumlah</Th>
                                 <Td>{animal.amount}</Td>
                               </Tr>
                               <Tr>
-                                <Th>Coordinates</Th>
+                                <Th>Koordinat</Th>
                                 <Td>
                                   {animal.longitude + ", " + animal.latitude}
                                 </Td>
                               </Tr>
 
                               <Tr>
-                                <Th>Created at</Th>
+                                <Th>Dibuat pada</Th>
                                 <Td>{formatDate(animal.date)}</Td>
                               </Tr>
                               <Tr>
-                                <Th>Updated at</Th>
+                                <Th>Diperbarui pada</Th>
                                 <Td>
                                   {animal.updated_at == animal.date ? (
                                     <Text as="b">-</Text>

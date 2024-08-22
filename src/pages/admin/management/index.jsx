@@ -36,7 +36,7 @@ import { useCallback, useEffect, useState } from "react";
 import { axiosInstance } from "@/lib/axios";
 import formatDate from "@/lib/formatDate";
 
-const AdminManagemet = () => {
+const AdminManagement = () => {
   const router = useRouter();
   return (
     <>
@@ -55,7 +55,7 @@ const AdminManagemet = () => {
                 py={4}
                 onClick={() => router.push("/admin/management/add")}
               >
-                Add
+                Tambah
               </Button>
             </HStack>
             <TableAdmin />
@@ -95,10 +95,10 @@ const TableAdmin = () => {
       setAdmins(adminResponse.data);
     } catch (error) {
       toast({
-        title: error?.response?.data?.message || "Error fetching admins",
+        title: error?.response?.data?.message || "Gagal memuat data admin",
         status: "error",
       });
-      console.error("Error fetching admins:", error);
+      console.error("Gagal memuat data admin:", error);
       setIsLoading(false);
     }
   };
@@ -120,16 +120,16 @@ const TableAdmin = () => {
       const response = await axiosInstance.delete(`/admin/delete/${id}`);
       console.log(response);
       toast({
-        title: response?.data?.message || "Success deleting admin",
+        title: response?.data?.message || "Berhasil menghapus admin",
         status: "info",
       });
       fetchAdmins();
     } catch (error) {
       toast({
-        title: error?.response?.data?.message || "Error deleting admin",
+        title: error?.response?.data?.message || "Gagal menghapus admin",
         status: "error",
       });
-      console.error("Error deleting admin:", error);
+      console.error("Gagal menghapus admin:", error);
     }
   };
 
@@ -213,9 +213,9 @@ const TableAdmin = () => {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Are you sure?</ModalHeader>
+          <ModalHeader>Apakah Anda yakin?</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>Do you want to delete this admin?</ModalBody>
+          <ModalBody>Apakah Anda ingin menghapus admin ini?</ModalBody>
           <ModalFooter>
             <Button
               colorScheme="red"
@@ -224,7 +224,7 @@ const TableAdmin = () => {
                 handleDelete(idAdmin);
               }}
             >
-              Yes
+              Ya
             </Button>
             <Button
               variant="ghost"
@@ -233,7 +233,7 @@ const TableAdmin = () => {
                 setIdAdmin(0);
               }}
             >
-              No
+              Tidak
             </Button>
           </ModalFooter>
         </ModalContent>
@@ -248,7 +248,7 @@ const TableAdmin = () => {
         <Input
           defaultValue={search}
           onChange={handleSearchChange}
-          placeholder="Search..."
+          placeholder="Cari..."
           focus={true}
           autoFocus
         />
@@ -263,8 +263,8 @@ const TableAdmin = () => {
           <Thead>
             <Tr>
               <Th>No</Th>
-              <Th>Name</Th>
-              <Th>Created At</Th>
+              <Th>Nama</Th>
+              <Th>Dibuat Pada</Th>
               <Th></Th>
             </Tr>
           </Thead>
@@ -281,7 +281,7 @@ const TableAdmin = () => {
                   <Td colSpan={8} textAlign="center">
                     <Alert status="info">
                       <AlertIcon />
-                      No admins found
+                      Tidak ada admin ditemukan
                     </Alert>
                   </Td>
                 </Tr>
@@ -307,7 +307,7 @@ const TableAdmin = () => {
                           setIdAdmin(admin.id_admin);
                         }}
                       >
-                        Delete
+                        Hapus
                       </Button>
                     </Center>
                   </Td>
@@ -325,7 +325,7 @@ const TableAdmin = () => {
                 onClick={() => handlePagination(page - 1)}
                 isDisabled={page === 1}
               >
-                <Text as="b">Previous</Text>
+                <Text as="b">Sebelumnya</Text>
               </Button>
               {page > 3 && (
                 <>
@@ -374,7 +374,7 @@ const TableAdmin = () => {
                 onClick={() => handlePagination(page + 1)}
                 isDisabled={page === admins.pagination.total_page}
               >
-                <Text as="b">Next</Text>
+                <Text as="b">Berikutnya</Text>
               </Button>
             </HStack>
           ) : null}
@@ -385,4 +385,4 @@ const TableAdmin = () => {
   );
 };
 
-export default withAuth(AdminManagemet);
+export default withAuth(AdminManagement);

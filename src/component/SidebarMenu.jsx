@@ -5,7 +5,7 @@ import { Switch } from "@chakra-ui/react";
 import { MdDarkMode, MdLightMode } from "react-icons/md";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoClose } from "react-icons/io5";
-import { IoIosArrowForward,IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowForward, IoIosArrowDown } from "react-icons/io";
 
 const SidebarMenu = () => {
   const userData = useContext(AuthContext);
@@ -70,40 +70,40 @@ const SidebarMenu = () => {
       isVisible: isSuperAdmin,
     },
     {
-      label: "Animal",
+      label: "Satwa",
       icon: "🐦‍⬛",
       path: "/admin/animal",
     },
     {
-      label: "Manage Suggestion",
+      label: "Kelola Saran",
       icon: "🔎",
       path: "/admin/suggestion",
     },
     {
-      label: "History Request Data",
+      label: "Riwayat Permintaan Data",
       icon: "📑",
       path: "/admin/history",
     },
     {
-      label: "Request",
+      label: "Permintaan",
       icon: "🧾",
       children: [
-        { label: "Account", icon: "🧑‍🦰", path: "/admin/request/account" },
+        { label: "Akun", icon: "🧑‍🦰", path: "/admin/request/account" },
         { label: "Data", icon: "🧑‍💻", path: "/admin/request/data" },
       ],
     },
     {
-      label: "User",
+      label: "Pengguna",
       icon: "👤",
       path: "/admin/user",
     },
     {
-      label: "Edit Profile",
+      label: "Edit Profil",
       icon: "🪪",
       path: "/admin/profile",
     },
     {
-      label: "Logout",
+      label: "Keluar",
       icon: "🔒",
       onClick: handleLogout,
     },
@@ -140,7 +140,7 @@ const SidebarMenu = () => {
             <li className="mb-2">
               <div className="flex items-center self-start">
                 {isDarkMode ? <MdDarkMode /> : <MdLightMode />}
-                {isDarkMode ? <p className="ml-1">Dark Mode</p> : <p className="ml-1">Light Mode</p>}
+                {isDarkMode ? <p className="ml-1">Mode Gelap</p> : <p className="ml-1">Mode Terang</p>}
                 <Switch isChecked={isDarkMode} onChange={changeColor} className="ml-4" />
               </div>
             </li>
@@ -223,7 +223,7 @@ const SidebarMenu = () => {
         >
           <GiHamburgerMenu />
         </div>
-        {/* Content goes here */}
+        {/* Konten di sini */}
       </div>
     </div>
   );

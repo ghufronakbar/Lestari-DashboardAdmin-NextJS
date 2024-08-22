@@ -10,12 +10,16 @@ const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }) {
   const [isAdmin, setIsAdmin] = useState(false)
+  const [isLoginRoute, setIsLoginRoute] = useState(false)
   const router = useRouter()
   const path = router.asPath
   useEffect(() => {
     if(router.isReady){
       if(path.includes("/admin")){
         setIsAdmin(true)
+      }
+      if(path.includes("/admin/login")){
+        setIsLoginRoute(true)
       }
     }
   }, [router.isReady, path])
@@ -28,7 +32,7 @@ export default function App({ Component, pageProps }) {
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="icon" href="" />
         </Head>
-        {isAdmin && <SidebarMenu/>}
+        {isAdmin && !isLoginRoute && <SidebarMenu/>}
         <Component {...pageProps} />
       </ChakraProvider>
     </QueryClientProvider>

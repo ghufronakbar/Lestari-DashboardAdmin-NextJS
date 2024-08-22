@@ -11,7 +11,7 @@ const Profile = () => {
           <SidebarMenu flex={1} />
           <Container maxW="80%">
             <Heading marginBottom="8" marginTop="8">
-              Edit Profile
+              Edit Profil
             </Heading>
             <FormProfile />
           </Container>
@@ -20,7 +20,6 @@ const Profile = () => {
     </>
   );
 };
-
 
 const FormProfile = () => {
   const [name, setName] = useState("");
@@ -38,7 +37,7 @@ const FormProfile = () => {
       const response = await axiosInstance.get(`/admin/profile`);
       setName(response?.data?.values?.name);
     } catch (error) {
-      console.error("Error fetching profile:", error);
+      console.error("Gagal memuat profil:", error);
     }
   };
 
@@ -52,15 +51,15 @@ const FormProfile = () => {
 
       setIsOpen(false);
       toast({
-        title: response?.data?.message || "Success updating profile",
+        title: response?.data?.message || "Profil berhasil diperbarui",
         status: "success",
       });
       setPassword("");
       setConfirmationPassword("");
     } catch (error) {
-      console.error("Error updating profile:", error);
+      console.error("Gagal memperbarui profil:", error);
       toast({
-        title: error?.response?.data?.message || "Error updating admin",
+        title: error?.response?.data?.message || "Gagal memperbarui admin",
         status: "error",
       });
     }
@@ -76,9 +75,9 @@ const FormProfile = () => {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Update Profile</ModalHeader>
+          <ModalHeader>Perbarui Profil</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>Are you sure you want to update your profile?</ModalBody>
+          <ModalBody>Apakah Anda yakin ingin memperbarui profil Anda?</ModalBody>
           <ModalFooter>
             <Button
               colorScheme="teal"
@@ -87,7 +86,7 @@ const FormProfile = () => {
                 handleUpdate();
               }}
             >
-              Yes
+              Ya
             </Button>
             <Button
               variant="ghost"
@@ -95,13 +94,14 @@ const FormProfile = () => {
                 setIsOpen(false);
               }}
             >
-              No
+              Tidak
             </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
     );
   };
+  
   return (
     <>
       <Box>
@@ -109,7 +109,7 @@ const FormProfile = () => {
           <Box flex={5} mt={4}>
             <Flex direction={{ base: "column", md: "row" }} gap={4} w={"100%"}>
               <FormControl w={{ base: "100%", md: "50%" }}>
-                <FormLabel>Edit Name</FormLabel>
+                <FormLabel>Edit Nama</FormLabel>
                 <Input
                   placeholder={name}
                   value={name}
@@ -118,9 +118,9 @@ const FormProfile = () => {
               </FormControl>
               <Flex direction="column" gap={4} w={{ base: "100%", md: "50%" }}>
                 <FormControl>
-                  <FormLabel>Edit Password</FormLabel>
+                  <FormLabel>Edit Kata Sandi</FormLabel>
                   <Input
-                    placeholder="Password"
+                    placeholder="Kata Sandi"
                     value={password}
                     type="password"
                     onChange={(e) => setPassword(e.target.value)}
@@ -128,7 +128,7 @@ const FormProfile = () => {
                 </FormControl>
                 <FormControl>
                   <Input
-                    placeholder="Confirmation Password"
+                    placeholder="Konfirmasi Kata Sandi"
                     value={confirmationPassword}
                     type="password"
                     onChange={(e) => setConfirmationPassword(e.target.value)}
@@ -144,7 +144,7 @@ const FormProfile = () => {
                   setIsOpen(true);
                 }}
               >
-                Update
+                Perbarui
               </Button>
             </Center>
           </Box>
