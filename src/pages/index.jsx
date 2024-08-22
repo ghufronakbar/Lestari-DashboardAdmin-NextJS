@@ -2,9 +2,11 @@ import Head from "next/head";
 import Navbar from "@/component/Navbar";
 import Hero from "@/component/Hero";
 import Feature from "@/component/Feature";
-import KeyPoint from "@/component/KeyPoint";
 import BannerBottom from "@/component/BannerBottom";
 import Footer from "@/component/Footer";
+import Example from "@/component/Example";
+import HowTo from "@/component/HowTo";
+
 
 
 export default function Home() {
@@ -21,7 +23,8 @@ export default function Home() {
       <Navbar />
       <Hero />
       <Feature />
-      <KeyPoint />
+      <Example />
+      <HowTo/>
       <BannerBottom />
       <Footer />
     </div>

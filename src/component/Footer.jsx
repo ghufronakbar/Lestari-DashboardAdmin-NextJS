@@ -10,7 +10,7 @@ export default function Footer() {
         </h2>
         <div className="w-full flex flex-col md:flex-row gap-6">
           <Image
-            src="/images/hero.jpg"
+            src="/images/logo.png"
             alt="Lestari"
             width={200}
             height={200}
@@ -24,28 +24,28 @@ export default function Footer() {
                 href="mailto:laporpurwodadi@gmail.com"
                 target="_blank"
               >
-                laporpurwodadi@gmail.com
+                contact@lestari.com
               </Link>
             </div>
             <div className="w-full flex flex-col">
               <h4 className="font-bold text-base font-poppins">Telepon</h4>
               <Link
                 className="text-sm"
-                href="https://wa.me/6282225031574//"
+                href="https://wa.me/62812345678/"
                 target="_blank"
               >
-                082225031574
+                0812345678
               </Link>
             </div>
           </div>
           <div className="w-full flex flex-col px-4 gap-2">
             <div className="w-full flex flex-col">
               <h4 className="font-bold text-base font-poppins">Alamat</h4>
-              <p className="text-sm">Cepogo, Purwodadi, Tepus, Gunungkidul</p>
+              <p className="text-sm">55218 Jl. Swadaya, Sleman, Yogyakarta</p>
             </div>
             <div className="w-full flex flex-col">
               <h4 className="font-bold text-base font-poppins">Website</h4>
-              <p className="text-sm">www.laporpurwodadi.site</p>
+              <p className="text-sm">lestari.com</p>
             </div>
           </div>
         </div>

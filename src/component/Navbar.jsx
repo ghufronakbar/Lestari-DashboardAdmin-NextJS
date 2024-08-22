@@ -59,8 +59,9 @@ export default function Navbar() {
   const navItems = [
     { label: 'Home', href: '#hero' },
     { label: 'Tentang Kami', href: '#visi' },
-    { label: 'Wisata', href: '#wisata' },
-    { label: 'Struktur', href: '#struktur' },
+    { label: 'Tata Cara', href: '#tatacara' },
+    { label: 'Keanekaragaman', href: '#keanekaragaman' },
+    { label: 'Bergabung', href: '#bergabung' },
     { label: 'Kontak', href: '#footer' },
   ];
 
@@ -76,9 +77,9 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 z-50 w-full max-w-full px-4 py-1 rounded-none shadow-md lg:px-8 lg:py-2 transition-all duration-300 ${
+      className={`fixed top-0 z-40 w-full max-w-full px-4 py-1 rounded-none lg:px-8 lg:py-2 transition-all duration-300 ${
         isScrolled
-          ? 'bg-white text-black border-white/80'
+          ? 'bg-white text-black border-white/80 shadow-md'
           : 'bg-transparent text-white'
       } ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}
     >
@@ -87,8 +88,8 @@ export default function Navbar() {
           onClick={() => scrollToSection('#hero')}
           className="mr-4 flex items-center gap-2 py-1.5 font-sans text-base font-medium leading-relaxed antialiased cursor-pointer"
         >
-          <Image src="/images/hero.jpg" alt="Logo" width={48} height={48} className="w-auto h-12" />
-          <span className="hidden lg:inline-block font-poppins text-xl font-bold">Kalurahan Purwodadi</span>
+          <Image src="/images/logo.png" alt="Logo" width={48} height={48} className="w-8 h-8 object-cover" />
+          <span className="inline-block font-poppins text-xl font-bold ml-2 md:ml-4">Lestari</span>
         </div>
         <div className="flex items-center gap-4">
           <div className="hidden mr-4 lg:block">

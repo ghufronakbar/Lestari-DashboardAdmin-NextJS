@@ -2,18 +2,41 @@ import Image from "next/image";
 
 const featureItems = [
   {
-    imgSrc: "/images/hero.jpg",
-    title: "Pengaduan Online 24 Jam",
+    imgSrc: "/images/monitoring.png",
+    title: "Real-Time Monitoring",
     description:
-      "Status pengaduan yang dapat dipantau secara real-time oleh pelapor.",
+      "Pantau keanekaragaman hayati secara real-time dengan data yang selalu terbarui dari berbagai sumber terpercaya.",
   },
   {
-    imgSrc: "/images/hero.jpg",
-    title: "Akses Mudah",
+    imgSrc: "/images/analysis.png",
+    title: "Data Analysis",
     description:
-      "Formulir pengaduan yang mudah diakses dengan fitur upload foto untuk melampirkan bukti.",
+      "Lakukan analisis mendalam untuk memahami tren dan pola yang terjadi dalam keanekaragaman hayati, membantu pengambilan keputusan yang lebih baik.",
   },
-  // Add more items here...
+  {
+    imgSrc: "/images/reporting.png",
+    title: "Comprehensive Reporting",
+    description:
+      "Hasilkan laporan komprehensif yang memudahkan Anda untuk membagikan informasi penting kepada pemangku kepentingan.",
+  },
+  {
+    imgSrc: "/images/security.png",
+    title: "Keamanan Terjaga",
+    description:
+      "Data bersifat bebas namun rahasia. Akses data hanya dapat dilakukan dengan legalitas tertentu, menjaga kerahasiaan dan integritas informasi.",
+  },
+  {
+    imgSrc: "/images/recognition.png",
+    title: "Penghargaan Kontribusi",
+    description:
+      "Pengguna yang berkontribusi dalam pendataan akan mendapatkan penghargaan sebagai bentuk apresiasi atas usaha mereka menjaga keanekaragaman hayati.",
+  },
+  {
+    imgSrc: "/images/approved_data.png",
+    title: "Data Terjamin",
+    description:
+      "Hanya pengguna yang telah di-approve yang dapat melakukan pendataan, memastikan bahwa setiap data yang masuk valid dan dapat dipercaya.",
+  },
 ];
 
 export default function Feature() {
@@ -23,20 +46,42 @@ export default function Feature() {
       className="w-full min-h-[80vh] z-10 bg-white py-20 rounded-t-3xl -mb-20 shadow-black shadow-lg drop-shadow-2xl"
     >
       <div className="w-full flex flex-col items-center gap-6 md:gap-8 lg:gap-12 px-6 md:px-12 lg:px-24">
-        <h2 className="text-black font-bold text-lg md:text-xl lg:text-2xl md:text-xl lg:text-2xl font-poppins text-center">
-          Lapor Purwodadi
+        <h2 className="text-black font-bold text-lg md:text-xl lg:text-2xl font-poppins text-center">
+          Lestari
         </h2>
         <h2 className="md:text-xl text-black text-sm text-center">
-          Lapor Purwodadi adalah platform online yang memudahkan masyarakat
-          Kalurahan Purwodadi untuk menyampaikan aspirasi, keluhan, dan saran
-          kepada pemerintah setempat.
+          Melestarikan Kehidupan, Mencatat Keanekaragaman, Menjaga Bumi untuk
+          Generasi Mendatang.
         </h2>
-        <p></p>
+        <div className="w-full flex flex-col items-center gap-6 md:gap-8 lg:gap-12 px-6 md:px-12 lg:px-24 my-32">          
+          <div className="w-full flex flex-col gap-8 md:flex-row items-center">
+            <div className="w-full flex justify-center">
+              <Image
+                width={400}
+                height={300}
+                alt="Pantai Selatan Gunungkidul"
+                src="/images/hero.jpg"
+                className="w-1/11 object-cover rounded-lg hover:scale-105 transition-all"
+              />
+            </div>
+            <div className="w-full flex flex-col gap-2 text-justify">
+              <p className="md:text-xl text-black text-sm text-start">
+                Lestari hadir sebagai penjaga keberlanjutan dan pencatat
+                keanekaragaman hayati dunia. Kami percaya bahwa dengan memahami,
+                mencatat, dan melestarikan keanekaragaman hayati, kita bisa
+                menjaga keseimbangan alam yang krusial bagi masa depan planet
+                kita. Lestari berkomitmen untuk menjadi platform yang mendorong
+                kolaborasi, transparansi, dan keberlanjutan dalam melindungi dan
+                merawat bumi kita.
+              </p>
+            </div>
+          </div>
+        </div>
         <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
           {featureItems.map((item, index) => (
             <div
               key={index}
-              className="w-full flex flex-col gap-4 pb-4 border border-gray-300 rounded-lg overflow-hidden"
+              className="w-full flex flex-col gap-4 pb-4 border border-gray-300 rounded-lg overflow-hidden hover:scale-105 transition-all duration-300"
             >
               <Image
                 width={400}
@@ -51,83 +96,9 @@ export default function Feature() {
                 </h3>
                 <p className="text-black text-sm">{item.description}</p>
               </div>
-              <div
-                className="absolute bottom-0 left-0 w-full bg-white opacity-0 transition-opacity duration-300 hidden"
-                id="moreInfo"
-              >
-                <p className="text-black text-sm">
-                  More detailed information about Pantai Siung
-                </p>
-              </div>
             </div>
           ))}
-        </div>
-        <div className="w-full flex flex-col items-center gap-6 md:gap-8 lg:gap-12 px-6 md:px-12 lg:px-24">
-          <p></p>
-          <h2 className="text-black font-bold font-regular text-sm md:text-xl lg:text-2xl font-poppins text-center">
-            Tatacara Pengaduan
-          </h2>
-          <h2 className="md:text-xl text-black text-sm text-center">
-            Langkah-langkah yang harus diikuti saat ingin menyampaikan keluhan
-            atau ketidakpuasan terkait suatu layanan atau tindakan. Tujuannya
-            yaitu untuk mendapatkan solusi atas masalah yang dialami dan
-            meningkatkan kualitas pelayanan.
-          </h2>
-          <p></p>
-          <Image
-            width={400}
-            height={300}
-            src="/images/hero.jpg"
-            alt="Gambar Tatacara"
-            className="w-full md:w-3/4 lg:px-1/14"
-          />
-        </div>
-        <p></p>
-        <p></p>
-        <div className="w-full flex flex-col items-center gap-6 md:gap-8 lg:gap-12 px-6 md:px-12 lg:px-24 md:px-12 lg:px-24">
-          <h2 className="text-black font-bold text-lg md:text-xl lg:text-2xl md:text-xl lg:text-2xl font-poppins text-center">
-            Surga Tersembunyi di Pantai Selatan Gunungkidul
-          </h2>
-          <div className="w-full flex flex-col gap-8 md:flex-row items-center">
-            <div className="w-full flex justify-center">
-              <Image
-                width={400}
-                height={300}
-                alt="Pantai Selatan Gunungkidul"
-                src="/images/hero.jpg"
-                className="w-1/11 object-cover rounded-lg hover:scale-105 transition-all"
-              />
-            </div>
-            <div className="w-full flex flex-col gap-2 text-justify">
-              <p>
-                Dusun Purwodadi, sebuah permata tersembunyi di pesisir selatan
-                Gunungkidul, menawarkan pesona alam yang luar biasa. Dengan
-                garis pantai yang menawan, tebing-tebing karang yang gagah, dan
-                hamparan pasir putih yang lembut, Purwodadi adalah surga bagi
-                para pecinta alam dan petualang.
-              </p>
-              <p>
-                Purwodadi juga merupakan destinasi wisata edukasi yang menarik.
-                Dengan beragam ekosistem yang ada, desa ini menjadi laboratorium
-                alam yang sempurna untuk mempelajari keanekaragaman hayati dan
-                pentingnya menjaga kelestarian lingkungan.
-              </p>
-              <p>
-                Masyarakat Purwodadi memiliki semangat gotong royong yang tinggi
-                dan menjunjung tinggi nilai-nilai adat istiadat. Potensi ekonomi
-                desa pun terus dikembangkan, antara lain melalui sektor
-                pertanian, perikanan, dan pariwisata yang berkelanjutan.
-              </p>
-              <p>
-                Datanglah ke Purwodadi dan rasakan sendiri pengalaman yang tak
-                terlupakan. Jelajahi keindahan alamnya, belajar tentang warisan
-                budaya yang kaya, dan nikmati keramahan masyarakatnya. Purwodadi
-                adalah tempat yang tepat untuk melepas penat dan mencari
-                ketenangan.
-              </p>
-            </div>
-          </div>
-        </div>
+        </div>                               
       </div>
     </section>
   );
