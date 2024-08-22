@@ -39,7 +39,7 @@ const featureItems = [
   },
 ];
 
-export default function Feature() {
+export default function Feature() {  
   return (
     <section
       id="visi"
@@ -77,7 +77,7 @@ export default function Feature() {
             </div>
           </div>
         </div>
-        <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {featureItems.map((item, index) => (
             <div
               key={index}

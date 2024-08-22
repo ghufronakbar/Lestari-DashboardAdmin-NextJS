@@ -14,7 +14,7 @@ function HowTo() {
         <Image
           width={400}
           height={300}
-          src="/images/hero.jpg"
+          src={imageHowTo}
           alt="Gambar Tatacara"
           className="w-full h-auto object-cover hover:scale-105 transition-all rounded-lg cursor-pointer"
           onClick={() => setIsVisible(true)}
@@ -46,9 +46,9 @@ const ModalImage = ({isVisible, onClose}) => {
             <Image
                 width={400}
                 height={300}
-                src="/images/hero.jpg"
+                src={imageHowTo}
                 alt="Gambar Tatacara"
-                className="w-[60vw] h-auto object-cover hover:scale-105 transition-all rounded-lg cursor-pointer"
+                className="w-[90vw] md:w-[80vw] lg:w-[70vw] xl:w-[60vw] h-auto object-cover hover:scale-105 transition-all rounded-lg cursor-pointer"
             />
         </div>
     )
@@ -104,5 +104,7 @@ const howToItems = [
       "Pastikan untuk cek aplikasi secara berkala untuk mengetahui status request data Anda atau update terbaru mengenai kredibilitas akun.",
   },
 ];
+
+const imageHowTo = '/images/hero.jpg';
 
 export default HowTo;

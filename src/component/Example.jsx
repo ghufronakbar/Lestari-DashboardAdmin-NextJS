@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useState } from "react";
 
 const exampleItems = [
   {
@@ -67,16 +68,17 @@ const exampleItems = [
       latinName: 'Probosciger aterrimus',
       description: 'Kakatua Raja adalah burung besar dengan paruh kuat dan bulu hitam mengkilap. Mereka ditemukan di Papua dan dikenal dengan jambul besar yang dapat ditegakkan.'
   },
-  {
-      imgSrc: '/images/hero.jpg',
-      localName: 'Ikan Arwana Merah',
-      latinName: 'Scleropages formosus',
-      description: 'Ikan Arwana Merah adalah spesies ikan air tawar yang sangat dihargai karena warna sisiknya yang indah. Mereka ditemukan di perairan Indonesia dan terkenal dalam budaya lokal sebagai simbol keberuntungan.'
-  }
+  // {
+  //     imgSrc: '/images/hero.jpg',
+  //     localName: 'Ikan Arwana Merah',
+  //     latinName: 'Scleropages formosus',
+  //     description: 'Ikan Arwana Merah adalah spesies ikan air tawar yang sangat dihargai karena warna sisiknya yang indah. Mereka ditemukan di perairan Indonesia dan terkenal dalam budaya lokal sebagai simbol keberuntungan.'
+  // }
 ];
 
   
   export default function Example() {
+    const [isSeeAll, setIsSeeAll] = useState(false);
     return (
       <section id="keanekaragaman" className="w-full min-h-[80vh] z-10 bg-white py-20">
     <div
@@ -86,9 +88,9 @@ const exampleItems = [
         Datang dan jatuh cinta dengan satwa
       </h2>
       <div
-        className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+        className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         
-        {exampleItems.map((item,index) => (        
+        {exampleItems.slice(0, isSeeAll ? exampleItems.length : 4).map((item,index) => (        
         <div
         key={index}
           className="w-full flex flex-col gap-4 pb-4 border border-gray-300 rounded-lg overflow-hidden hover:scale-105 transition-all duration-300">
@@ -108,16 +110,12 @@ const exampleItems = [
             <p className="text-black text-sm">
               {item.description}
             </p>
-          </div>
-          <div className="absolute bottom-0 left-0 w-full bg-white opacity-0 transition-opacity duration-300 hidden" id="moreInfo">
-            <p className="text-black text-sm">
-              More detailed information about Pantai Siung
-            </p>
-          </div>
+          </div>          
         </div>
         ))}
-
-
+        {!isSeeAll &&         
+        <p className="text-gray-600 text-sm cursor-pointer w-fit h-fit hover:underline transition-all duration-300" onClick={() => setIsSeeAll(true)}>Lihat semua</p>
+        }
       </div>
     </div>
   </section>
